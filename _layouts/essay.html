@@ -206,6 +206,7 @@
     <h2 class="sec-h">Provenance</h2>
     {%- if page.editing %}<p class="note">{{ page.editing }}</p>{% endif %}
     <p class="orig-head"><strong>Original version</strong>{% if page.original_title %}: <em>{{ page.original_title }}</em>{% endif %}{% if page.original_date %}, {% assign _d = page.original_date | date: "%-d" | plus: 0 -%}{%- assign _m = _d | modulo: 10 -%}{%- if _d >= 11 and _d <= 13 -%}{%- assign _s = "th" -%}{%- elsif _m == 1 -%}{%- assign _s = "st" -%}{%- elsif _m == 2 -%}{%- assign _s = "nd" -%}{%- elsif _m == 3 -%}{%- assign _s = "rd" -%}{%- else -%}{%- assign _s = "th" -%}{%- endif -%}{{ page.original_date | date: "%B %-d" }}<sup class="ord">{{ _s }}</sup>, {{ page.original_date | date: "%Y" }}{% endif %}. Unedited.</p>
+    {%- if page.original_byline %}<p class="orig-head"><em>{{ page.original_byline }}</em></p>{% endif %}
     <div id="originalText">
 {{ page.original | markdownify }}
     </div>

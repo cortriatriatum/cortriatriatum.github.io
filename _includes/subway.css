@@ -296,7 +296,7 @@
       border-bottom: 2px solid var(--ink); font-size: var(--fs-xs); font-weight: 800; letter-spacing: 0.1em;
       text-transform: uppercase; color: var(--ink); }
     .station-content > .sub-line:first-child { margin-top: 2px; }
-    .data-title .pdf-link { margin-left: 7px; font-size: var(--fs-2xs); font-weight: 800; letter-spacing: 0.06em; color: var(--link); text-decoration: none; vertical-align: 1px; }
+    .data-title .pdf-link { margin-left: 3px; font-size: var(--fs-2xs); font-weight: 800; letter-spacing: 0.06em; color: var(--link); text-decoration: none; vertical-align: 1px; }
     .data-title .pdf-link:hover { text-decoration: underline; }
     .station-header a.feed-link { display: inline; color: var(--mta-yellow); opacity: 1; text-decoration: none; }
     .station-header a.feed-link:hover, .station-header a.feed-link:focus-visible { text-decoration: underline; }
