@@ -164,7 +164,7 @@ def main(md_path):
         if fm.get("original_date"):
             head += ", " + date_line(fm["original_date"])
         w("{\\color{rule}\\noindent\\rule{\\textwidth}{0.4pt}}\\par\n")
-        w("\\noindent{\\bfseries %s.} Unedited.\\par\n}\n" % head)
+        w("\\noindent{\\bfseries %s.} %s\\par\n}\n" % (head, esc(fm.get("original_note") or "Unedited.")))
         w("\\fontsize{13.0}{18.85}\\selectfont\\setlength{\\parskip}{6.5pt}\n")
         for p in [x.strip() for x in fm["original"].split("\n\n") if x.strip()]:
             w(inline(p, nums) + "\n\n")

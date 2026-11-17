@@ -124,7 +124,9 @@ def provenance_html(fm):
         head += ", " + date_line(fm["original_date"])
     out = ['<p class="h">How this was edited</p>', f'<p class="note">{esc(fm.get("editing", ""))} '
            f'A web version with every change marked is at {SITE}essays/.</p>',
-           '<div class="rule">&nbsp;</div>', f'<p class="h">{head}. Unedited.</p>']
+           '<div class="rule">&nbsp;</div>', f'<p class="h">{head}.</p>' if fm.get("original_note") else f'<p class="h">{head}. Unedited.</p>']
+    if fm.get("original_note"):
+        out.append(f'<p class="note">{esc(fm["original_note"])}</p>')
     if fm.get("original_byline"):
         out.append(f'<p class="note"><i>{esc(fm["original_byline"])}</i></p>')
     out += [f"<p>{esc(p.strip())}</p>" for p in fm["original"].split("\n\n") if p.strip()]
