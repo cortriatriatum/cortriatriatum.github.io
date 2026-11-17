@@ -4,7 +4,6 @@ date: 2026-11-17
 pdf: /docs/essays/Mathews_2026_Atomic_Unit_Single_Experiment.pdf
 keywords: "publication bias, negative results, experimental design, reproducibility, p-values, scientific publishing, essay"
 description: "Rewarding robust design is the antidote to the mangled mess that is the published and peer-reviewed scientific corpus today."
-published: false
 
 # Provenance: my own draft, before any edits by Claude.
 original_title: "The atomic unit of scientific information is a single experiment"
