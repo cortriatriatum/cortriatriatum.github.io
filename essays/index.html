@@ -25,10 +25,11 @@ layout: null
   <div class="station-content">
     {%- assign essays = site.essays | sort: "date" | reverse -%}
     {%- for e in essays %}
-    <div class="data-row"><div class="data-year">{{ e.date | date: "%b %-d, %Y" }}</div><div class="data-title"><a href="{{ e.url | relative_url }}">{{ e.title }}</a>{% if e.pdf %} <a class="data-sub" href="{{ e.pdf | relative_url }}" target="_blank" rel="noopener">PDF</a>{% endif %}{% if e.description %}<div class="data-sub">{{ e.description }}</div>{% endif %}</div></div>
+    <div class="data-row"><div class="data-year">{{ e.date | date: "%b %-d, %Y" }}</div><div class="data-title"><a href="{{ e.url | relative_url }}">{{ e.title }}</a>{% if e.pdf %}<a class="pdf-link" href="{{ e.pdf | relative_url }}" target="_blank" rel="noopener">PDF</a>{% endif %}{% if e.description %}<div class="data-sub">{{ e.description }}</div>{% endif %}</div></div>
     {%- endfor %}
     <div class="essay-nav button-group">
       <a class="portal-btn" href="{{ '/' | relative_url }}">Home</a>
+      <a class="portal-btn" href="{{ '/#subscribe' | relative_url }}">Subscribe</a>
       <a class="portal-btn" href="{{ '/essays/feed.xml' | relative_url }}">RSS</a>
     </div>
   </div>

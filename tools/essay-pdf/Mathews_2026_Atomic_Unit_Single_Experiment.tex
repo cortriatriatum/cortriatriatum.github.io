@@ -1,0 +1,115 @@
+% The Atomic Unit of Scientific Information Is a Single Experiment
+% Copyright (c) 2026 Rick Mathews. All rights reserved.
+% Generated from _essays/atomic-unit-single-experiment.md by tools/essay-pdf/md2tex.py; edit the Markdown, not this file.
+% Build: latexmk -xelatex <this file>
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[final]{microtype}
+\usepackage[letterpaper,top=0.7in,bottom=0.75in,left=1in,right=1in]{geometry}
+\usepackage{ragged2e}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{hyperxmp}
+\hypersetup{
+  pdftitle={The Atomic Unit of Scientific Information Is a Single Experiment},
+  pdfauthor={Rick Mathews, PhD},
+  pdfsubject={Essay},
+  pdfkeywords={publication bias, negative results, experimental design, p-values, scientific publishing, essay},
+  pdfcopyright={Copyright (C) 2026 Rick Mathews. All rights reserved.},
+  pdfcontacturl={https://cortriatriatum.github.io/me/},
+  pdflang={en-US},
+  pdfcreator={Rick Mathews},
+  pdfproducer={LaTeX}
+}
+\definecolor{rule}{gray}{0.6}
+\definecolor{quote}{gray}{0.3}
+\pagestyle{empty}
+% Ragged right: lines run the full measure without stretched word spacing.
+\setlength{\RaggedRightParindent}{1.5em}
+\setlength{\RaggedRightRightskip}{0pt plus 2em}
+\setlength{\emergencystretch}{1.5em}
+\tolerance=1000
+\hyphenpenalty=1000 % no words split across lines
+\widowpenalty=10000 % no single lines stranded at the top or bottom of a page
+\clubpenalty=10000
+\begin{document}
+\special{pdf:docinfo << /Author (Rick Mathews, PhD) >>}% hyperxmp drops the Author field
+\RaggedRight
+\begin{center}
+  {\fontsize{21}{25.2}\selectfont\bfseries The Atomic Unit of Scientific Information Is a Single Experiment\par}
+  \vspace{9pt}
+  {\large Rick Mathews, PhD\par}
+  \vspace{3pt}
+  {\small November 17\textsuperscript{th}, 2026\par}
+\end{center}
+\vspace{2pt}
+{\color{rule}\noindent\rule{\textwidth}{0.4pt}}\par
+\vspace{-4pt}
+
+\fontsize{13.0}{18.85}\selectfont
+\setlength{\parskip}{6.5pt}
+Having recently completed a PhD, I have found that a few frustrating experiences across multiple years culminated in an insight I thought was worth sharing. I believe the atomic unit of scientific information is a single experiment. And for as long as we ignore this fact and do not operate based on it, we are often shooting ourselves in the foot.
+
+I have just finished writing some thoughts on why \href{/me/essays/peer-review-scaled-and-continuous/}{peer review should be overhauled}. Even more malignant in the current practice of peer review is the molding of scientific papers into tidy narratives, with a bias toward publishing positive results. Studies with strong results are 40 percentage points more likely to be published than studies with null results, mostly because the null results are never written up\textsuperscript{\hyperlink{ref-franco2014}{1}}.
+
+Science is somehow both a stochastic and a deterministic process. The scientific method is a torch, lamp, or light in the dark: it lights the way ahead, and hopefully we all agree that forward is the way we are all traveling.
+
+However, when we fail to share our failures, we shoot ourselves and everyone behind us in the foot, and doom ourselves to spirals of inefficiency that are now scaling with AI tools. When AI tools, including large language models and other machine learning algorithms, run on the biased, published scientific corpus, they amplify our biases: they learn what we choose to include and remain blind to what we choose to leave out.
+
+In the scientific method, every result, whether negative, inconclusive, or positive, informs the next experiment. We have largely treated ourselves as the only ones who need to learn from our failures, when we needed to be sharing any and all results with everyone. A negative experiment points a different way; an inconclusive one drives better design. And it is the robustness and strength of the design that ultimately decides how well the path is lit, not the significant figures of a p-value and its magnitude below the 0.05 threshold. Statisticians agree that scientific conclusions should not rest only on whether a p-value passes a threshold\textsuperscript{\hyperlink{ref-asa2016}{2}}.
+
+Rewarding design already works. When journals agree to publish a study on the strength of its design, before the results are known, the share of positive results falls from 96\% to 44\%\textsuperscript{\hyperlink{ref-scheel2021}{3}}. And the single experiment is already publishable: \href{https://www.micropublication.org/}{microPublication Biology} publishes individual, peer-reviewed findings, including results that would otherwise be left out of a paper's narrative\textsuperscript{\hyperlink{ref-raciti2018}{4}}. A null result from a weak design teaches little, which is exactly why design, not outcome, is what we should reward.
+
+Rewarding robust design and incentivizing the publication of every experiment may be an antidote to publication bias and to the mangled mess that is the published, peer-reviewed scientific corpus today. As we begin to scale hypothesis generation and data analyses, it is critical we do not scale our inefficiencies, lest we go further off course in our path forward.
+
+\vspace{14pt}
+{\color{rule}\noindent\rule{0.3\textwidth}{0.4pt}}
+\vspace{4pt}
+
+{\fontsize{11.7}{16.38}\selectfont\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+{\itshape If you are working on this problem, or would like to discuss it further, please get in touch: \href{https://cortriatriatum.github.io/me/\#contact}{\upshape cortriatriatum.github.io/me}.}
+
+Rick Mathews, PhD, is an MD/PhD candidate at the Oregon Health \& Science University (OHSU), currently on leave.
+
+}
+
+\vspace{12pt}
+{\fontsize{10.5}{13.5}\selectfont\setlength{\parskip}{0pt}
+\noindent{\bfseries References}\par\vspace{4pt}
+\begin{enumerate}[leftmargin=1.8em,itemsep=5pt,topsep=0pt,label=\arabic*.]
+\item \hypertarget{ref-franco2014}{}Franco A, Malhotra N, Simonovits G. Publication bias in the social sciences: unlocking the file drawer. \textit{Science}. 2014;345(6203):1502--1505. \url{https://doi.org/10.1126/science.1255484}\\[1pt]{\color{quote}\itshape ``Strong results are 40 percentage points more likely to be published than are null results''}~{\color{quote}\footnotesize(Abstract)}
+\item \hypertarget{ref-asa2016}{}Wasserstein RL, Lazar NA. The ASA statement on p-values: context, process, and purpose. \textit{Am Stat}. 2016;70(2):129--133. \url{https://doi.org/10.1080/00031305.2016.1154108}\\[1pt]{\color{quote}\itshape ``Scientific conclusions and business or policy decisions should not be based only on whether a p-value passes a specific threshold.''}~{\color{quote}\footnotesize(Principle 3)}
+\item \hypertarget{ref-scheel2021}{}Scheel AM, Schijen MRMJ, Lakens D. An excess of positive results: comparing the standard psychology literature with registered reports. \textit{Adv Methods Pract Psychol Sci}. 2021;4(2). \url{https://doi.org/10.1177/25152459211007467}\\[1pt]{\color{quote}\itshape ``we found 96\% positive results in standard reports but only 44\% positive results in RRs.''}~{\color{quote}\footnotesize(Abstract)}
+\item \hypertarget{ref-raciti2018}{}Raciti D, Yook K, Harris TW, Schedl T, Sternberg PW. Micropublication: incentivizing community curation and placing unpublished data into the public domain. \textit{Database}. 2018;2018:bay013. \url{https://doi.org/10.1093/database/bay013}\\[1pt]{\color{quote}\itshape ``results are omitted from science narratives due to publication bias where certain results are considered irrelevant for the publication.''}~{\color{quote}\footnotesize(Abstract)}
+\end{enumerate}
+}
+
+\clearpage
+{\fontsize{11.7}{16.38}\selectfont\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}
+\noindent{\bfseries How this was edited}\par
+I wrote the original on November 17, 2026, and revised it the same day with editorial help from Claude, an AI model made by Anthropic. Claude critiqued the draft, found and checked the sources, and drafted edits, some on its own suggestion and some at my direction; I chose what to keep. The Markup view shows every change from the original. Every quote in the references is copied word for word from the published source.\par
+\vspace{10pt}
+{\color{rule}\noindent\rule{\textwidth}{0.4pt}}\par
+\noindent{\bfseries Original version: \textit{The atomic unit of scientific information is a single experiment}, November 17\textsuperscript{th}, 2026.} Unedited.\par
+}
+\fontsize{13.0}{18.85}\selectfont\setlength{\parskip}{6.5pt}
+Rewarding robust design is the antidote to the mangled mess that is the published and peer reviewed scientific corpus today
+
+Having recently completed a phd, a few frustrating experiences across multiple years have culminated in an insight i thought was worth sharing. I believe the atomic unit of scientific information is a single experiment. And for as long as we ignore this fact and do not operate based on it, we're often shooting ourselves in the foot.
+
+I've just finished writing some thoughts on why peer review should be overhauled - see link. Further malignant regarding the current practice of peer review is the misaligned moulding of scienitifc papers and narratives, with positive publication bias.
+
+Science is somehow both a stochastic and deterministic process. The scientific method is a torch, lamp, or light in the dark, it lights the way ahead, and hopefully we're all agreed that forward is the way we're all travelling.
+
+However, when we fail to share oru failures, we shoot ourselves and everyone behind us in the foot and doom ourselves to spirals of inefficiency which are now scaling with ai tools. When ai tools - llms, and other machine learning algos - run on the biased, published, scientific corpus, they exemplify our biases, what we choose to include, and remain blind to what we choose to leave out.
+
+In the scientific method, every result, whether negative, inconclusive, or positive informs the next experiment. We have largely treated ourselves as the only one who needs to learn from our failures when we needed to be sharing any and all results with everyone. A negative experiment points a different way, an inconclusive one drives better design. And it is the robustness and strength of the design that ultimately decides how well the path is lit, not the significant figures of a p value and its magnitude below the 0.05 threshold.
+
+Rewarding robust design and incentivizing experimental publication may be an antidote to combating the publication bias and the mangled mess that is the published and peer reviewed scientific corpus today. As we begin to scale hypothesis generation and data analyses, it is critical we do not scale our ineffiencies lest we go further off course in our path forward.
+
+
+\vspace{10pt}
+{\centering\footnotesize \copyright\ 2026 Rick Mathews. All rights reserved.\par}
+\end{document}

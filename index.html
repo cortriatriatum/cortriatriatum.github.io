@@ -327,6 +327,9 @@
       border-bottom: 2px solid var(--ink); font-size: var(--fs-xs); font-weight: 800; letter-spacing: 0.1em;
       text-transform: uppercase; color: var(--ink); }
     .station-content > .sub-line:first-child { margin-top: 2px; }
+    .data-title .pdf-link { margin-left: 7px; font-size: var(--fs-2xs); font-weight: 800; letter-spacing: 0.06em; color: var(--link); text-decoration: none; vertical-align: 1px; }
+    .data-title .pdf-link:hover { text-decoration: underline; }
+    .contact .sub-alt { font-size: var(--fs-sm); color: var(--sub); }
     .station-header a.feed-link { display: inline; color: var(--mta-yellow); opacity: 1; text-decoration: none; }
     .station-header a.feed-link:hover, .station-header a.feed-link:focus-visible { text-decoration: underline; }
     .bullet.mini { width: 1.15rem; height: 1.15rem; font-size: 0.6rem; border-width: 1.5px; box-shadow: none; }
@@ -423,15 +426,15 @@
 <div class="col col-b">
 <!-- 1 WRITING: filled from _essays/ by Jekyll; newest four, then RSS -->
 <div class="station line-green writing">
-<div class="station-header"><div class="bullet green">W</div><span class="station-title">Writing</span><a class="station-tag feed-link" href="https://cortriatriatum.github.io/me/essays/feed.xml">RSS</a></div>
+<div class="station-header"><div class="bullet green">W</div><span class="station-title">Writing</span><a class="station-tag feed-link" href="#subscribe" id="subBtn">Subscribe</a></div>
 <div class="station-content">
-<div class="data-row"><div class="data-year">Nov 2026</div><div class="data-title"><a href="essays/peer-review-scaled-and-continuous/">Peer Review Should Be Scaled and Continuous</a></div></div>
-<div class="data-row"><div class="data-year">Nov 2026</div><div class="data-title"><a href="essays/medicines-missing-experiments/">Medicine’s Missing Experiments</a></div></div>
+<div class="data-row"><div class="data-year">Nov 2026</div><div class="data-title"><a href="essays/peer-review-scaled-and-continuous/">Peer Review Should Be Scaled and Continuous for Every Paper</a><a class="pdf-link" href="docs/essays/Mathews_2026_Peer_Review_Scaled_and_Continuous.pdf" rel="noopener" target="_blank">PDF</a><div class="data-sub">A paper should not be peer reviewed just once.</div></div></div>
+<div class="data-row"><div class="data-year">Nov 2026</div><div class="data-title"><a href="essays/medicines-missing-experiments/">Medicine’s Missing Experiments</a><a class="pdf-link" href="docs/essays/Mathews_2026_Medicines_Missing_Experiments.pdf" rel="noopener" target="_blank">PDF</a><div class="data-sub">Scientists and engineers stand to benefit from improved clinical contextual awareness.</div></div></div>
 </div>
 </div>
 <!-- 5 WORK EXPERIENCE + LEADERSHIP & SERVICE -->
 <div class="station line-gray experience">
-<div class="station-header"><div class="bullet gray">L</div><span class="station-title">Work, Leadership &amp; Service</span></div>
+<div class="station-header"><div class="bullet gray">L</div><span class="station-title">Leadership, Work Experience, &amp; Service</span></div>
 <div class="station-content">
 <div class="sub-line"><span class="bullet mini yellow">W</span>Work Experience</div>
 <div class="data-row"><div class="data-year">2021 to 2022</div><div class="data-title">Platform and Portfolio Company Support<div class="data-sub"><a href="https://www.groovecap.com/">Groove Capital</a>, Minneapolis, Minnesota</div></div></div>
@@ -546,6 +549,19 @@
 <input name="_subject" type="hidden" value="cortriatriatum.github.io/me: new message"/>
 <div class="row"><button class="send" type="submit">Send</button><span class="status" id="contactStatus" role="status"></span></div>
 <div class="fine">Delivered privately. I'll reply from my own address.</div>
+</form>
+</dialog>
+<dialog aria-labelledby="subTitle" class="contact" id="subDlg">
+<div class="station-header"><div style="display:flex;align-items:center;gap:8px;"><div class="bullet green">W</div><span class="station-title" id="subTitle">Subscribe to new essays</span></div>
+<button aria-label="Close" class="close" id="subClose" type="button">✕</button></div>
+<form id="subForm" method="POST" novalidate="">
+<label>Your email<input autocomplete="email" maxlength="200" name="email" required="" type="email"/></label>
+<div aria-hidden="true" class="hp"><label>Leave this empty<input autocomplete="off" name="_gotcha" tabindex="-1"/></label></div>
+<input name="_subject" type="hidden" value="cortriatriatum.github.io/me: essay subscription"/>
+<input name="message" type="hidden" value="Please email me new essays."/>
+<div class="row"><button class="send" type="submit">Subscribe</button><span class="status" id="subStatus" role="status"></span></div>
+<div class="fine">I'll email you when a new essay is published, a few times a year at most. Reply to any of those emails to unsubscribe.</div>
+<div class="sub-alt">Prefer a feed reader? <a href="https://cortriatriatum.github.io/me/essays/feed.xml">RSS feed</a></div>
 </form>
 </dialog>
 <script>
@@ -880,6 +896,38 @@
       .then(function(r){
         if (r.ok) { status.textContent = 'Sent. Thank you, I will reply soon.'; form.reset(); setTimeout(function(){ dlg.close(); }, 1800); }
         else { form.submit(); }   /* e.g. CAPTCHA required: fall back to Formspree's own page */
+      })
+      .catch(function(){ form.submit(); })
+      .then(function(){ send.disabled = false; });
+  });
+})();
+</script>
+<script>
+/* ===== Subscribe: emails go to the same Formspree inbox as the contact form (free plan). New essays are
+   sent to subscribers by hand. Opens from the Writing card or from /me/#subscribe (essay pages link here). */
+(function(){
+  var FORMSPREE_ID = 'mwlllezg';
+  var dlg = document.getElementById('subDlg'), btn = document.getElementById('subBtn');
+  if (!FORMSPREE_ID || !dlg || !btn || typeof dlg.showModal !== 'function') return;
+  var form = document.getElementById('subForm'), status = document.getElementById('subStatus');
+  var send = form.querySelector('.send'), endpoint = 'https://formspree.io/f/' + FORMSPREE_ID, openedAt = 0;
+  form.action = endpoint;
+  function open(){ status.textContent = ''; openedAt = Date.now(); dlg.showModal(); form.elements.email.focus(); }
+  btn.addEventListener('click', function(e){ e.preventDefault(); open(); });
+  var fromHash = function(){ if (location.hash === '#subscribe' && !dlg.open) open(); };
+  window.addEventListener('hashchange', fromHash); fromHash();
+  document.getElementById('subClose').addEventListener('click', function(){ dlg.close(); });
+  dlg.addEventListener('click', function(e){ if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('close', function(){ if (location.hash === '#subscribe') history.replaceState(null, '', location.pathname); });
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (!form.checkValidity()) { status.textContent = 'Please enter a valid email.'; return; }
+    if (form.elements._gotcha.value || Date.now() - openedAt < 2000) { status.textContent = 'Subscribed. Thank you.'; form.reset(); return; }
+    send.disabled = true; status.textContent = 'Sending…';
+    fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+      .then(function(r){
+        if (r.ok) { status.textContent = 'Subscribed. Thank you.'; form.reset(); setTimeout(function(){ dlg.close(); }, 1800); }
+        else { form.submit(); }
       })
       .catch(function(){ form.submit(); })
       .then(function(){ send.disabled = false; });
