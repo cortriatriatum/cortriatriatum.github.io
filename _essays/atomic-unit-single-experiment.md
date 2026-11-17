@@ -111,6 +111,15 @@ edits:
     what: "“an antidote to combating the publication bias” became “the antidote to publication bias”; the last sentence now ends “or we will drift even further off course.”"
     why: "“Antidote to combating” doubles the verb; smoother ending."
     by: Claude
+  - where: "¶1"
+    what: "Opens “Having recently completed my PhD”; we shoot “ourselves, and the growing base of future knowledge, in the foot.”"
+    why: "My revision; recast so the opening is grammatical."
+    by: Rick
+    words: Claude
+  - where: "¶2, ¶7"
+    what: "“Too often, too, I failed” became “Too often I failed”; dropped “And” before “The single experiment is already publishable.”"
+    why: "My revision."
+    by: Rick
 
 references:
   - id: errington2021
@@ -150,9 +159,9 @@ references:
     where: Abstract
 ---
 
-<p>I recently completed my PhD, and a few frustrating experiences across those years left me with an insight I think is worth sharing: the atomic unit of scientific information is a single experiment. As long as we do not operate on that fact, we are shooting ourselves in the foot.</p>
+<p>Having recently completed my PhD, I came away from a few frustrating experiences across those years with an insight I think is worth sharing: the atomic unit of scientific information is a single experiment. As long as we do not operate on that fact, we are shooting ourselves, and the growing base of future knowledge, in the foot.</p>
 
-<p>Too often, I ran an experiment that did not work. By my own estimate, the experiments that failed outnumbered those that worked, or that fit my original research program, by at least an order of magnitude. Informal conversations about PhD progress tell the same story: three years of experiments that do not work, then a final year in which everything works and is rushed to the finish. Too often, too, I failed to replicate published experiments because of obscure protocol details left out of the methods and even the supplement. Not because of falsification, just a lack of detail, and I paid for the inefficiency in time, reagents, money, and (perhaps soon to be professionally managed) anxiety. I am not alone. <span class="claim" data-ref="errington2021">When one project set out to repeat 193 experiments from high-impact cancer biology papers, not one was described in enough detail to repeat without asking the original authors</span><sup class="ref"><a href="#ref-errington2021">1</a></sup>.</p>
+<p>Too often, I ran an experiment that did not work. By my own estimate, the experiments that failed outnumbered those that worked, or that fit my original research program, by at least an order of magnitude. Informal conversations about PhD progress tell the same story: three years of experiments that do not work, then a final year in which everything works and is rushed to the finish. Too often I failed to replicate published experiments because of obscure protocol details left out of the methods and even the supplement. Not because of falsification, just a lack of detail, and I paid for the inefficiency in time, reagents, money, and (perhaps soon to be professionally managed) anxiety. I am not alone. <span class="claim" data-ref="errington2021">When one project set out to repeat 193 experiments from high-impact cancer biology papers, not one was described in enough detail to repeat without asking the original authors</span><sup class="ref"><a href="#ref-errington2021">1</a></sup>.</p>
 
 <p>I recently wrote about why <a href="/me/essays/peer-review-scaled-and-continuous/">peer review should be overhauled</a>. An even more malignant facet of the current system is the molding of papers into tidy narratives, with positive publication bias a routine part of formal peer review. <span class="claim" data-ref="franco2014">Studies with strong results are 40 percentage points more likely to be published than studies with null results, mostly because the null results are never written up</span><sup class="ref"><a href="#ref-franco2014">2</a></sup>. <span class="claim" data-ref="dwan2008">By favoring positive results over robust design, we have inherited a literature short on negative and inconclusive results</span><sup class="ref"><a href="#ref-dwan2008">3</a></sup>. What goes into peer review is rarely what comes out, and not always for the better: <span class="claim" data-ref="dwan2013">when published trials are compared with their own protocols, 40 to 62 percent have at least one primary outcome that was changed, introduced, or omitted</span><sup class="ref"><a href="#ref-dwan2013">4</a></sup>. Provenance, <a href="https://www.biorxiv.org/">preprints</a>, and <a href="https://elifesciences.org/about/peer-review">peer review logs</a> may be as critical as the polished output, which is why every essay on this site shows its original draft, its edits, and its sources.</p>
 
@@ -162,7 +171,7 @@ references:
 
 <p>In the scientific method, every result, whether negative, inconclusive, or positive, informs the next experiment. Yet we have treated ourselves as the only ones who need to learn from our failures, when we should have been sharing every result with everyone. A negative experiment points a different way; an inconclusive one drives better design. <span class="claim" data-ref="asa2016">Ultimately, it is the robustness of the design that decides how well the path is lit, not how far a p-value falls below 0.05</span><sup class="ref"><a href="#ref-asa2016">5</a></sup>.</p>
 
-<p>Rewarding design already works. <span class="claim" data-ref="scheel2021">When journals agree to publish a study on the strength of its design, before the results are known, the share of positive results falls from 96 percent to 44 percent</span><sup class="ref"><a href="#ref-scheel2021">6</a></sup>. And the single experiment is already publishable: <a href="https://www.micropublication.org/">microPublication Biology</a> <span class="claim" data-ref="raciti2018">publishes individual, peer-reviewed findings, including results that would otherwise be left out of a paper’s narrative</span><sup class="ref"><a href="#ref-raciti2018">7</a></sup>. A null result from a weak design teaches little, which is exactly why we should reward design, not outcome.</p>
+<p>Rewarding design already works. <span class="claim" data-ref="scheel2021">When journals agree to publish a study on the strength of its design, before the results are known, the share of positive results falls from 96 percent to 44 percent</span><sup class="ref"><a href="#ref-scheel2021">6</a></sup>. The single experiment is already publishable: <a href="https://www.micropublication.org/">microPublication Biology</a> <span class="claim" data-ref="raciti2018">publishes individual, peer-reviewed findings, including results that would otherwise be left out of a paper’s narrative</span><sup class="ref"><a href="#ref-raciti2018">7</a></sup>. A null result from a weak design teaches little, which is exactly why we should reward design, not outcome.</p>
 
 <p>Rewarding robust design and incentivizing experimental publication may be the antidote to publication bias and to the mangled mess that is today’s published, peer-reviewed scientific corpus. As we begin to scale hypothesis generation and data analysis, we must not scale our inefficiencies along with them, or we will drift even further off course.</p>
 
