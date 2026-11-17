@@ -1,75 +1,65 @@
 % Medicine's Missing Experiments
 % Copyright (c) 2026 Rick Mathews. All rights reserved.
+% Build: latexmk -xelatex <this file>
 \documentclass[12pt]{article}
-
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
 \usepackage{lmodern}
-\usepackage[final,protrusion=true,expansion=true]{microtype}
-% Measure: 12pt Latin Modern on a 5in line sets about 65-70 characters, within the 60-75 range for comfortable reading.
-\usepackage[letterpaper,textwidth=5in,hcentering,top=1.2in,bottom=1.1in,footskip=0.5in]{geometry}
-\usepackage{fancyhdr}
+\usepackage[final]{microtype}
+\usepackage[letterpaper,top=0.7in,bottom=0.75in,left=1in,right=1in]{geometry}
+\usepackage{ragged2e}
 \usepackage{xcolor}
-\pdfsuppressptexinfo=-1
 \usepackage[hidelinks]{hyperref}
 \usepackage{hyperxmp}
-
 \hypersetup{
   pdftitle={Medicine's Missing Experiments},
-  pdfauthor={Rick Mathews},
+  pdfauthor={Rick Mathews, PhD},
   pdfsubject={Essay},
   pdfkeywords={physician-scientist, clinical evidence, translational research, essay},
   pdfcopyright={Copyright (C) 2026 Rick Mathews. All rights reserved.},
   pdfcontacturl={https://cortriatriatum.github.io/me/},
-  pdfpubtype={other},
   pdflang={en-US},
   pdfcreator={Rick Mathews},
-  pdfproducer={LaTeX},
-  pdfdate={2026-11-16}
+  pdfproducer={LaTeX}
 }
-
-
-\definecolor{rule}{gray}{0.55}
-\definecolor{quiet}{gray}{0.40}
-
-\pagestyle{fancy}
-\fancyhf{}
-\renewcommand{\headrulewidth}{0pt}
-\fancyfoot[C]{\footnotesize\color{quiet}\copyright\ 2026 Rick Mathews. All rights reserved.}
-
-\setlength{\parindent}{1.2em}
-\setlength{\parskip}{0pt}
-\linespread{1.08} % 12pt type on about 15.7pt leading
-
+\definecolor{rule}{gray}{0.6}
+\pagestyle{empty}
+% Ragged right: lines run the full measure without stretched word spacing.
+\setlength{\RaggedRightParindent}{1.5em}
+\setlength{\RaggedRightRightskip}{0pt plus 2em}
+\setlength{\emergencystretch}{1.5em}
+\tolerance=1000
+\hyphenpenalty=1000 % no words split across lines
 \begin{document}
-\pdfinfo{/Author (Rick Mathews)}
-\thispagestyle{fancy}
-
+\special{pdf:docinfo << /Author (Rick Mathews, PhD) >>}% hyperxmp drops the Author field
+\RaggedRight
 \begin{center}
-  {\LARGE\bfseries Medicine's Missing Experiments\par}
-  \vspace{1.1em}
+  {\fontsize{21}{25.2}\selectfont\bfseries Medicine's Missing Experiments\par}
+  \vspace{9pt}
   {\large Rick Mathews, PhD\par}
-  \vspace{0.35em}
-  {\normalsize\color{quiet}November 16, 2026\par}
+  \vspace{3pt}
+  {\small November 16\textsuperscript{th}, 2026\par}
 \end{center}
+\vspace{2pt}
+{\color{rule}\noindent\rule{\textwidth}{0.4pt}}\par
+\vspace{-4pt}
 
-\vspace{1.6em}
+\fontsize{13.0}{18.85}\selectfont
+\setlength{\parskip}{6.5pt}
+Every day, physicians encounter patients in circumstances that raise questions no scientific experiment or trial has investigated. Where evidence does exist, it often ranks low on the hierarchy that ranges from high-quality randomized trials to the lower rungs of expert opinion. Improving evidence quality for clinical decisions will directly impact clinical outcomes.
 
-\noindent Every day, treating teams encounter patients in circumstances that raise questions that are difficult to answer with strong supporting evidence. Where evidence does exist, it often ranks low on the hierarchy that ranges from high-quality randomized trials to the lower rungs of expert opinion. Across guidelines in multiple medical specialties, the majority of recommendations do not rely on the strongest types of evidence. Improving evidence quality for clinical decisions could directly impact clinical outcomes.
+For clinical questions and decisions to benefit from scientific experimentation, scientists must first be made aware of these questions within their appropriate clinical context. However, most scientists are not aware of broad swaths of clinical questions that could benefit from scientific experiments. This is because physicians are rarely the ones conducting benchtop science and researchers are rarely the ones treating patients at the bedside. Physician-scientists, who are trained in both environments, are a minority of the workforce and are resource intensive to train. Physician-scientist trainees average over eight years to obtain both an MD and a PhD. This follows a four-year undergraduate degree and precedes three to seven years of additional residency training prior to independent clinical practice. Therefore, physician-scientists are not a scalable solution in bridging benchtop science to the patient bedside. As a result, the majority of biomedical researchers remain unaware of the clinical questions and decisions made during routine clinical management of their disease of interest.
 
-For clinical questions and decisions that may benefit from scientific experimentation, scientists must first be made aware of the questions within their appropriate clinical context. Yet physicians are rarely the ones conducting benchtop science and researchers are rarely the ones treating patients at the bedside.
+Several programs attempt to bridge this gap; however, no solution has bridged the clinic to the laboratory at scale. Medical research remains blind to broad swaths of clinical questions, and a large number of clinical decisions today rely on suboptimal quality of evidence for everyday clinical decisions.
 
-Physician-scientists are a minority of the workforce and are resource intensive to train. Physician-scientist trainees average over eight years to obtain both an MD and a PhD. This follows a four-year undergraduate degree and precedes three to seven years of additional residency training prior to independent clinical practice. Therefore, physician-scientists are not a scalable solution in bridging benchtop science to the patient bedside. As a result, the majority of biomedical researchers are likely blind to the clinical questions and decisions made during the clinical course of their disease of interest.
-
-Several programs already attempt to bridge this gap; however, no solution has yet done so at scale. Medical research remains blind to broad swaths of clinical questions, and a large number of clinical decisions today rely on a suboptimal quality of evidence for guidance and management.
-
-\vspace{1.6em}
+\vspace{14pt}
 {\color{rule}\noindent\rule{0.3\textwidth}{0.4pt}}
-\vspace{0.5em}
+\vspace{4pt}
 
-\noindent{\small\itshape If you are working on solutions to this problem, or would like to talk about it, please get in touch: \href{https://cortriatriatum.github.io/me/\#contact}{\upshape cortriatriatum.github.io/me}.\par}
+{\fontsize{11.7}{16.38}\selectfont\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+{\itshape If you are working on solutions to this problem, or would like to discuss this further, please get in touch: \href{https://cortriatriatum.github.io/me/\#contact}{\upshape cortriatriatum.github.io/me}.}
 
-\vspace{0.6em}
-\noindent{\small Rick Mathews, PhD, is an MD/PhD candidate at Oregon Health \& Science University (OHSU), currently on leave.\par}
+Rick Mathews, PhD, is an MD/PhD candidate at Oregon Health \& Science University (OHSU), currently on leave.
 
+\vspace{6pt}
+\centering\footnotesize \copyright\ 2026 Rick Mathews. All rights reserved.\par}
 \end{document}
