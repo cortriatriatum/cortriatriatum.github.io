@@ -1,7 +1,6 @@
 ---
 title: "Medicine’s Missing Experiments"
 date: 2026-11-16
-published: false
 pdf: /docs/essays/Mathews_2026_Medicines_Missing_Experiments.pdf
 ---
 
@@ -14,3 +13,5 @@ Physician-scientists are a minority of the workforce and are resource intensive 
 Several programs already attempt to bridge this gap; however, no solution has yet done so at scale. Medical research remains blind to broad swaths of clinical questions, and a large number of clinical decisions today rely on a suboptimal quality of evidence for guidance and management.
 
 *If you are working on solutions to this problem, or would like to talk about it, [please get in touch](/me/#contact).*
+
+Rick Mathews, PhD, is an MD/PhD candidate at Oregon Health & Science University (OHSU), currently on leave.
