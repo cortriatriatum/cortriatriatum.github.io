@@ -27,7 +27,7 @@ editing: >-
 # Edit log, shown under "Edits". by: who decided it; words: who wrote the new words.
 edits:
   - where: "¶1"
-    what: "Added that across U.S. guidelines in several specialties, a minority of recommendations rests on the strongest evidence and nearly half or more on weaker evidence, with three citations (cardiology, oncology, infectious diseases)."
+    what: "Added that across U.S. guidelines in several specialties, only a small minority of recommendations rest on the strongest evidence and, in some specialties, nearly half or more on weaker types, with three citations (cardiology, oncology, infectious diseases); the hierarchy now “runs from high-quality randomized trials and meta-analyses down to expert opinion.”"
     why: "Gives evidence for “ranks low on the hierarchy.” Wording from my earlier draft; replaced Claude’s cardiology-only sentence."
     by: Rick
   - where: "¶1"
@@ -61,8 +61,8 @@ edits:
     why: "Evidence that research questions and clinical questions really do diverge."
     by: Claude
   - where: "¶3"
-    what: "“are a minority of the workforce” became “make up a single-digit minority of the workforce,” with a citation (1.5%)."
-    why: "Wording from my earlier draft."
+    what: "“are a minority of the workforce” became “made up only about 1.5 percent of American physicians in 2012,” with a citation."
+    why: "Wording from my email draft."
     by: Rick
   - where: "¶3"
     what: "“average over eight years” became “average about eight years,” with a citation."
@@ -86,13 +86,25 @@ edits:
     by: Rick
     words: Claude
   - where: "¶4"
-    what: "Added that there is no shared, standardized map of clinical questions, and what such a map would do."
-    why: "The missing infrastructure, in my words from an earlier draft."
+    what: "Added that there is no shared, standardized map of clinical questions; “Without one, we are sailing unknown waters blind.”"
+    why: "The missing infrastructure, in my words from my email draft."
     by: Rick
   - where: "¶4"
-    what: "Final sentence shortened (“a large number of clinical decisions today rely on suboptimal quality of evidence for everyday clinical decisions”)."
-    why: "Removed the repeated “clinical decisions.”"
+    what: "Final sentence shortened to “many everyday clinical decisions still rely on low-quality evidence,” joined to the sailing-blind sentence; “Medical research remains blind to broad swaths of clinical questions” dropped."
+    why: "Removed the repeated “clinical decisions,” and avoided saying “blind” twice in a row."
     by: Claude
+  - where: "¶3"
+    what: "Added “Without insight into a treating team’s day, medical science is further and further removed from the bedside.”"
+    why: "From my email draft."
+    by: Rick
+  - where: "¶5"
+    what: "New paragraph: build the map now, laying out disease and clinical care the way programmers write code, from cradle to grave, with the evidence behind each step. Added engineers alongside physicians, scientists, and funders; dropped my aside “(used to?).”"
+    why: "The proposal, from my email draft."
+    by: Rick
+  - where: "¶6"
+    what: "New closing paragraph: this is not an argument against curiosity-driven work; research claiming clinical relevance should point to an exact point on a shared map."
+    why: "From my email draft. The essay now ends on the proposal rather than the problem."
+    by: Rick
   - where: "Throughout"
     what: "Serial (Oxford) commas made consistent."
     why: "Consistent style."
@@ -151,13 +163,17 @@ references:
     where: Article text
 ---
 
-<p><span class="claim" data-ref="delfiol2014">Every day, physicians encounter patients in circumstances that raise questions no scientific experiment or trial has investigated.</span><sup class="ref"><a href="#ref-delfiol2014">1</a></sup> Where evidence does exist, it often ranks low on the hierarchy that ranges from high-quality randomized trials to the lower rungs of expert opinion. <span class="claim" data-ref="fanaroff2019">Across major U.S. guidelines in multiple medical specialties, a minority of recommendations rests on the strongest types of evidence while nearly half or more rest on weaker types of evidence</span><sup class="ref"><a href="#ref-fanaroff2019">2</a></sup><sup class="ref">,</sup><sup class="ref"><a href="#ref-poonacha2011">3</a></sup><sup class="ref">,</sup><sup class="ref"><a href="#ref-lee2011">4</a></sup>. Improving evidence quality for clinical decisions will change clinical outcomes.</p>
+<p><span class="claim" data-ref="delfiol2014">Every day, physicians encounter patients in circumstances that raise questions no scientific experiment or trial has investigated.</span><sup class="ref"><a href="#ref-delfiol2014">1</a></sup> Where evidence does exist, it often ranks low on the hierarchy that runs from high-quality randomized trials and meta-analyses down to expert opinion. <span class="claim" data-ref="fanaroff2019">Across major U.S. guidelines in multiple medical specialties, only a small minority of recommendations rest on the strongest type of evidence, and in some specialties nearly half or more rest on weaker types</span><sup class="ref"><a href="#ref-fanaroff2019">2</a></sup><sup class="ref">,</sup><sup class="ref"><a href="#ref-poonacha2011">3</a></sup><sup class="ref">,</sup><sup class="ref"><a href="#ref-lee2011">4</a></sup>. Improving evidence quality for clinical decisions will change clinical outcomes.</p>
 
 <p>Clinical uncertainty is itself a rich source of scientific questions. However, for clinical questions and decisions to benefit from scientific experimentation, scientists and engineers must first be made aware of these questions within their appropriate clinical context. Yet most scientists and engineers are not aware of broad swaths of clinical questions that could benefit from scientific experiments. This is partly because physicians are rarely the ones conducting benchtop science or building devices, and researchers and engineers are rarely the ones treating patients at the bedside: few have both skill sets, and fewer still have dedicated time to do both tasks well. <span class="claim" data-ref="wsj">Physicians therefore have unique, informed insight into this clinical context, which may be powerful in informing innovation, not just in science but in engineering and capital allocation decisions</span><sup class="ref"><a href="#ref-wsj">5</a></sup>. <span class="claim" data-ref="crowe2015">When patients and clinicians are asked what they want studied, their priorities differ sharply from the research actually being done</span><sup class="ref"><a href="#ref-crowe2015">6</a></sup>.</p>
 
-<p><span class="claim" data-ref="milewicz2015">Physician-scientists, who are trained in both environments, make up a single-digit minority of the workforce</span><sup class="ref"><a href="#ref-milewicz2015">7</a></sup> and are resource intensive to train. <span class="claim" data-ref="brass2010">Physician-scientist trainees average about eight years to obtain both an MD and a PhD</span><sup class="ref"><a href="#ref-brass2010">8</a></sup>. This follows a four-year undergraduate degree and precedes three to seven years of additional residency training prior to independent clinical practice. Therefore, physician-scientists are essential, but they are not a scalable solution in bridging benchtop science to the patient bedside. As a result, many biomedical researchers remain unaware of the clinical questions and decisions made during routine clinical management of their disease of interest.</p>
+<p><span class="claim" data-ref="milewicz2015">Physician-scientists, who are trained in both environments, made up only about 1.5 percent of American physicians in 2012</span><sup class="ref"><a href="#ref-milewicz2015">7</a></sup>, and they are resource intensive to train. <span class="claim" data-ref="brass2010">Physician-scientist trainees average about eight years to obtain both an MD and a PhD</span><sup class="ref"><a href="#ref-brass2010">8</a></sup>. This follows a four-year undergraduate degree and precedes three to seven years of additional residency training prior to independent clinical practice. Therefore, physician-scientists are essential, but they are not a scalable solution in bridging benchtop science to the patient bedside. As a result, many biomedical researchers remain unaware of the clinical questions and decisions made during routine clinical management of their disease of interest. Without insight into a treating team’s day, medical science is further and further removed from the bedside.</p>
 
-<p>Several programs attempt to bridge this gap. The NIH’s <a href="https://ncats.nih.gov/ctsa">Clinical and Translational Science Awards</a> fund institutional hubs for translational research, and the <a href="https://www.jla.nihr.ac.uk/">James Lind Alliance</a> brings patients, carers, and clinicians together to set research priorities<sup class="ref"><a href="#ref-crowe2015">6</a></sup>. For engineers, <a href="https://biodesign.stanford.edu/">Stanford Biodesign</a> <span class="claim" data-ref="yock2015">trains fellows to start from unmet clinical needs rather than from a technology in search of a use</span><sup class="ref"><a href="#ref-yock2015">9</a></sup>. Yet no solution has bridged the clinic to the laboratory at scale, in part because there is no shared, standardized map of clinical questions that need better guiding evidence. Such a map would tie each study to a clinically relevant question and reveal which of those questions need better scientific evidence to guide their key decisions. Medical research remains blind to broad swaths of clinical questions, and many everyday clinical decisions still rely on low-quality evidence.</p>
+<p>Several programs attempt to bridge this gap. The NIH’s <a href="https://ncats.nih.gov/ctsa">Clinical and Translational Science Awards</a> fund institutional hubs for translational research, and the <a href="https://www.jla.nihr.ac.uk/">James Lind Alliance</a> brings patients, carers, and clinicians together to set research priorities<sup class="ref"><a href="#ref-crowe2015">6</a></sup>. For engineers, <a href="https://biodesign.stanford.edu/">Stanford Biodesign</a> <span class="claim" data-ref="yock2015">trains fellows to start from unmet clinical needs rather than from a technology in search of a use</span><sup class="ref"><a href="#ref-yock2015">9</a></sup>. Yet no solution has bridged the clinic to the laboratory at scale, in part because there is no shared, standardized map of clinical questions requiring better guiding evidence. Without one, we are sailing unknown waters blind, and many everyday clinical decisions still rely on low-quality evidence.</p>
+
+<p>The map can and must be built today, as a collaborative platform between physicians, scientists, and engineers. Lay out the path of disease and clinical care the way programmers write code. Software cannot afford to leave anything implied: every step must be written explicitly, and chronologically, or the program may fail. Disease and clinical pathways are rarely written at such granularity. Mapping disease this way, every clinically relevant interaction from cradle to grave, and annotating the evidence behind each step would reveal the clinical questions that need a trial or an experiment. Medical scientists, engineers, and funders could then choose which of those experiments to pursue, each directly addressing a clinically relevant question.</p>
+
+<p>None of this argues against curiosity-driven work, which is both free to wander and warranted. It argues for a better fit between medical science and the clinic. Research that claims clinical relevance should be able to point to an exact point on a shared map.</p>
 
 *If you are working on solutions to this problem, or would like to discuss this further, [please get in touch](/me/#contact).*
 
