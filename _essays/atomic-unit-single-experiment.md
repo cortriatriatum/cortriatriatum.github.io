@@ -120,13 +120,23 @@ edits:
     why: "My revision."
     by: Rick
   - where: "¶8"
-    what: "New paragraph from my earlier notes: no human can read every paper; summarizing papers is not the solution (Consensus stops at the paper); one experiment, one output; the calculator and atherosclerosis comparison; sildenafil, cited; a machine working from single experiments might connect what no person can."
-    why: "Gives the essay its payoff: what becomes possible once the experiment is the unit."
+    what: "New paragraph from my earlier notes: no human can read every paper; summarizing papers is not the solution; the calculator comparison (new numbers) and atherosclerosis. Characterized existing tools (Consensus, Elicit, scite, SemMedDB, nanopublications) and said where they stop: none that I know of is built around the experiment itself."
+    why: "Places my idea honestly against what already exists."
     by: Rick
     words: Claude
-  - where: "¶8"
-    what: "Sildenafil described as beginning “as a potential treatment for angina” rather than “for blood vessels and hypertension”; ended with “a machine… might” rather than a certainty."
-    why: "Matches the cited history; the claim that the data were already out there is my judgment, not a documented fact."
+  - where: "¶9"
+    what: "New paragraph: semaglutide (Ozempic) and smoking, cited; Swanson’s fish oil and Raynaud’s syndrome; literature-based discovery and computational drug repurposing as formalized fields; their limit is the biased, detail-poor literature they mine."
+    why: "Replaces the sildenafil example, which I dropped; shows the idea has formal precedent."
+    by: Rick
+    words: Claude
+  - where: "¶10"
+    what: "New paragraph: language-model agents may make this architecture unnecessary, or general intelligence may; or experiment-level data may keep lasting value. I say plainly I lack the expertise to judge."
+    why: "My direction; honesty about the strongest counterargument and my limits."
+    by: Rick
+    words: Claude
+  - where: "¶3, ¶8"
+    what: "“What goes into peer review is rarely what comes out” became “What goes in is rarely what comes out in publication”; “Each works from what papers chose to report” became “Most work…”"
+    why: "The cited evidence compares protocols with publications, not submissions with published papers; nanopublications can carry data directly."
     by: Claude
 
 references:
@@ -165,10 +175,50 @@ references:
     url: https://doi.org/10.1093/database/bay013
     quote: "results are omitted from science narratives due to publication bias where certain results are considered irrelevant for the publication."
     where: Abstract
-  - id: ghofrani2006
-    cite: "Ghofrani HA, Osterloh IH, Grimminger F. Sildenafil: from angina to erectile dysfunction to pulmonary hypertension and beyond. <i>Nat Rev Drug Discov</i>. 2006;5(8):689–702."
-    url: https://doi.org/10.1038/nrd2030
-    quote: "sildenafil, has evolved from a potential anti-angina drug to an on-demand oral treatment for erectile dysfunction (Viagra)"
+  - id: nicholson2021
+    cite: "Nicholson JM, Mordaunt M, Lopez P, et al. scite: a smart citation index that displays the context of citations and classifies their intent using deep learning. <i>Quant Sci Stud</i>. 2021;2(3):882–898."
+    url: https://doi.org/10.1162/qss_a_00146
+    quote: "indicates whether the statement provides supporting or contrasting evidence for a referenced work, or simply mentions it."
+    where: Abstract
+  - id: kilicoglu2012
+    cite: "Kilicoglu H, Shin D, Fiszman M, Rosemblat G, Rindflesch TC. SemMedDB: a PubMed-scale repository of biomedical semantic predications. <i>Bioinformatics</i>. 2012;28(23):3158–3160."
+    url: https://doi.org/10.1093/bioinformatics/bts591
+    quote: "a repository of semantic predications (subject-predicate-object triples) extracted from the entire set of PubMed citations."
+    where: Abstract
+  - id: schultes2022
+    cite: "Schultes E, Magagna B, Hettne KM, Pergl R, Suchánek M, Kuhn T. The comparative anatomy of nanopublications and FAIR digital objects. <i>Res Ideas Outcomes</i>. 2022;8:e94150."
+    url: https://doi.org/10.3897/rio.8.e94150
+    quote: "Nanopublications can be used to expose quantitative and qualitative data, as well as hypotheses, claims, negative results, and opinions that are typically unavailable as structured data or go unpublished altogether."
+    where: Abstract
+  - id: wang2024
+    cite: "Wang W, Volkow ND, Berger NA, Davis PB, Kaelber DC, Xu R. Association of semaglutide with tobacco use disorder in patients with type 2 diabetes: target trial emulation using real-world data. <i>Ann Intern Med</i>. 2024;177(8):1016–1027."
+    url: https://doi.org/10.7326/M23-2718
+    quote: "Reports of reduced desire to smoke in patients treated with semaglutide … have raised interest about its potential benefit for tobacco use disorders"
+    where: Abstract, Background
+  - id: swanson1986
+    cite: "Swanson DR. Fish oil, Raynaud’s syndrome, and undiscovered public knowledge. <i>Perspect Biol Med</i>. 1986;30(1):7–18."
+    url: https://doi.org/10.1353/pbm.1986.0087
+    quote: "Fish oil, Raynaud’s syndrome, and undiscovered public knowledge"
+    where: Title
+  - id: henry2017
+    cite: "Henry S, McInnes BT. Literature based discovery: models, methods, and trends. <i>J Biomed Inform</i>. 2017;74:20–32."
+    url: https://doi.org/10.1016/j.jbi.2017.08.011
+    quote: "an overview of the application areas of drug development, drug repurposing, and adverse drug event prediction"
+    where: Abstract, Scope
+  - id: pushpakom2019
+    cite: "Pushpakom S, Iorio F, Eyers PA, et al. Drug repurposing: progress, challenges and recommendations. <i>Nat Rev Drug Discov</i>. 2019;18(1):41–58."
+    url: https://doi.org/10.1038/nrd.2018.168
+    quote: "Various data-driven and experimental approaches have been suggested for the identification of repurposable drug candidates"
+    where: Abstract
+  - id: skarlinski2024
+    cite: "Skarlinski MD, Cox S, Laurent JM, et al. Language agents achieve superhuman synthesis of scientific knowledge. <i>arXiv</i>. 2024:2409.13740."
+    url: https://doi.org/10.48550/arXiv.2409.13740
+    quote: "PaperQA2, a frontier language model agent optimized for improved factuality, matches or exceeds subject matter expert performance on three realistic literature research tasks"
+    where: Abstract
+  - id: asai2026
+    cite: "Asai A, He J, Shao R, et al. Synthesizing scientific literature with retrieval-augmented language models. <i>Nature</i>. 2026."
+    url: https://doi.org/10.1038/s41586-025-10072-4
+    quote: "Although GPT-4o hallucinates citations 78–90% of the time, OpenScholar achieves citation accuracy on par with human experts."
     where: Abstract
 ---
 
@@ -176,7 +226,7 @@ references:
 
 <p>Too often, I ran an experiment that did not work. By my own estimate, the experiments that failed outnumbered those that worked, or that fit my original research program, by at least an order of magnitude. Informal conversations about PhD progress tell the same story: three years of experiments that do not work, then a final year in which everything works and is rushed to the finish. Too often I failed to replicate published experiments because of obscure protocol details left out of the methods and even the supplement. Not because of falsification, just a lack of detail, and I paid for the inefficiency in time, reagents, money, and (perhaps soon to be professionally managed) anxiety. I am not alone. <span class="claim" data-ref="errington2021">When one project set out to repeat 193 experiments from high-impact cancer biology papers, not one was described in enough detail to repeat without asking the original authors</span><sup class="ref"><a href="#ref-errington2021">1</a></sup>.</p>
 
-<p>I recently wrote about why <a href="/me/essays/peer-review-scaled-and-continuous/">peer review should be overhauled</a>. An even more malignant facet of the current system is the molding of papers into tidy narratives, with positive publication bias a routine part of formal peer review. <span class="claim" data-ref="franco2014">Studies with strong results are 40 percentage points more likely to be published than studies with null results, mostly because the null results are never written up</span><sup class="ref"><a href="#ref-franco2014">2</a></sup>. <span class="claim" data-ref="dwan2008">By favoring positive results over robust design, we have inherited a literature short on negative and inconclusive results</span><sup class="ref"><a href="#ref-dwan2008">3</a></sup>. What goes into peer review is rarely what comes out, and not always for the better: <span class="claim" data-ref="dwan2013">when published trials are compared with their own protocols, 40 to 62 percent have at least one primary outcome that was changed, introduced, or omitted</span><sup class="ref"><a href="#ref-dwan2013">4</a></sup>. Provenance, <a href="https://www.biorxiv.org/">preprints</a>, and <a href="https://elifesciences.org/about/peer-review">peer review logs</a> may be as critical as the polished output, which is why every essay on this site shows its original draft, its edits, and its sources.</p>
+<p>I recently wrote about why <a href="/me/essays/peer-review-scaled-and-continuous/">peer review should be overhauled</a>. An even more malignant facet of the current system is the molding of papers into tidy narratives, with positive publication bias a routine part of formal peer review. <span class="claim" data-ref="franco2014">Studies with strong results are 40 percentage points more likely to be published than studies with null results, mostly because the null results are never written up</span><sup class="ref"><a href="#ref-franco2014">2</a></sup>. <span class="claim" data-ref="dwan2008">By favoring positive results over robust design, we have inherited a literature short on negative and inconclusive results</span><sup class="ref"><a href="#ref-dwan2008">3</a></sup>. What goes in is rarely what comes out in publication, and not always for the better: <span class="claim" data-ref="dwan2013">when published trials are compared with their own protocols, 40 to 62 percent have at least one primary outcome that was changed, introduced, or omitted</span><sup class="ref"><a href="#ref-dwan2013">4</a></sup>. Provenance, <a href="https://www.biorxiv.org/">preprints</a>, and <a href="https://elifesciences.org/about/peer-review">peer review logs</a> may be as critical as the polished output, which is why every essay on this site shows its original draft, its edits, and its sources.</p>
 
 <p>Science is somehow both stochastic and deterministic, investigating processes that range from strictly one or the other to every shade of gray in between. The scientific method is a light in the dark that reveals the path ahead, and hopefully we all agree that forward is the way we should be traveling.</p>
 
@@ -186,7 +236,11 @@ references:
 
 <p>Rewarding design already works. <span class="claim" data-ref="scheel2021">When journals agree to publish a study on the strength of its design, before the results are known, the share of positive results falls from 96 percent to 44 percent</span><sup class="ref"><a href="#ref-scheel2021">6</a></sup>. The single experiment is already publishable: <a href="https://www.micropublication.org/">microPublication Biology</a> <span class="claim" data-ref="raciti2018">publishes individual, peer-reviewed findings, including results that would otherwise be left out of a paper’s narrative</span><sup class="ref"><a href="#ref-raciti2018">7</a></sup>. A null result from a weak design teaches little, which is exactly why we should reward design, not outcome.</p>
 
-<p>There are millions of papers out there, and more come every day. No human can read them all. Plenty of software already summarizes papers well, but that is not the solution; tools such as <a href="https://consensus.app/">Consensus</a> have started well, but they stop at the paper rather than boiling it down to the experiment. The atomic unit of science is one experiment, one output, and a machine can put these together better than any human. What is 5,692,929 × 9,485? You would never work that out by hand; you would use a calculator. What is the current literature on atherosclerosis? You would never be able to read all of it; you would use intelligent data aggregation. <span class="claim" data-ref="ghofrani2006">Sildenafil began as a potential treatment for angina and became Viagra, a treatment for erectile dysfunction</span><sup class="ref"><a href="#ref-ghofrani2006">8</a></sup>. Biologically, it always had that effect; the human body does not evolve that fast. Likely, the data were already out there, and someone who knew all of the published data could have put it together. No human can, but a machine working from single experiments, negative and inconclusive ones included, might.</p>
+<p>Treating the experiment as the unit would also change what machines can do with the literature. There are millions of papers, and more come every day; no human can read them all. What is 8,317,406 × 2,749? You would never work that out by hand; you would use a calculator. What does the literature say about atherosclerosis? You could never read all of it; you would need intelligent aggregation. Plenty of software already summarizes papers well, but that is not the solution. <a href="https://consensus.app/">Consensus</a> and <a href="https://elicit.com/">Elicit</a> search and summarize papers; <span class="claim" data-ref="nicholson2021"><a href="https://scite.ai/">scite</a> classifies whether each citation supports or contrasts the work it cites</span><sup class="ref"><a href="#ref-nicholson2021">8</a></sup>; <span class="claim" data-ref="kilicoglu2012">SemMedDB extracts subject–predicate–object statements from all of PubMed</span><sup class="ref"><a href="#ref-kilicoglu2012">9</a></sup>; and <span class="claim" data-ref="schultes2022">nanopublications package single assertions, negative results included, as citable units</span><sup class="ref"><a href="#ref-schultes2022">10</a></sup>. Most work from what papers chose to report, at the level of a paper or a claim. None that I know of is built around the experiment itself: its design, its protocol, and every result, whether positive, negative, or inconclusive.</p>
+
+<p>That level matters because discoveries hide in connections no single reader makes. <span class="claim" data-ref="wang2024">Semaglutide, sold as Ozempic, was developed for type 2 diabetes; patients’ reports of a reduced desire to smoke later prompted studies of its effect on addiction</span><sup class="ref"><a href="#ref-wang2024">11</a></sup>. Biologically, that effect was always there; the human body does not evolve that fast. Making such connections deliberately is not a new idea. <span class="claim" data-ref="swanson1986">In 1986, Don Swanson linked fish oil to Raynaud’s syndrome by connecting findings from separate literatures</span><sup class="ref"><a href="#ref-swanson1986">12</a></sup>, and <span class="claim" data-ref="henry2017">literature-based discovery</span><sup class="ref"><a href="#ref-henry2017">13</a></sup> and <span class="claim" data-ref="pushpakom2019">computational drug repurposing</span><sup class="ref"><a href="#ref-pushpakom2019">14</a></sup> have since been formalized as fields. But those methods can only mine the literature we have, which favors positive results and omits experimental detail. Working from single experiments, negative and inconclusive ones included, they might connect what no person can.</p>
+
+<p>Perhaps none of this architecture will matter. <span class="claim" data-ref="skarlinski2024">Language-model agents already match or exceed subject-matter experts on some literature research tasks</span><sup class="ref"><a href="#ref-skarlinski2024">15</a></sup>, <span class="claim" data-ref="asai2026">even as a leading general-purpose model fabricated most of its citations on one benchmark</span><sup class="ref"><a href="#ref-asai2026">16</a></sup>. If large language models keep improving, or general intelligence arrives, they may synthesize the literature as it is, mess and all, better than any structured alternative. Or there may be lasting value in data built from single experiments that no model can reconstruct from narrative papers. I do not have the expertise to judge which; I am a scientist describing the problem, not a machine learning researcher. Either way, a model can only learn from the experiments we share.</p>
 
 <p>Rewarding robust design and incentivizing experimental publication may be the antidote to publication bias and to the mangled mess that is today’s published, peer-reviewed scientific corpus. As we begin to scale hypothesis generation and data analysis, we must not scale our inefficiencies along with them, or we will drift even further off course.</p>
 
