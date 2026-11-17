@@ -119,6 +119,15 @@ edits:
     what: "“Too often, too, I failed” became “Too often I failed”; dropped “And” before “The single experiment is already publishable.”"
     why: "My revision."
     by: Rick
+  - where: "¶8"
+    what: "New paragraph from my earlier notes: no human can read every paper; summarizing papers is not the solution (Consensus stops at the paper); one experiment, one output; the calculator and atherosclerosis comparison; sildenafil, cited; a machine working from single experiments might connect what no person can."
+    why: "Gives the essay its payoff: what becomes possible once the experiment is the unit."
+    by: Rick
+    words: Claude
+  - where: "¶8"
+    what: "Sildenafil described as beginning “as a potential treatment for angina” rather than “for blood vessels and hypertension”; ended with “a machine… might” rather than a certainty."
+    why: "Matches the cited history; the claim that the data were already out there is my judgment, not a documented fact."
+    by: Claude
 
 references:
   - id: errington2021
@@ -156,6 +165,11 @@ references:
     url: https://doi.org/10.1093/database/bay013
     quote: "results are omitted from science narratives due to publication bias where certain results are considered irrelevant for the publication."
     where: Abstract
+  - id: ghofrani2006
+    cite: "Ghofrani HA, Osterloh IH, Grimminger F. Sildenafil: from angina to erectile dysfunction to pulmonary hypertension and beyond. <i>Nat Rev Drug Discov</i>. 2006;5(8):689–702."
+    url: https://doi.org/10.1038/nrd2030
+    quote: "sildenafil, has evolved from a potential anti-angina drug to an on-demand oral treatment for erectile dysfunction (Viagra)"
+    where: Abstract
 ---
 
 <p>Having recently completed my PhD, I came away from a few frustrating experiences across those years with an insight I think is worth sharing: the atomic unit of scientific information is a single experiment. As long as we do not operate on that fact, we are shooting ourselves, and the growing base of future knowledge, in the foot.</p>
@@ -171,6 +185,8 @@ references:
 <p>In the scientific method, every result, whether negative, inconclusive, or positive, informs the next experiment. Yet we have treated ourselves as the only ones who need to learn from our failures, when we should have been sharing every result with everyone. A negative experiment points a different way; an inconclusive one drives better design. <span class="claim" data-ref="asa2016">Ultimately, it is the robustness of the design that decides how well the path is lit, not how far a p-value falls below 0.05</span><sup class="ref"><a href="#ref-asa2016">5</a></sup>.</p>
 
 <p>Rewarding design already works. <span class="claim" data-ref="scheel2021">When journals agree to publish a study on the strength of its design, before the results are known, the share of positive results falls from 96 percent to 44 percent</span><sup class="ref"><a href="#ref-scheel2021">6</a></sup>. The single experiment is already publishable: <a href="https://www.micropublication.org/">microPublication Biology</a> <span class="claim" data-ref="raciti2018">publishes individual, peer-reviewed findings, including results that would otherwise be left out of a paper’s narrative</span><sup class="ref"><a href="#ref-raciti2018">7</a></sup>. A null result from a weak design teaches little, which is exactly why we should reward design, not outcome.</p>
+
+<p>There are millions of papers out there, and more come every day. No human can read them all. Plenty of software already summarizes papers well, but that is not the solution; tools such as <a href="https://consensus.app/">Consensus</a> have started well, but they stop at the paper rather than boiling it down to the experiment. The atomic unit of science is one experiment, one output, and a machine can put these together better than any human. What is 5,692,929 × 9,485? You would never work that out by hand; you would use a calculator. What is the current literature on atherosclerosis? You would never be able to read all of it; you would use intelligent data aggregation. <span class="claim" data-ref="ghofrani2006">Sildenafil began as a potential treatment for angina and became Viagra, a treatment for erectile dysfunction</span><sup class="ref"><a href="#ref-ghofrani2006">8</a></sup>. Biologically, it always had that effect; the human body does not evolve that fast. Likely, the data were already out there, and someone who knew all of the published data could have put it together. No human can, but a machine working from single experiments, negative and inconclusive ones included, might.</p>
 
 <p>Rewarding robust design and incentivizing experimental publication may be the antidote to publication bias and to the mangled mess that is today’s published, peer-reviewed scientific corpus. As we begin to scale hypothesis generation and data analysis, we must not scale our inefficiencies along with them, or we will drift even further off course.</p>
 

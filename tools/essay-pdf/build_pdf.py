@@ -104,6 +104,9 @@ def page_html(fm, paras, coda):
             url = r["url"]
             out.append(f'<p class="ref" id="ref-{r["id"]}">{i}. {r["cite"]} <a href="{url}">{esc(url.replace("https://", ""))}</a>{q}</p>')
             KEEP_IDS.add(f"ref-{r['id']}")
+            plain = re.sub(r"<[^>]+>", "", r["cite"]).split()
+            tail = (r.get("quote") or "No verbatim excerpt attached.").split()
+            KEEP_TEXT[f"ref-{r['id']}"] = (f"{i}. " + " ".join(plain[:2]), " ".join(tail[-3:]))
             if i == 1:
                 out.append("</div>")
         KEEP_IDS.add("refs-start")
@@ -151,7 +154,16 @@ def render(markup, path):
                 seen.setdefault(p.id, []).append((p.page_num, fitz.Rect(p.rect)))
         doc = story.write_with_links(lambda n, filled: (PAGE, where, None), positionfn=pos)
         # A block that splits is reported clipped at the bottom margin, so a block reaching the margin is moved.
-        split = next(((i, v) for i, v in seen.items() if v[0][1].y1 > where.y1 - 10), None)
+        pages = [" ".join(unlig(pg.get_text()).split()) for pg in doc]
+
+        def spans_pages(i):
+            if i not in KEEP_TEXT:
+                return False
+            a, b = KEEP_TEXT[i]
+            pa = [n for n, t in enumerate(pages) if a in t]
+            pb = [n for n, t in enumerate(pages) if b in t]
+            return bool(pa and pb) and pa[0] not in pb
+        split = next(((i, v) for i, v in seen.items() if v[0][1].y1 > where.y1 - 10 or spans_pages(i)), None)
         if not split:
             doc.save(str(path))
             return
@@ -161,6 +173,16 @@ def render(markup, path):
 
 
 KEEP_IDS = set()
+LIGATURES = {"\ufb00": "ff", "\ufb01": "fi", "\ufb02": "fl", "\ufb03": "ffi", "\ufb04": "ffl"}
+
+
+def unlig(t):
+    for k, v in LIGATURES.items():
+        t = t.replace(k, v)
+    return t
+
+
+KEEP_TEXT = {}  # id -> (text the block starts with, text it ends with)
 
 
 def main(md_path):
