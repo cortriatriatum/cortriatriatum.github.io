@@ -13,6 +13,11 @@ kramdown:
 # Essays: one Markdown file per essay in _essays/. See WRITING.md.
 collections:
   essays:
-    output: false   # each essay is a PDF (pdf: in front matter); the Markdown file holds its title, date and text for RSS
+    output: true    # each essay gets a web page at /essays/<name>/ (layout: essay) plus a PDF (pdf: in front matter)
+    permalink: /essays/:name/
+
+defaults:
+  - scope: { type: essays }
+    values: { layout: essay }
 
 exclude: [README.md, WRITING.md, tools/, Gemfile, Gemfile.lock, vendor/, me-site-v3/]

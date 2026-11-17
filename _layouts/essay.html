@@ -19,49 +19,336 @@
   <meta name="citation_doi" content="{{ page.doi }}">
   {%- endif %}
   <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/essays/feed.xml' | relative_url }}">
-  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   <style>
-{% include subway.css %}
+    /* Latin Modern, the LaTeX default typeface (GUST Font License), from the latex.css package. */
+    @font-face { font-family: "LM"; font-style: normal; font-weight: 400; font-display: swap; src: url("https://cdn.jsdelivr.net/npm/latex.css@1.10.0/fonts/LM-regular.woff2") format("woff2"); }
+    @font-face { font-family: "LM"; font-style: italic; font-weight: 400; font-display: swap; src: url("https://cdn.jsdelivr.net/npm/latex.css@1.10.0/fonts/LM-italic.woff2") format("woff2"); }
+    @font-face { font-family: "LM"; font-style: normal; font-weight: 700; font-display: swap; src: url("https://cdn.jsdelivr.net/npm/latex.css@1.10.0/fonts/LM-bold.woff2") format("woff2"); }
+    @font-face { font-family: "LM"; font-style: italic; font-weight: 700; font-display: swap; src: url("https://cdn.jsdelivr.net/npm/latex.css@1.10.0/fonts/LM-bold-italic.woff2") format("woff2"); }
+
+    :root {
+      --desk: #e9e8e4; --paper: #fffffd; --ink: #111; --sub: #555; --rule: #999; --faint: #e4e2dc;
+      --link: #1a3f8f; --cite: #1a3f8f; --del: #b3261e; --del-bg: #fbeceb; --ins: #1d6b3a; --ins-bg: #e8f4ec;
+      --bar: #1b1b1b; --bar-ink: #f2f2f2; --shadow: 0 1px 3px rgba(0,0,0,.12), 0 8px 24px rgba(0,0,0,.08);
+    }
+    @media (prefers-color-scheme: dark) { :root { --desk: #1c1c1e; --shadow: 0 1px 3px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.4); } }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--desk); color: var(--ink); font-family: "LM", "Latin Modern Roman", "Computer Modern", Georgia, serif; }
+    a { color: var(--link); }
+
+    /* Toolbar: the only non-paper element. Hidden when printing. */
+    .bar { position: sticky; top: 0; z-index: 20; background: var(--bar); color: var(--bar-ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 13px;
+      -webkit-font-smoothing: antialiased; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; padding: 9px 18px; }
+    .bar a { color: var(--bar-ink); text-decoration: none; }
+    .bar .home { font-weight: 600; font-size: 14px; letter-spacing: -.005em; margin-right: auto; }
+    .tabs { display: flex; gap: 2px; background: rgba(255,255,255,.07); border-radius: 7px; padding: 2px; }
+    .tabs button, .bar .act { font: inherit; font-weight: 500; letter-spacing: .01em; color: rgba(242,242,242,.72);
+      background: transparent; border: 0; border-radius: 5px; padding: 5px 11px; cursor: pointer; transition: color .15s, background .15s; }
+    .tabs button:hover, .bar .act:hover { color: var(--bar-ink); background: rgba(255,255,255,.08); }
+    .tabs button[aria-selected="true"] { background: var(--bar-ink); color: var(--bar); }
+    .acts { display: flex; gap: 2px; }
+
+    /* The sheet: US letter proportions, 1in side margins, as in the LaTeX source. */
+    .sheet { background: var(--paper); color: var(--ink); width: 100%; max-width: 8.5in; margin: 28px auto 40px; padding: .7in 1in .75in;
+      box-shadow: var(--shadow); font-size: 17.5px; line-height: 1.55; }
+    .title-block { text-align: center; }
+    .title-block h1 { font-size: 1.62em; font-weight: 700; line-height: 1.2; margin: 0; }
+    .title-block .author { font-size: 1.2em; margin-top: 12px; }
+    .title-block .date { font-size: .92em; margin-top: 4px; }
+    .title-rule { border: 0; border-top: .5px solid var(--rule); margin: 10px 0 8px; }
+    .view { text-align: left; hyphens: manual; }
+    /* Every body paragraph is indented 1.5em with a half-line gap, as in the LaTeX source; notes and labels are not. */
+    .view p { margin: 0 0 .6em; text-indent: 1.5em; }
+    sup.ord { font-size: .62em; vertical-align: .55em; line-height: 0; }
+    .view i, .view em { font-style: italic; }
+
+    /* Citations: claim gets a faint dotted underline; number is a LaTeX-style superscript. */
+    .claim { text-decoration: underline dotted #9a9a9a; text-decoration-thickness: 1px; text-underline-offset: 3px; cursor: help; }
+    .claim.on, .claim:focus-visible { text-decoration: underline solid var(--cite); outline: none; background: #eef2fa; }
+    sup.ref { font-size: .68em; line-height: 0; }
+    sup.ref a { color: var(--cite); text-decoration: none; padding: 0 1px; }
+    .view a:not(.ref-url):not(sup a) { color: var(--link); text-decoration: none; border-bottom: .5px solid #b9c4dd; }
+
+    /* Closing note and bio, set smaller after a short rule (as in the PDF). */
+    .coda { font-size: .9em; text-indent: 0 !important; }
+    .coda-rule { border: 0; border-top: .5px solid var(--rule); width: 30%; margin: 1.4em 0 .6em; }
+
+    .refs { font-size: .8em; line-height: 1.38; margin-top: 1.6em; }
+    .refs h2, .sec-h { font-size: 1.05em; font-weight: 700; margin: 0 0 .4em; }
+    .refs ol { margin: 0; padding-left: 1.8em; }
+    .refs li { margin-bottom: .55em; scroll-margin-top: 70px; }
+    .refs li:target { background: #eef2fa; }
+    .ref-url { word-break: break-all; color: var(--link); }
+    .ref-quote { margin: 2px 0 0; color: #333; font-style: italic; }
+    .ref-quote .ref-where { font-style: normal; font-size: .85em; color: var(--sub); }
+    .ref-none { font-style: normal; color: var(--sub); }
+
+    .copyright { text-align: center; font-size: .72em; margin-top: 2.2em; color: var(--ink); }
+
+    /* Hover box for a citation. */
+    .ref-pop { position: fixed; z-index: 50; background: var(--paper); color: var(--ink); border: .5px solid #888; box-shadow: 0 6px 24px rgba(0,0,0,.18);
+      padding: 10px 13px; font-size: 15px; line-height: 1.4; max-height: 70vh; overflow-y: auto; font-family: inherit; }
+    .ref-pop .pop-num { font-variant: small-caps; letter-spacing: .05em; color: var(--sub); margin-bottom: 3px; }
+    .ref-pop .ref-url { display: block; margin-top: 3px; font-size: .9em; }
+    .ref-pop .ref-quote { margin-top: 7px; padding-left: 9px; border-left: 2px solid var(--cite); }
+
+    /* Markup: redline of the original against the essay. */
+    del { color: var(--del); background: var(--del-bg); text-decoration: line-through; text-decoration-thickness: 1px; }
+    ins { color: var(--ins); background: var(--ins-bg); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    .legend { font-size: .82em; color: var(--sub); margin: 0 0 1em; text-indent: 0 !important; }
+
+    /* Edits log. */
+    .edits { width: 100%; border-collapse: collapse; font-size: .82em; line-height: 1.35; }
+    .edits th { text-align: left; font-weight: 700; border-top: 1px solid var(--ink); border-bottom: .5px solid var(--ink); padding: 5px 6px; }
+    .edits td { vertical-align: top; border-bottom: .5px solid var(--faint); padding: 6px; }
+    .edits tr:last-child td { border-bottom: 1px solid var(--ink); }
+    .edits .where { white-space: nowrap; color: var(--sub); }
+    .who { font-variant: small-caps; letter-spacing: .04em; white-space: nowrap; }
+    .who.claude { color: #8a4b0f; } .who.rick { color: #1d4f8a; }
+    .why { display: block; color: var(--sub); font-style: italic; margin-top: 2px; }
+
+    .note { font-size: .88em; border-left: 2px solid var(--rule); padding: 2px 0 2px 12px; margin: 0 0 1.2em; text-indent: 0 !important; }
+    .orig-head { font-size: .88em; margin: 0 0 .8em; text-indent: 0 !important; }
+
+    @media (max-width: 760px) {
+      .sheet { margin: 0; padding: 28px 20px 36px; box-shadow: none; font-size: 17px; }
+      .bar { padding: 8px 12px; } .tabs button, .bar .act { padding: 5px 8px; }
+      .edits .where { white-space: normal; }
+    }
+
+    /* Printing ("Save as PDF") gives the essay, references, then the provenance page. */
+    @page { size: letter; margin: .7in 1in .75in; }
+    @media print {
+      body { background: #fff; } .bar, .ref-pop { display: none !important; }
+      .sheet { box-shadow: none; margin: 0; padding: 0; max-width: none; font-size: 13pt; line-height: 18.85pt; }
+      .view p { margin-bottom: 6.5pt; orphans: 3; widows: 3; }
+      .refs li { break-inside: avoid; }
+      .view[data-version="markup"], .view[data-version="edits"] { display: none !important; }
+      .view[data-version="revised"] { display: block !important; }
+      .view[data-version="original"] { display: block !important; break-before: page; }
+      .claim { text-decoration: none; background: none; }
+      a { color: inherit; border: 0 !important; }
+    }
   </style>
-  {%- if page.math %}
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" defer></script>
-  {%- endif %}
 </head>
-<body class="essay-page">
-<div class="service-board">
-  <span class="sb-live"><span class="sb-dot"></span><span>Service</span></span>
-  <span class="sb-msg"><a href="{{ '/' | relative_url }}" style="color:inherit">{{ site.title }}</a></span>
-  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false" title="Toggle light / dark">☾</button>
-</div>
-<article class="station line-green">
-  <div class="station-header"><div class="bullet green">W</div><span class="station-title">Writing</span></div>
-  <div class="station-content">
-    <header class="essay-head">
-      <h1>{{ page.title }}</h1>
-      <div class="essay-date"><time datetime="{{ page.date | date_to_xml_schema }}">{{ page.date | date: "%B %-d, %Y" }}</time></div>
-      {%- if page.doi %}<div class="essay-date">DOI <a href="https://doi.org/{{ page.doi }}">{{ page.doi }}</a></div>{% endif %}
-      {%- if page.description %}<div class="essay-desc">{{ page.description }}</div>{% endif %}
-    </header>
-    <div class="essay-body">
+<body>
+<nav class="bar" aria-label="Essay">
+  <a class="home" href="{{ '/' | relative_url }}">Rick Mathews, PhD</a>
+  {%- if page.original %}
+  <div class="tabs" role="tablist" aria-label="View">
+    <button type="button" role="tab" data-show="revised" aria-selected="true">Essay</button>
+    <button type="button" role="tab" data-show="markup" aria-selected="false">Markup</button>
+    {%- if page.edits %}<button type="button" role="tab" data-show="edits" aria-selected="false">Edits</button>{% endif %}
+    <button type="button" role="tab" data-show="original" aria-selected="false">Provenance</button>
+  </div>
+  {%- endif %}
+  <div class="acts">
+    <button type="button" class="act" onclick="window.print()">Print</button>
+    {%- if page.pdf %}<a class="act" href="{{ page.pdf | relative_url }}">PDF</a>{% endif %}
+    <a class="act" href="{{ '/essays/' | relative_url }}">All essays</a>
+  </div>
+</nav>
+
+<article class="sheet">
+  <header class="title-block">
+    <h1>{{ page.title }}</h1>
+    <div class="author">Rick Mathews, PhD</div>
+    <div class="date"><time datetime="{{ page.date | date_to_xml_schema }}">{%- assign _d = page.date | date: "%-d" | plus: 0 -%}{%- assign _m = _d | modulo: 10 -%}{%- if _d >= 11 and _d <= 13 -%}{%- assign _s = "th" -%}{%- elsif _m == 1 -%}{%- assign _s = "st" -%}{%- elsif _m == 2 -%}{%- assign _s = "nd" -%}{%- elsif _m == 3 -%}{%- assign _s = "rd" -%}{%- else -%}{%- assign _s = "th" -%}{%- endif -%}{{ page.date | date: "%B %-d" }}<sup class="ord">{{ _s }}</sup>, {{ page.date | date: "%Y" }}</time></div>
+  </header>
+  <hr class="title-rule">
+
+  <div class="view" data-version="revised">
 {{ content }}
-    </div>
-    <div class="essay-nav button-group">
-      {%- if page.pdf %}
-      <a class="portal-btn" href="{{ page.pdf | relative_url }}">PDF</a>
-      {%- endif %}
-      <a class="portal-btn" href="{{ '/' | relative_url }}">Home</a>
-      <a class="portal-btn" href="{{ '/essays/' | relative_url }}">All essays</a>
-      <a class="portal-btn" href="{{ '/essays/feed.xml' | relative_url }}">RSS</a>
+  {%- if page.references %}
+    <section class="refs" aria-labelledby="refs-h">
+      <h2 id="refs-h">References</h2>
+      <ol>
+      {%- for r in page.references %}
+        <li id="ref-{{ r.id }}"><span class="ref-cite">{{ r.cite }}</span> <a class="ref-url" href="{{ r.url }}">{{ r.url | remove_first: 'https://' }}</a>
+          {%- if r.quote and r.quote != "" %}
+          <div class="ref-quote">“{{ r.quote }}” <span class="ref-where">({{ r.where }})</span></div>
+          {%- else %}
+          <div class="ref-quote ref-none">No verbatim excerpt attached.</div>
+          {%- endif %}
+        </li>
+      {%- endfor %}
+      </ol>
+    </section>
+  {%- endif %}
+  </div>
+
+  {%- if page.original %}
+  <div class="view" data-version="markup" hidden>
+    <p class="legend"><del>Struck through</del>: in the original, since removed. <ins>Underlined</ins>: added or rewritten in revision. Citations and links are left out of this view; the Edits tab says who made each change and why.</p>
+    <div id="markupOut"></div>
+  </div>
+
+  {%- if page.edits %}
+  <div class="view" data-version="edits" hidden>
+    <h2 class="sec-h">Edit log</h2>
+    <p class="legend"><span class="who rick">Rick</span> or <span class="who claude">Claude</span> under <em>Decided</em> is who chose the change; <em>Words</em> is who wrote the new wording, when someone else did.</p>
+    <table class="edits">
+      <thead><tr><th>Where</th><th>Change</th><th>Decided</th><th>Words</th></tr></thead>
+      <tbody>
+      {%- for e in page.edits %}
+        <tr><td class="where">{{ e.where }}</td><td>{{ e.what }}{% if e.why %}<span class="why">{{ e.why }}</span>{% endif %}</td>
+          <td><span class="who {{ e.by | downcase }}">{{ e.by }}</span></td><td>{% if e.words %}<span class="who {{ e.words | downcase }}">{{ e.words }}</span>{% endif %}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  {%- endif %}
+
+  <div class="view" data-version="original" hidden>
+    <h2 class="sec-h">Provenance</h2>
+    {%- if page.editing %}<p class="note">{{ page.editing }}</p>{% endif %}
+    <p class="orig-head"><strong>Original version</strong>{% if page.original_title %}: <em>{{ page.original_title }}</em>{% endif %}{% if page.original_date %}, {%- assign _d = page.original_date | date: "%-d" | plus: 0 -%}{%- assign _m = _d | modulo: 10 -%}{%- if _d >= 11 and _d <= 13 -%}{%- assign _s = "th" -%}{%- elsif _m == 1 -%}{%- assign _s = "st" -%}{%- elsif _m == 2 -%}{%- assign _s = "nd" -%}{%- elsif _m == 3 -%}{%- assign _s = "rd" -%}{%- else -%}{%- assign _s = "th" -%}{%- endif -%}{{ page.original_date | date: "%B %-d" }}<sup class="ord">{{ _s }}</sup>, {{ page.original_date | date: "%Y" }}{% endif %}. Unedited.</p>
+    <div id="originalText">
+{{ page.original | markdownify }}
     </div>
   </div>
+  {%- endif %}
+
+  <div class="copyright">© {{ page.date | date: "%Y" }} Rick Mathews. All rights reserved.</div>
 </article>
+<div class="ref-pop" id="refPop" role="tooltip" hidden></div>
+
 <script>
 (function(){
-  var root=document.documentElement, b=document.getElementById('themeToggle');
-  function dark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
-  function sync(){ b.setAttribute('aria-pressed', String(dark())); b.textContent = dark() ? '☀' : '☾'; }
-  b.addEventListener('click', function(){ var n = dark() ? 'light' : 'dark'; root.setAttribute('data-theme', n); try{localStorage.setItem('theme', n)}catch(e){} sync(); });
-  sync();
+  var revised = document.querySelector('[data-version="revised"]');
+
+  // The closing note (a paragraph that is all italics) and the bio after it are set smaller, after a short rule.
+  function codaStart(root){
+    var ps = root.querySelectorAll(':scope > p');
+    for (var i = 0; i < ps.length; i++) {
+      var f = ps[i].firstElementChild;
+      if (f && f.tagName === 'EM' && ps[i].textContent.trim().indexOf(f.textContent.trim()) === 0) return ps[i];
+    }
+    return null;
+  }
+  var coda = codaStart(revised);
+  if (coda) {
+    var hr = document.createElement('hr'); hr.className = 'coda-rule'; coda.parentNode.insertBefore(hr, coda);
+    for (var el = coda; el && el.tagName === 'P'; el = el.nextElementSibling) el.classList.add('coda');
+  }
+
+  // Tabs
+  var btns = document.querySelectorAll('.tabs [data-show]'), built = false;
+  function show(v){
+    document.querySelectorAll('.view').forEach(function(el){ el.hidden = el.getAttribute('data-version') !== v; });
+    btns.forEach(function(b){ b.setAttribute('aria-selected', String(b.getAttribute('data-show') === v)); });
+    if (v === 'markup' && !built) { buildMarkup(); built = true; }
+    hide();
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){
+    var v = b.getAttribute('data-show'); show(v);
+    history.replaceState(null, '', v === 'revised' ? location.pathname : '#' + v);
+  }); });
+
+  // Markup: word-level redline of the original against the essay, computed here so it is always current.
+  function paras(root, stopAtCoda){
+    var out = [], ps = root.querySelectorAll(':scope > p');
+    for (var i = 0; i < ps.length; i++) {
+      if (stopAtCoda && ps[i] === coda) break;
+      var c = ps[i].cloneNode(true); c.querySelectorAll('sup.ref').forEach(function(x){ x.remove(); });
+      out.push(c.textContent.replace(/\s+/g, ' ').trim());
+    }
+    return out;
+  }
+  function tokens(ps){ var t = []; ps.forEach(function(p, i){ if (i) t.push('\n'); t.push.apply(t, p.split(' ')); }); return t; }
+  function esc(x){ return x.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function buildMarkup(){
+    var a = tokens(paras(document.getElementById('originalText'), false)), b = tokens(paras(revised, true)),
+        n = a.length, m = b.length, w = m + 1, L = new Int32Array((n + 1) * w), i, j;
+    for (i = n - 1; i >= 0; i--) for (j = m - 1; j >= 0; j--)
+      L[i*w+j] = a[i] === b[j] ? L[(i+1)*w+j+1] + 1 : Math.max(L[(i+1)*w+j], L[i*w+j+1]);
+    var ops = []; i = 0; j = 0;
+    while (i < n || j < m) {
+      if (i < n && j < m && a[i] === b[j]) { ops.push(['=', a[i]]); i++; j++; }
+      else if (j < m && (i === n || L[i*w+j+1] >= L[(i+1)*w+j])) { ops.push(['+', b[j]]); j++; }
+      else { ops.push(['-', a[i]]); i++; }
+    }
+    // Readability: fold 1-3 unchanged words that sit between edits into the edit,
+    // then show each edit as one deletion followed by one insertion.
+    var segs = [];
+    ops.forEach(function(o){ var k = o[0] === '=' ? '=' : 'x';
+      if (!segs.length || segs[segs.length-1].k !== k || o[1] === '\n') segs.push({k: k, o: []});
+      segs[segs.length-1].o.push(o); });
+    segs.forEach(function(g, i){ if (g.k === '=' && g.o.length <= 3 && i > 0 && i < segs.length - 1 && segs[i-1].k === 'x' && segs[i+1].k === 'x'
+      && g.o.every(function(o){ return o[1] !== '\n'; })) g.k = 'x'; });
+    ops = []; var dels = [], ins = [];
+    function out(){ ops.push.apply(ops, dels); ops.push.apply(ops, ins); dels = []; ins = []; }
+    segs.forEach(function(g){
+      if (g.k === '=') { out(); ops.push.apply(ops, g.o); return; }
+      g.o.forEach(function(o){
+        if (o[1] === '\n') { out(); ops.push(o); return; }
+        if (o[0] !== '+') dels.push(['-', o[1]]);
+        if (o[0] !== '-') ins.push(['+', o[1]]);
+      });
+    });
+    out();
+    var html = '<p>', run = null, buf = [];
+    function flush(){ if (!buf.length) return; var s = esc(buf.join(' '));
+      html += (run === '+' ? '<ins>' + s + '</ins>' : run === '-' ? '<del>' + s + '</del>' : s) + ' '; buf = []; }
+    ops.forEach(function(o){
+      if (o[1] === '\n') { if (o[0] !== '-') { flush(); html = html.replace(/ $/, '') + '</p><p>'; run = null; } return; }
+      if (o[0] !== run) { flush(); run = o[0]; }
+      buf.push(o[1]);
+    });
+    flush();
+    document.getElementById('markupOut').innerHTML = html.replace(/ $/, '') + '</p>';
+  }
+
+  // Hover (or focus, or tap) a claim or its number to see the source and its verbatim quote.
+  var pop = document.getElementById('refPop'), cur = null, t = null;
+  function refFor(el){
+    var id = el.getAttribute('data-ref');
+    if (!id) { var a = el.matches('a') ? el : el.querySelector('a'); id = a && a.getAttribute('href').replace('#ref-', ''); }
+    return id && document.getElementById('ref-' + id);
+  }
+  function open(el){
+    var li = refFor(el); if (!li) return;
+    clearTimeout(t); cur = el;
+    var n = Array.prototype.indexOf.call(li.parentNode.children, li) + 1;
+    pop.innerHTML = '<div class="pop-num">reference ' + n + '</div>' + li.innerHTML;
+    pop.hidden = false;
+    var r = el.getBoundingClientRect(), vw = document.documentElement.clientWidth, w = Math.min(430, vw - 32);
+    pop.style.width = w + 'px';
+    pop.style.left = Math.max(16, Math.min(r.left, vw - w - 16)) + 'px';
+    var h = pop.offsetHeight;
+    pop.style.top = (r.bottom + h + 8 > window.innerHeight && r.top > h + 60 ? r.top - h - 8 : r.bottom + 8) + 'px';
+    document.querySelectorAll('.claim.on').forEach(function(c){ c.classList.remove('on'); });
+    var id = li.id.replace('ref-', ''), para = el.closest('p');
+    if (para) para.querySelectorAll('.claim[data-ref="' + id + '"]').forEach(function(c){ c.classList.add('on'); });
+  }
+  function hide(){ pop.hidden = true; cur = null; document.querySelectorAll('.claim.on').forEach(function(c){ c.classList.remove('on'); }); }
+  function later(){ clearTimeout(t); t = setTimeout(hide, 180); }
+  var hoverable = matchMedia('(hover: hover)');
+  revised.querySelectorAll('.claim, sup.ref').forEach(function(el){
+    el.addEventListener('mouseenter', function(){ open(el); });
+    el.addEventListener('mouseleave', later);
+    el.addEventListener('focusin', function(){ open(el); });
+    el.addEventListener('focusout', later);
+    if (el.matches('.claim')) el.setAttribute('tabindex', '0');
+  });
+  // Touch: first tap on a number shows the source; a second tap jumps to the reference list.
+  revised.querySelectorAll('sup.ref a').forEach(function(a){
+    a.addEventListener('click', function(e){ if (!hoverable.matches && cur !== a.parentNode) { e.preventDefault(); open(a.parentNode); } });
+  });
+  revised.querySelectorAll('.claim').forEach(function(c){
+    c.addEventListener('click', function(e){ if (!hoverable.matches && !e.target.closest('a')) open(c); });
+  });
+  pop.addEventListener('mouseenter', function(){ clearTimeout(t); });
+  pop.addEventListener('mouseleave', later);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') hide(); });
+  document.addEventListener('click', function(e){ if (!pop.hidden && !pop.contains(e.target) && !e.target.closest('.claim, sup.ref')) hide(); });
+  window.addEventListener('resize', hide);
+  window.addEventListener('scroll', function(){ if (!pop.matches(':hover')) hide(); }, true);
+
+  var h0 = location.hash.replace('#', '');
+  if (h0 === 'markup' || h0 === 'edits' || h0 === 'original') show(h0);
 })();
 </script>
 </body>
