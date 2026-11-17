@@ -1,0 +1,25 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.title | xml_escape }}</title>
+  <link href="{{ '/essays/feed.xml' | absolute_url }}" rel="self" type="application/atom+xml"/>
+  <link href="{{ '/' | absolute_url }}" rel="alternate" type="text/html"/>
+  <id>{{ '/essays/' | absolute_url }}</id>
+  <author><name>{{ site.author | xml_escape }}</name></author>
+  {%- assign essays = site.essays | sort: "date" | reverse %}
+  <updated>{% if essays.size > 0 %}{{ essays.first.date | date_to_xml_schema }}{% else %}{{ site.time | date_to_xml_schema }}{% endif %}</updated>
+  {%- for e in essays limit: 20 %}
+  <entry>
+    <title>{{ e.title | xml_escape }}</title>
+    <link href="{{ e.pdf | absolute_url }}" rel="alternate" type="application/pdf"/>
+    <link href="{{ e.pdf | absolute_url }}" rel="enclosure" type="application/pdf"/>
+    <id>{{ e.pdf | absolute_url }}</id>
+    <published>{{ e.date | date_to_xml_schema }}</published>
+    <updated>{{ e.updated | default: e.date | date_to_xml_schema }}</updated>
+    {%- if e.description %}<summary>{{ e.description | xml_escape }}</summary>{% endif %}
+    <content type="html">{{ e.content | xml_escape }}</content>
+  </entry>
+  {%- endfor %}
+</feed>

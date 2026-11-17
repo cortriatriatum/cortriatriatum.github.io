@@ -1,0 +1,18 @@
+# GitHub Pages builds this site with Jekyll. No plugins.
+title: Rick Mathews, PhD
+author: Rick Mathews
+description: "Rick Mathews. Biomedical engineer and Physician-Scientist in training at the Oregon Health & Science University."
+url: https://cortriatriatum.github.io
+baseurl: /me
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  footnote_backlink: "↩"
+
+# Essays: one Markdown file per essay in _essays/. See WRITING.md.
+collections:
+  essays:
+    output: false   # each essay is a PDF (pdf: in front matter); the Markdown file holds its title, date and text for RSS
+
+exclude: [README.md, WRITING.md, tools/, Gemfile, Gemfile.lock, vendor/, me-site-v3/]

@@ -1,0 +1,37 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writing | {{ site.title }}</title>
+  <meta name="description" content="{{ site.description | escape }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/essays/feed.xml' | relative_url }}">
+  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+  <style>
+{% include subway.css %}
+  </style>
+</head>
+<body class="essay-page">
+<div class="service-board">
+  <span class="sb-live"><span class="sb-dot"></span><span>Service</span></span>
+  <span class="sb-msg"><a href="{{ '/' | relative_url }}" style="color:inherit">{{ site.title }}</a></span>
+</div>
+<main class="station line-green">
+  <div class="station-header"><div class="bullet green">W</div><span class="station-title">Writing</span></div>
+  <div class="station-content">
+    {%- assign essays = site.essays | sort: "date" | reverse -%}
+    {%- for e in essays %}
+    <div class="data-row"><div class="data-year">{{ e.date | date: "%b %-d, %Y" }}</div><div class="data-title"><a href="{{ e.pdf | relative_url }}" target="_blank" rel="noopener">{{ e.title }}</a>{% if e.description %}<div class="data-sub">{{ e.description }}</div>{% endif %}</div></div>
+    {%- endfor %}
+    <div class="essay-nav button-group">
+      <a class="portal-btn" href="{{ '/' | relative_url }}">Home</a>
+      <a class="portal-btn" href="{{ '/essays/feed.xml' | relative_url }}">RSS</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>
