@@ -118,7 +118,7 @@ layout: null
 <div class="station-content">
 {%- assign recent = site.essays | sort: "date" | reverse -%}
 {%- for e in recent limit: 4 %}
-<div class="data-row"><div class="data-year">{{ e.date | date: "%b %Y" }}</div><div class="data-title"><a href="{{ e.url | relative_url }}">{{ e.title }}</a>{% if e.pdf %} <a class="pdf-link" href="{{ e.pdf | relative_url }}" rel="noopener" target="_blank">PDF</a>{% endif %}{% if e.description %}<div class="data-sub">{{ e.description }}</div>{% endif %}</div></div>
+<div class="data-row" data-share-url="{{ e.url | absolute_url }}" data-cite="Mathews R. {{ e.title | escape }}. Published {{ e.date | date: "%B %-d, %Y" }}{% if e.updated %}; revised {{ e.updated | date: "%B %-d, %Y" }}{% endif %}. {{ e.url | absolute_url }}"><div class="data-year">{{ e.date | date: "%b %Y" }}</div><div class="data-title"><a href="{{ e.url | relative_url }}">{{ e.title }}</a>{% if e.pdf %} <a class="pdf-link" href="{{ e.pdf | relative_url }}" rel="noopener" target="_blank">PDF</a>{% endif %}{% if e.description %}<div class="data-sub">{{ e.description }}</div>{% endif %}</div></div>
 {%- endfor %}
 </div>
 </div>
@@ -494,19 +494,45 @@ layout: null
     } else { fallbackCopy(text, ok); }
   }
 
+  /* Cite and Share buttons on every piece of writing: publications (citations above) and essays
+     (citation and link written into each Writing row by Jekyll). Share opens the system share sheet
+     where there is one, otherwise copies the link. */
+  function addBtn(box, label, aria, onClick){
+    var btn = document.createElement('button');
+    btn.className = 'cite-btn'; btn.type = 'button'; btn.textContent = label;
+    btn.setAttribute('aria-label', aria);
+    btn.addEventListener('click', onClick);
+    box.appendChild(btn);
+  }
+  function share(title, url){
+    if (navigator.share) {
+      navigator.share({ title: title, text: title + ', by Rick Mathews, PhD', url: url }).catch(function(e){
+        if (e && e.name !== 'AbortError') copyText(url, function(){ showToast('Link copied'); });
+      });
+    } else { copyText(url, function(){ showToast('Link copied'); }); }
+  }
+  function addPair(row, title, cite, url){
+    var wrap = row.querySelector('.data-title') || row;
+    var acts = document.createElement('span'); acts.className = 'row-acts';
+    wrap.appendChild(acts);
+    if (cite) addBtn(acts, 'Cite', 'Copy citation: ' + title, function(){ copyText(cite, function(){ showToast('Citation copied'); }); });
+    if (url) addBtn(acts, 'Share', 'Share: ' + title, function(){ share(title, url); });
+  }
+
   var pubCard = document.querySelector('.station.pubs');
   if (pubCard){
-    pubCard.querySelectorAll('.data-row').forEach(function(row){
-      var a = row.querySelector('a[href]'); if (!a) return;
+    pubCard.querySelectorAll('.data-title > a[href]:first-child').forEach(function(a){
+      var row = a.closest('.data-row'); if (!row) return;
       var href = a.getAttribute('href');
       var key = Object.keys(CITES).filter(function(k){ return href.indexOf(k) !== -1; })[0];
       if (!key) return;
-      var btn = document.createElement('button');
-      btn.className = 'cite-btn'; btn.type = 'button'; btn.textContent = 'Cite';
-      btn.addEventListener('click', function(){ copyText(CITES[key], function(){ showToast('Citation copied'); }); });
-      (row.querySelector('.data-title') || row).appendChild(btn);
+      addPair(row, a.textContent.trim(), CITES[key], a.href);
     });
   }
+  document.querySelectorAll('.station.writing .data-row[data-share-url]').forEach(function(row){
+    var a = row.querySelector('.data-title > a');
+    addPair(row, a ? a.textContent.trim() : document.title, row.getAttribute('data-cite'), row.getAttribute('data-share-url'));
+  });
 })();
 </script>
 <script>

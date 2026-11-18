@@ -4,7 +4,7 @@ date: 2026-11-17
 updated: 2026-11-18
 pdf: /docs/essays/Mathews_2026_Atomic_Unit_Single_Experiment.pdf
 keywords: "publication bias, negative results, experimental design, reproducibility, p-values, scientific publishing, essay"
-description: "Rewarding robust design is the antidote to the mangled mess that is the published and peer-reviewed scientific corpus today."
+description: "Robust design and single experiment publication may be the antidote to publication bias."
 route: "A"
 route_color: "#0039A6"
 route_text: "#FFFFFF"
@@ -35,6 +35,7 @@ editing: >-
   model made by Anthropic. Claude critiqued the draft, found and checked the sources, and drafted edits,
   some on its own suggestion and some at my direction; I chose what to keep. The Markup view shows every
   change from my draft. Every quote in the references is copied word for word from the published source.
+  On November 18 I revised it again by hand.
 
 # Edit log, shown under "Edits". by: who decided it; words: who wrote the new wording.
 edits:
@@ -168,6 +169,39 @@ edits:
     why: "Claude’s suggestion, which I accepted. Makes the point about where the discovery came from, rather than about evolution."
     by: Rick
     words: Claude
+  - where: "Byline"
+    what: "Became “Robust design and single experiment publication may be the antidote to publication bias.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶1"
+    what: "Removed “My PhD taught me”; cut the sentence defining an experiment; “literature” became “literature base.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶3"
+    what: "“seemingly tidy narratives”; bias “becoming” routine; a literature base “blind to” negative results; “What goes in is rarely what comes out” became “What is submitted to a journal is rarely what is published.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶4"
+    what: "Cut the paragraph on stochastic and deterministic science."
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶5"
+    what: "Moved after the paragraph on the scientific method; cut my estimate that unpublished negative and inconclusive results outnumber published positive results."
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶8"
+    what: "The atherosclerosis question became “So why would we expect any scientist to know a vast and growing literature base…?” followed by “We need standardized annotation of experiments, claims, and intelligent aggregation.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶9"
+    what: "“The effect was always there yet not capitalized on immediately”; the last sentence now says a comprehensive corpus of individual experiments “will connect what no individual can.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶11"
+    what: "Closing now says “an antidote to publication bias,” dropping “the mangled mess”; “we must attempt to avoid scaling our inefficiencies.”"
+    why: "My revision, November 18."
+    by: Rick
+
 references:
   - id: errington2021
     cite: "Errington TM, Denis A, Perfito N, Iorns E, Nosek BA. Challenges for assessing replicability in preclinical cancer biology. <i>eLife</i>. 2021;10:e67995."
@@ -251,27 +285,27 @@ references:
     where: Abstract
 ---
 
-<p>My PhD taught me that the atomic unit of scientific information is a single experiment, and that our literature is not built around it. By an experiment, I mean the full record of one test of one question: the hypothesis, the design, the protocol down to the reagent lot, the raw data, and the result, whatever it was. Until we build on that unit, we are shooting ourselves, and the growing base of future knowledge, in the foot.</p>
+<p>The atomic unit of scientific information is a single experiment, and our literature base is not built around it. Until we build on that unit, we are shooting ourselves, and the growing base of future knowledge, in the foot.</p>
 
 <p>Too often, I ran an experiment that did not work. By my own estimate, the experiments that failed outnumbered those that worked, or that fit my original research program, by at least an order of magnitude. Informal conversations about PhD progress told me a similar story: three years of experiments that do not work, then a final year in which everything works and is rushed to the finish. Too often I failed to replicate published experiments because of obscure protocol details left out of the methods and even the supplement. Not because of falsification, just a lack of detail, and I paid for the inefficiency in time, reagents, money, and (perhaps soon to be professionally managed) anxiety. I am not alone. <span class="claim" data-ref="errington2021">When one project set out to repeat 193 experiments from high-impact cancer biology papers, not one was described in enough detail to repeat without asking the original authors</span><sup class="ref"><a href="#ref-errington2021">1</a></sup>.</p>
 
-<p>I recently wrote about why <a href="/essays/peer-review-scaled-and-continuous/">peer review should be overhauled</a>. An even more malignant facet of the current system is the molding of papers into tidy narratives, with positive publication bias a routine part of formal peer review. <span class="claim" data-ref="franco2014">Studies with strong results are 40 percentage points more likely to be published than studies with null results, mostly because the null results are never written up</span><sup class="ref"><a href="#ref-franco2014">2</a></sup>. <span class="claim" data-ref="dwan2008">By favoring positive results over robust design, we have inherited a literature short on negative and inconclusive results</span><sup class="ref"><a href="#ref-dwan2008">3</a></sup>. What goes in is rarely what comes out in publication, and not always for the better: <span class="claim" data-ref="dwan2013">when published trials are compared with their own protocols, 40 to 62 percent have at least one primary outcome that was changed, introduced, or omitted</span><sup class="ref"><a href="#ref-dwan2013">4</a></sup>. Provenance, <a href="https://www.biorxiv.org/">preprints</a>, and <a href="https://elifesciences.org/about/peer-review">peer review logs</a> may be as critical as the polished output, which is why every essay on this site shows its original draft, its edits, and its sources.</p>
+<p>I recently wrote about why <a href="/essays/peer-review-scaled-and-continuous/">peer review should be overhauled</a>. An even more malignant facet of the current system is the molding of papers into seemingly tidy narratives, with positive publication bias becoming a routine part of formal peer review. <span class="claim" data-ref="franco2014">Studies with strong results are 40 percentage points more likely to be published than studies with null results, mostly because the null results are never written up</span><sup class="ref"><a href="#ref-franco2014">2</a></sup>. <span class="claim" data-ref="dwan2008">By favoring positive results over robust design, we have inherited a literature base blind to negative and inconclusive results</span><sup class="ref"><a href="#ref-dwan2008">3</a></sup>. What is submitted to a journal is rarely what is published, and not always for the better: <span class="claim" data-ref="dwan2013">when published trials are compared with their own protocols, 40 to 62 percent have at least one primary outcome that was changed, introduced, or omitted</span><sup class="ref"><a href="#ref-dwan2013">4</a></sup>. Provenance, <a href="https://www.biorxiv.org/">preprints</a>, and <a href="https://elifesciences.org/about/peer-review">peer review logs</a> may be as critical as the polished output, which is why every essay on this site shows its original draft, its edits, and its sources.</p>
 
-<p>Science is somehow both stochastic and deterministic, investigating processes that range from strictly one or the other to every shade of gray in between. Because so much of biology is stochastic, a single result rarely settles anything; only the full set of results, failures included, shows the true shape of an effect. The scientific method is a light in the dark that reveals the path ahead, and hopefully we all agree that forward is the way we should be traveling.</p>
 
-<p>When we fail to share our failures, we doom ourselves to spirals of inefficiency that machine learning tools are now scaling. When large language models and other machine learning algorithms learn from the biased, published scientific corpus, they amplify our biases: they absorb what we choose to include and remain blind to what we leave out. My guess, from years in research labs, is that negative and inconclusive results outnumber published positive results by an order of magnitude or more, sitting unpublished and poorly collated in lab notebooks. If data today is truly as valuable as oil, we have poured a fair amount of it down the drain, and it will not be easy to retrieve.</p>
 
 <p>In the scientific method, every result, whether negative, inconclusive, or positive, informs the next experiment. Yet we have treated ourselves as the only ones who need to learn from our failures, when we should have been sharing every result with everyone. A negative experiment points a different way; an inconclusive one drives better design. <span class="claim" data-ref="asa2016">Ultimately, it is the robustness of the design that decides how well the path is lit, not how far a p-value falls below 0.05</span><sup class="ref"><a href="#ref-asa2016">5</a></sup>.</p>
 
+<p>When we fail to share our failures, we doom ourselves to spirals of inefficiency that machine learning tools are now scaling. When large language models and other machine learning algorithms learn from the biased, published scientific corpus, they amplify our biases: they absorb what we choose to include and remain blind to what we leave out. If data today is truly as valuable as oil, we have poured a fair amount of it down the drain, and it will not be easy to retrieve.</p>
+
 <p>Rewarding design already works. <span class="claim" data-ref="scheel2021">When journals agree to publish a study on the strength of its design, before the results are known, the share of positive results falls from 96 percent to 44 percent</span><sup class="ref"><a href="#ref-scheel2021">6</a></sup>. The single experiment is already publishable: <a href="https://www.micropublication.org/">microPublication Biology</a> <span class="claim" data-ref="raciti2018">publishes individual, peer-reviewed findings, including results that would otherwise be left out of a paper’s narrative</span><sup class="ref"><a href="#ref-raciti2018">7</a></sup>. A null result from a weak design teaches little, which is exactly why we should reward design, not outcome.</p>
 
-<p>Treating the experiment as the atomic unit would also change what machines can do with the literature. There are millions of papers, and more come every day; no human can read them all. What is 8,317,406 × 2,749? You would not even attempt to calculate that by hand; you would use a calculator. What does the literature say about atherosclerosis in some very specific scenario? You would rarely attempt to read all of it; you would need intelligent aggregation. Plenty of software already summarizes papers well, but that is not the solution. <a href="https://consensus.app/">Consensus</a> and <a href="https://elicit.com/">Elicit</a> search and summarize papers; <span class="claim" data-ref="nicholson2021"><a href="https://scite.ai/">scite</a> classifies whether each citation supports or contrasts the work it cites</span><sup class="ref"><a href="#ref-nicholson2021">8</a></sup>; <span class="claim" data-ref="kilicoglu2012">SemMedDB extracts subject–predicate–object statements from all of PubMed</span><sup class="ref"><a href="#ref-kilicoglu2012">9</a></sup>; and <span class="claim" data-ref="schultes2022">nanopublications package single assertions, negative results included, as citable units</span><sup class="ref"><a href="#ref-schultes2022">10</a></sup>. Most work from what papers chose to report, at the level of a paper or a claim. None that I know of is built around the experiment itself: its design, its protocol, and every result, whether positive, negative, or inconclusive.</p>
+<p>Treating the experiment as the atomic unit would also change what machines can do with the literature. There are millions of papers, and more come every day; no human can read them all. What is 8,317,406 × 2,749? You would not even attempt to calculate that by hand; you would use a calculator. So why would we expect any scientist to know a vast and growing literature base that likely is beyond the capacity of any human to cover in a lifetime? We need standardized annotation of experiments, claims, and intelligent aggregation. Plenty of software already summarizes papers well, but that is not the solution. <a href="https://consensus.app/">Consensus</a> and <a href="https://elicit.com/">Elicit</a> search and summarize papers; <span class="claim" data-ref="nicholson2021"><a href="https://scite.ai/">scite</a> classifies whether each citation supports or contrasts the work it cites</span><sup class="ref"><a href="#ref-nicholson2021">8</a></sup>; <span class="claim" data-ref="kilicoglu2012">SemMedDB extracts subject–predicate–object statements from all of PubMed</span><sup class="ref"><a href="#ref-kilicoglu2012">9</a></sup>; and <span class="claim" data-ref="schultes2022">nanopublications package single assertions, negative results included, as citable units</span><sup class="ref"><a href="#ref-schultes2022">10</a></sup>. Most work from what papers chose to report, at the level of a paper or a claim. None that I know of is built around the experiment itself: its design, its protocol, and every result, whether positive, negative, or inconclusive.</p>
 
-<p>That level matters because discoveries hide in connections no single reader makes. <span class="claim" data-ref="wang2024">Semaglutide, sold as Ozempic, was developed for type 2 diabetes; patients’ reports of a reduced desire to smoke later prompted studies of its effect on addiction</span><sup class="ref"><a href="#ref-wang2024">11</a></sup>. The effect was always there; it surfaced through patients’ remarks, not through the literature. Making such connections deliberately is not a new idea. <span class="claim" data-ref="swanson1986">In 1986, Don Swanson linked fish oil to Raynaud’s syndrome by connecting findings from separate literatures</span><sup class="ref"><a href="#ref-swanson1986">12</a></sup>, and <span class="claim" data-ref="henry2017">literature-based discovery</span><sup class="ref"><a href="#ref-henry2017">13</a></sup> and <span class="claim" data-ref="pushpakom2019">computational drug repurposing</span><sup class="ref"><a href="#ref-pushpakom2019">14</a></sup> have since been formalized as fields. But those methods can only mine the literature we have, which favors positive results and omits experimental detail. Working from single experiments, negative and inconclusive ones included, they might connect what no person can.</p>
+<p>That level matters because discoveries hide in connections no single reader makes. <span class="claim" data-ref="wang2024">Semaglutide, sold as Ozempic, was developed for type 2 diabetes; patients’ reports of a reduced desire to smoke later prompted studies of its effect on addiction</span><sup class="ref"><a href="#ref-wang2024">11</a></sup>. The effect was always there yet not capitalized on immediately. Making such connections deliberately is not a new idea. <span class="claim" data-ref="swanson1986">In 1986, Don Swanson linked fish oil to Raynaud’s syndrome by connecting findings from separate literatures</span><sup class="ref"><a href="#ref-swanson1986">12</a></sup>, and <span class="claim" data-ref="henry2017">literature-based discovery</span><sup class="ref"><a href="#ref-henry2017">13</a></sup> and <span class="claim" data-ref="pushpakom2019">computational drug repurposing</span><sup class="ref"><a href="#ref-pushpakom2019">14</a></sup> have since been formalized as fields. But those methods can only mine the literature we have, which favors positive results and omits experimental detail. Working from a comprehensive corpus of individual experiments, negative and inconclusive ones included, will connect what no individual can.</p>
 
 <p>Perhaps none of this architecture will matter. <span class="claim" data-ref="skarlinski2024">Language-model agents already match or exceed subject-matter experts on some literature research tasks</span><sup class="ref"><a href="#ref-skarlinski2024">15</a></sup>, <span class="claim" data-ref="asai2026">even as a leading general-purpose model fabricated most of its citations on one benchmark</span><sup class="ref"><a href="#ref-asai2026">16</a></sup>. If large language models keep improving, or general intelligence arrives, they may synthesize the literature as it is, mess and all, better than any structured alternative. Or there may be lasting value in data built from single experiments that no model can reconstruct from narrative papers. Unfortunately, I am neither the expert nor the fortune teller to judge which. Either way, a model can only learn from the experiments we share and the database it derives from.</p>
 
-<p>Rewarding robust design and incentivizing experimental publication may be the antidote to publication bias and to the mangled mess that is today’s published, peer-reviewed scientific corpus. As we begin to scale hypothesis generation and data analysis, we must not scale our inefficiencies along with them, or we will drift even further off course.</p>
+<p>Rewarding robust design and incentivizing experimental publication may be an antidote to publication bias. As we begin to scale hypothesis generation and data analysis, we must attempt to avoid scaling our inefficiencies, or we will drift even further off course.</p>
 
 *If you are working on this problem, or would like to discuss it further, [please get in touch](/#contact).*
 

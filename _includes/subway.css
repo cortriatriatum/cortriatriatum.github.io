@@ -280,6 +280,9 @@
     }
     .cite-btn:hover { transform: translate(-1px,-1px); box-shadow: 2px 2px 0 var(--black); }
     .cite-btn:active { transform: translate(0,0); box-shadow: 0 0 0 var(--black); }
+    .row-acts { display: flex; gap: 6px; flex-wrap: wrap; }
+    .row-acts .cite-btn { margin-top: 0.3rem; }
+    .cite-btn:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
     .toast {
       position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%) translateY(20px);
@@ -341,7 +344,7 @@
       html { font-size: 10pt; }
       body { height: auto !important; width: auto; overflow: visible !important; display: block !important; padding: 0;
         background: #fff !important; color: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      #ambient, .service-board, .theme-toggle, .skip, dialog, .toast, .button-group, .station-tag, .essay-nav, .cite-btn, .avatar img:not(.on) { display: none !important; }
+      #ambient, .service-board, .theme-toggle, .skip, dialog, .toast, .button-group, .station-tag, .essay-nav, .cite-btn, .row-acts, .avatar img:not(.on) { display: none !important; }
       .print-only { display: block; }
       .bio-print { margin-top: 2px; font-size: var(--fs-xs); }
       .station-grid { display: flex !important; flex-direction: column; max-width: none; }

@@ -1,10 +1,10 @@
 ---
 title: "Medicine’s Missing Experiments"
 date: 2026-11-16
-updated: 2026-11-17
+updated: 2026-11-18
 pdf: /docs/essays/Mathews_2026_Medicines_Missing_Experiments.pdf
 keywords: "physician-scientist, clinical evidence, translational research, biodesign, essay"
-description: "Scientists and engineers stand to benefit from improved clinical contextual awareness."
+description: "Biomedical Research Scientists and Engineers stand to benefit from improved clinical contextual awareness."
 route: "M"
 route_color: "#FF6319"
 route_text: "#FFFFFF"
@@ -27,7 +27,7 @@ editing: >-
   Claude, an AI model made by Anthropic. Claude critiqued the draft, found and checked the sources, and
   drafted edits, some on its own suggestion and some at my direction; I chose what to keep. The Markup
   view shows every change from the original. Every quote in the references is copied word for word from
-  the published source.
+  the published source. On November 18 I revised it again by hand.
 
 # Edit log, shown under "Edits". by: who decided it; words: who wrote the new words.
 edits:
@@ -163,6 +163,38 @@ edits:
     what: "Physician-scientists are “the natural and publicly invested bridge.”"
     why: "My revision."
     by: Rick
+  - where: "Byline"
+    what: "“Scientists and engineers” became “Biomedical Research Scientists and Engineers.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶1"
+    what: "Questions now include clinical decisions that no trial has investigated “or guidelines neatly support”; cut the sentence defining “questions”; the evidence hierarchy now “ranges from meta-analyses to expert opinion”; “a small minority” became “a minority”; evidence is now improved “for key clinical questions and decisions.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶2"
+    what: "Few clinicians “are provided protected and paid time to do both”; “order” became “chronology”; physician insight shapes innovation “not only in science and engineering but also in capital allocation.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶3"
+    what: "“Incentives widen the gap” became “Misaligned incentives further widen the gap between the bench and the bedside”; dropped “and approved”; priorities “measurably differ”; recurring high-stakes questions now “warrant further investigation.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶4"
+    what: "Physician-scientists are “trained at both the laboratory bench and the patient bedside” and “resource intensive to train”; rewrote the last two sentences: the cohort “is not a scalable solution,” and “most of the medical research workforce is removed from the bedside.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶5"
+    what: "Opening now “Bridging the bench to the bedside is the aim of translational medicine”; dropped “carers”; Stanford Biodesign “clinically immerses” engineers; “none is the scalable solution that addresses the bench to bedside gap”; “Perhaps what is missing.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶6"
+    what: "The platform is “between, by, and for patients, physicians, scientists, and engineers”; software “cannot afford to” leave anything implied, written “chronologically”; decisions that “would benefit from” a trial; patients and physicians added to who chooses; each question “tethered to a clinical decision point.”"
+    why: "My revision, November 18."
+    by: Rick
+  - where: "¶7"
+    what: "Dropped “and should be”; the essay now argues “for a scaled solution, bridging biomedical labs to the patient bedside”; the map is “a shared map of clinical context.”"
+    why: "My revision, November 18."
+    by: Rick
 
 references:
   - id: delfiol2014
@@ -212,19 +244,19 @@ references:
     where: Article text
 ---
 
-<p><span class="claim" data-ref="delfiol2014">Every day, physicians encounter patients in circumstances that raise questions no scientific experiment or trial has investigated</span><sup class="ref"><a href="#ref-delfiol2014">1</a></sup>. By questions, I do not just mean what patients ask; I mean the uncertainty behind clinical decisions: which treatment or diagnostic, in which permutation, across all the ugly, variable ways any patient can present. Where evidence does exist for these decisions, it often ranks low on the hierarchy that runs from randomized trials and meta-analyses down to expert opinion. <span class="claim" data-ref="fanaroff2019">Across major U.S. guidelines in several specialties, only a small minority of recommendations rest on the strongest type of evidence, and in some specialties nearly half or more rest on weaker types</span><sup class="ref"><a href="#ref-fanaroff2019">2</a></sup><sup class="ref">,</sup><sup class="ref"><a href="#ref-poonacha2011">3</a></sup><sup class="ref">,</sup><sup class="ref"><a href="#ref-lee2011">4</a></sup>. Improving evidence for these decisions will change clinical outcomes.</p>
+<p><span class="claim" data-ref="delfiol2014">Every day, physicians encounter patients in circumstances that raise questions or require clinical decisions no scientific experiment or trial has investigated</span><sup class="ref"><a href="#ref-delfiol2014">1</a></sup> or guidelines neatly support. Where evidence does exist, it often ranks low on the hierarchy that ranges from meta-analyses to expert opinion. <span class="claim" data-ref="fanaroff2019">Across major U.S. guidelines in several specialties, only a minority of recommendations rest on the strongest type of evidence, and in some specialties nearly half or more rest on weaker types</span><sup class="ref"><a href="#ref-fanaroff2019">2</a></sup><sup class="ref">,</sup><sup class="ref"><a href="#ref-poonacha2011">3</a></sup><sup class="ref">,</sup><sup class="ref"><a href="#ref-lee2011">4</a></sup>. Improving evidence for key clinical questions and decisions will change clinical outcomes.</p>
 
-<p>Clinical uncertainty is a rich source of scientific questions, but only for those who can appreciate it. Physicians, the ones best positioned to do so, are rarely the ones running benchtop experiments or building devices, and researchers and engineers are rarely the ones treating patients at the bedside: few have both skill sets, and fewer still have the time to do both well. As a result, most researchers never witness the clinical context of their disease of interest: the order and urgency in which questions arise, and where their own work would fit. <span class="claim" data-ref="wsj">Physicians therefore hold unique, informed insight into that context, insight that can shape innovation not only in science but in engineering and in decisions about where capital goes</span><sup class="ref"><a href="#ref-wsj">5</a></sup>.</p>
+<p>Clinical uncertainty is a rich source of scientific questions, but only for those who can appreciate it. Physicians, the ones best positioned to do so, are rarely the ones running benchtop experiments or building devices, and researchers and engineers are rarely the ones treating patients at the bedside: few have both skill sets, and fewer still are provided protected and paid time to do both. As a result, most researchers never witness the clinical context of their disease of interest: the chronology and urgency in which questions arise, and where their own work would fit. <span class="claim" data-ref="wsj">Physicians therefore hold unique, informed insight into that context, insight that can shape innovation not only in science and engineering but also in capital allocation</span><sup class="ref"><a href="#ref-wsj">5</a></sup>.</p>
 
-<p>Incentives widen the gap. Research questions are often chosen less by what clinicians and patients need to know than by what can be funded and approved. <span class="claim" data-ref="crowe2015">When patients and clinicians are asked what they want studied, their priorities differ sharply from the research actually being done</span><sup class="ref"><a href="#ref-crowe2015">6</a></sup>. Not every clinical question deserves an experiment, and a clinician’s accumulated judgment is key to the quality of care they deliver. Nonetheless, the questions that recur, carry high stakes, and rest on weak evidence deserve better than judgment alone.</p>
+<p>Misaligned incentives further widen the gap between the bench and the bedside. Research questions are often chosen less by what clinicians and patients need to know than by what can be funded. <span class="claim" data-ref="crowe2015">When patients and clinicians are asked what they want studied, their priorities measurably differ from the research actually being done</span><sup class="ref"><a href="#ref-crowe2015">6</a></sup>. Not every clinical question deserves an experiment, and a clinician’s accumulated judgment is key to the quality of care they deliver. Nonetheless, the questions that recur, carry high stakes, and rest on weak evidence warrant further investigation.</p>
 
-<p>Physician-scientists, trained in both worlds, are the natural and publicly invested bridge. <span class="claim" data-ref="milewicz2015">Yet they made up only about 1.5 percent of American physicians in 2012</span><sup class="ref"><a href="#ref-milewicz2015">7</a></sup>, and they are expensive to train: <span class="claim" data-ref="brass2010">about eight years to earn both an MD and a PhD</span><sup class="ref"><a href="#ref-brass2010">8</a></sup>, after a four-year undergraduate degree and before three to seven years of residency. They are essential, but they are not a scalable solution. Without insight into a treating team’s day, medical science drifts further and further from the bedside.</p>
+<p>Physician-scientists, trained at both the laboratory bench and the patient bedside, are the natural and publicly invested bridge. <span class="claim" data-ref="milewicz2015">Yet they made up only about 1.5 percent of American physicians in 2012</span><sup class="ref"><a href="#ref-milewicz2015">7</a></sup>, and they are resource intensive to train: <span class="claim" data-ref="brass2010">approximately eight years to earn both an MD and a PhD</span><sup class="ref"><a href="#ref-brass2010">8</a></sup>, after a four-year undergraduate degree and preceding three to seven years of residency. While essential, the physician-scientist cohort is not a scalable solution. Consequently, without insight into a treating team’s day, most of the medical research workforce is removed from the bedside.</p>
 
-<p>Bringing the bench to the bedside is the stated aim of translational medicine, and several programs pursue it. The NIH’s <a href="https://ncats.nih.gov/ctsa">Clinical and Translational Science Awards</a> fund institutional hubs for translational research, the <a href="https://www.jla.nihr.ac.uk/">James Lind Alliance</a> brings patients, carers, and clinicians together to set research priorities<sup class="ref"><a href="#ref-crowe2015">6</a></sup>, and <a href="https://biodesign.stanford.edu/">Stanford Biodesign</a> <span class="claim" data-ref="yock2015">trains engineers to start from unmet clinical needs rather than from a technology in search of a use</span><sup class="ref"><a href="#ref-yock2015">9</a></sup>. Each helps, but none reaches every researcher in every disease. What is missing is a shared, standardized map of the clinical questions that need better evidence. Without one, we are sailing unknown waters blind, and many everyday clinical decisions still rely on low-quality evidence.</p>
+<p>Bridging the bench to the bedside is the aim of translational medicine. The NIH’s <a href="https://ncats.nih.gov/ctsa">Clinical and Translational Science Awards</a> fund institutional hubs for translational research, the <a href="https://www.jla.nihr.ac.uk/">James Lind Alliance</a> brings patients and clinicians together to set research priorities<sup class="ref"><a href="#ref-crowe2015">6</a></sup>, and <a href="https://biodesign.stanford.edu/">Stanford Biodesign</a> <span class="claim" data-ref="yock2015">clinically immerses engineers to start from unmet clinical needs rather than from a technology in search of a use</span><sup class="ref"><a href="#ref-yock2015">9</a></sup>. However, none is the scalable solution that addresses the bench to bedside gap. Perhaps what is missing is a shared, standardized map of the clinical questions that need better evidence. Without one, we are sailing unknown waters blind, and many everyday clinical decisions still rely on low-quality evidence.</p>
 
-<p>The map can and must be built today, as a collaborative platform for physicians, scientists, and engineers. Lay out the path of disease and clinical care the way programmers write code. Software cannot leave anything implied: every step must be written explicitly, and in order, or the program fails. Disease and care pathways are rarely written at that granularity. Mapping each disease this way, every clinically relevant interaction from cradle to grave, and annotating the evidence behind each step would show which decisions need a trial or an experiment. Scientists, engineers, and funders could then choose which to pursue, each tied to a real clinical decision.</p>
+<p>The map can and must be built today, as a collaborative platform between, by, and for patients, physicians, scientists, and engineers. Lay out the path of disease and clinical care the way programmers write code. Software cannot afford to leave anything implied: every step must be written explicitly, and chronologically, or the program fails. Disease and care pathways are rarely written at that granularity. Mapping each disease this way, every clinically relevant interaction from cradle to grave, and annotating the evidence behind each step would show which decisions would benefit from a trial or an experiment. Patients, physicians, scientists, engineers, and funders could then choose which to pursue, each tethered to a clinical decision point.</p>
 
-<p>None of this argues against curiosity-driven work, which is free to wander, and should be. It argues for a better fit between medical science and the clinic. Research that claims clinical relevance should be able to point to its exact place on a shared map.</p>
+<p>None of this argues against curiosity-driven work, which is free to wander. It argues for a scaled solution, bridging biomedical labs to the patient bedside. Research that claims clinical relevance should be able to point to its exact place on a shared map of clinical context.</p>
 
 *If you are working on solutions to this problem, or would like to discuss this further, [please get in touch](/#contact).*
 
