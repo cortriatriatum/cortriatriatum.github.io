@@ -1,0 +1,23 @@
+# Builds the site the way GitHub Pages does and checks the result: titles, canonical links, JSON-LD,
+# image alt text, no old /me/ or localhost links, and every internal link and asset resolves.
+# It does not deploy anything; Pages still publishes from main on its own.
+name: Check site
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build with the GitHub Pages Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - name: Check the built site
+        run: python3 tools/check_site.py _site

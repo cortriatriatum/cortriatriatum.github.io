@@ -4,6 +4,9 @@ Each essay has a web page at `/essays/<name>/` and a PDF. Both come from one Mar
 
 1. Copy `_essays/_template.md` to `_essays/<name>.md`. Fill in `title`, `date`, `description`, `keywords`
    and `pdf: /docs/essays/<file>.pdf`, and write the essay below the second `---`.
+   For the essays map (`/essays/`), give it a subway route: `route` (one letter), `route_color` and
+   `route_text` (hex colors for the bullet and its letter), and `transfers` (names of related essays, e.g.
+   `[atomic-unit-single-experiment]`; list it on both essays so the transfer shows at each stop).
 2. Citations (optional). List sources under `references:` in the front matter (`id`, `cite`, `url`, and a
    `quote` copied word for word from the source, with `where` it came from). In the text, wrap the claim and
    add its number:
@@ -18,11 +21,15 @@ Each essay has a web page at `/essays/<name>/` and a PDF. Both come from one Mar
    no LaTeX). It writes `docs/essays/<pdf name>.pdf` in the LaTeX layout of the original PDFs, with the
    references and provenance page. To compile with real LaTeX instead, `tools/essay-pdf/md2tex.py` writes
    the same essay as a .tex file for `latexmk -xelatex`.
-5. Delete the `published: false` line when it's ready. Add the essay to the Writing card in `index.html`
-   by hand (copy the existing row); the essays list and RSS feed update on their own. Commit and push;
-   GitHub Pages rebuilds in about a minute.
+5. Share card: set `image: /img/og/<name>.png` in the front matter and run `python3 tools/og_cards.py`
+   (rerun it if the title changes). It draws the 1200 x 630 picture that link previews show.
+6. Delete the `published: false` line when it is ready. The home Writing card (latest four), the essays
+   map, the RSS feed, the sitemap, and llms.txt all update on their own. Commit and push; GitHub Pages
+   rebuilds in about a minute, and the "Check site" action (`.github/workflows/check.yml`) builds it again
+   and flags broken internal links, missing titles, bad structured data, or images without alt text.
+   To run the same check locally: `python3 tools/check_site.py _preview` after a preview build.
 
-6. After the push deploys, tell search engines: `python3 tools/indexnow.py`. Google reads the sitemap
+7. After the push deploys, tell search engines: `python3 tools/indexnow.py`. Google reads the sitemap
    (`/sitemap.xml`) through Search Console on its own schedule.
 
 Feed: `/essays/feed.xml`.

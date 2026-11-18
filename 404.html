@@ -1,0 +1,48 @@
+---
+layout: null
+permalink: /404.html
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Not in service | {{ site.title }}</title>
+  <meta name="robots" content="noindex">
+  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+  <style>
+{% include subway.css %}
+    .essay-page .station.lost { max-width: 720px; }
+    .lost .station-content { padding: 22px 28px 28px; }
+    .lost h1 { font-size: 1.6rem; line-height: 1.2; margin: 0 0 10px; }
+    .lost p { font-size: var(--fs-base); color: var(--sub-strong); margin: 0 0 18px; max-width: 40rem; }
+    .lost ul { list-style: none; margin: 0 0 22px; padding: 0; }
+    .lost li { margin: 0 0 8px; }
+    .lost li a { color: var(--link); font-weight: 700; text-decoration: none; }
+    .lost li a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="essay-page">
+<div class="service-board" role="status">
+  <span class="sb-live"><span class="sb-dot"></span><span>Service change</span></span>
+  <span class="sb-msg"><a href="{{ '/' | relative_url }}" style="color:inherit">{{ site.title }}</a></span>
+</div>
+<main class="station line-gray lost">
+  <div class="station-header"><div class="bullet gray">?</div><span class="station-title">Not in service</span></div>
+  <div class="station-content">
+    <h1>This page is not in service.</h1>
+    <p>The address may have changed, or the page was taken down. The site moved from <code>/me/</code> to the root address, so older links may need updating.</p>
+    {%- assign recent = site.essays | sort: "date" | reverse %}
+    <ul>
+    {%- for e in recent %}
+      <li><a href="{{ e.url | relative_url }}">{{ e.title }}</a></li>
+    {%- endfor %}
+    </ul>
+    <div class="essay-nav button-group">
+      <a class="portal-btn" href="{{ '/' | relative_url }}">Home</a>
+      <a class="portal-btn" href="{{ '/essays/' | relative_url }}">All essays</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

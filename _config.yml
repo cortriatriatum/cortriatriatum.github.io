@@ -20,4 +20,4 @@ defaults:
   - scope: { type: essays }
     values: { layout: essay }
 
-exclude: [README.md, WRITING.md, tools/, Gemfile, Gemfile.lock, vendor/, me-site-v3/]
+exclude: [README.md, WRITING.md, assets/fonts/README.md, tools/, Gemfile, Gemfile.lock, vendor/, me-site-v3/]

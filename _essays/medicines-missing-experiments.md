@@ -5,6 +5,11 @@ updated: 2026-11-17
 pdf: /docs/essays/Mathews_2026_Medicines_Missing_Experiments.pdf
 keywords: "physician-scientist, clinical evidence, translational research, biodesign, essay"
 description: "Scientists and engineers stand to benefit from improved clinical contextual awareness."
+route: "M"
+route_color: "#FF6319"
+route_text: "#FFFFFF"
+transfers: []
+image: /img/og/medicines-missing-experiments.png
 
 # Provenance. The original is shown on the page under "Original", compared word by word under "Markup",
 # and printed in the PDF appendix. Never edit it after publishing.

@@ -6,10 +6,14 @@ layout: null
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Writing | {{ site.title }}</title>
-  <meta name="description" content="{{ site.description | escape }}">
+  <title>Essays | {{ site.title }}</title>
+  <meta name="description" content="Essays by Rick Mathews, PhD, on how science and medicine discover questions, evaluate evidence, and share results.">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Essays | {{ site.title }}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:image" content="{{ '/img/share.jpg' | absolute_url }}">
   {%- assign listed = site.essays | sort: "date" | reverse %}
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "CollectionPage", "name": "Essays by Rick Mathews, PhD",
@@ -20,6 +24,40 @@ layout: null
   <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   <style>
 {% include subway.css %}
+    /* Essays as a subway line: one trunk, a station per essay, route bullets by topic, transfers between essays. */
+    .essay-page .station.map { max-width: 1040px; }
+    .map .station-content { padding: 22px 28px 28px; }
+    .map-intro { font-size: var(--fs-base); color: var(--sub-strong); max-width: 46rem; margin: 0 0 22px; }
+    .line { position: relative; list-style: none; margin: 0; padding: 0 0 0 64px; }
+    .line::before { content: ""; position: absolute; left: 23px; top: 10px; bottom: 10px; width: 8px; border-radius: 4px;
+      background: var(--mta-dark-gray); transform-origin: top; animation: draw .9s cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes draw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    @media (prefers-reduced-motion: reduce) { .line::before { animation: none; } }
+    .stop { position: relative; padding: 4px 0 30px; }
+    .stop:last-child { padding-bottom: 4px; }
+    .stop::before { content: ""; position: absolute; left: -50px; top: 9px; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--surface); border: 4px solid var(--ink); box-sizing: border-box; }
+    .stop-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .route { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%;
+      font-weight: 800; font-size: 17px; flex: none; }
+    .stop-date { font-size: var(--fs-xs); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sub); }
+    .stop-title { display: block; font-size: 1.32rem; line-height: 1.25; font-weight: 800; letter-spacing: -.01em; color: var(--ink);
+      text-decoration: none; margin: 6px 0 4px; max-width: 48rem; }
+    .stop-title:hover, .stop-title:focus-visible { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+    .stop-sub { font-size: var(--fs-base); color: var(--sub-strong); max-width: 46rem; }
+    .stop-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; font-size: var(--fs-xs); font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase; color: var(--sub); }
+    .stop-meta a { color: var(--link); text-decoration: none; }
+    .stop-meta a:hover { text-decoration: underline; }
+    .xfer { display: inline-flex; align-items: center; gap: 5px; }
+    .xfer .route { width: 20px; height: 20px; font-size: 11px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .stop:target .stop-title { background: var(--hl-green); }
+    @media (max-width: 600px) {
+      .map .station-content { padding: 16px 14px 20px; }
+      .line { padding-left: 44px; } .line::before { left: 13px; width: 6px; } .stop::before { left: -38px; width: 16px; height: 16px; }
+      .stop-title { font-size: 1.15rem; }
+    }
   </style>
 </head>
 <body class="essay-page">
@@ -27,13 +65,33 @@ layout: null
   <span class="sb-live"><span class="sb-dot"></span><span>Service</span></span>
   <span class="sb-msg"><a href="{{ '/' | relative_url }}" style="color:inherit">{{ site.title }}</a></span>
 </div>
-<main class="station line-green">
+<main class="station line-green map">
   <div class="station-header"><div class="bullet green">W</div><span class="station-title">Writing</span></div>
   <div class="station-content">
-    {%- assign essays = site.essays | sort: "date" | reverse -%}
-    {%- for e in essays %}
-    <div class="data-row"><div class="data-year">{{ e.date | date: "%b %-d, %Y" }}</div><div class="data-title"><a href="{{ e.url | relative_url }}">{{ e.title }}</a>{% if e.pdf %} <a class="pdf-link" href="{{ e.pdf | relative_url }}" target="_blank" rel="noopener">PDF</a>{% endif %}{% if e.description %}<div class="data-sub">{{ e.description }}</div>{% endif %}</div></div>
+    <p class="map-intro">Essays on how science and medicine discover questions, evaluate evidence, and share results. Each one shows its original draft, every edit, and the exact words of its sources.</p>
+    <ol class="line">
+    {%- for e in listed %}
+      {%- assign words = e.content | number_of_words %}
+      {%- assign minutes = words | divided_by: 230 | plus: 1 %}
+      {%- assign slug = e.url | split: "/" | last %}
+      <li class="stop" id="{{ slug }}">
+        <div class="stop-head">
+          {%- if e.route %}<span class="route" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span>{% endif %}
+          <span class="stop-date"><time datetime="{{ e.date | date_to_xml_schema }}">{{ e.date | date: "%B %-d, %Y" }}</time></span>
+        </div>
+        <a class="stop-title" href="{{ e.url | relative_url }}">{{ e.title }}</a>
+        {%- if e.description %}<div class="stop-sub">{{ e.description }}</div>{% endif %}
+        <div class="stop-meta">
+          <span>{{ minutes }} min read</span>
+          {%- if e.references %}<span>{{ e.references | size }} sources</span>{% endif %}
+          {%- if e.pdf %}<a href="{{ e.pdf | relative_url }}" target="_blank" rel="noopener">PDF</a>{% endif %}
+          {%- for t in e.transfers %}{% for other in site.essays %}{% if other.url contains t %}
+            <a class="xfer" href="#{{ t }}" title="Transfer to {{ other.title | escape }}">Transfer <span class="route" style="background:{{ other.route_color }};color:{{ other.route_text }}" aria-hidden="true">{{ other.route }}</span><span class="sr-only">to {{ other.title }}</span></a>
+          {%- endif %}{% endfor %}{% endfor %}
+        </div>
+      </li>
     {%- endfor %}
+    </ol>
     <div class="essay-nav button-group">
       <a class="portal-btn" href="{{ '/' | relative_url }}">Home</a>
       <a class="portal-btn" href="{{ '/#subscribe' | relative_url }}">Subscribe</a>

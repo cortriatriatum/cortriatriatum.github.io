@@ -252,7 +252,7 @@
       .station-grid { display: flex; flex-direction: column; }
       .col { display: contents; }
       .station.identity { order: 1; } .station.writing { order: 2; } .station.pubs { order: 3; }
-      .station.education { order: 4; } .station.honors { order: 5; } .station.experience { order: 6; } .station.side { order: 7; }
+      .station.education { order: 4; } .station.experience { order: 5; } .station.honors { order: 6; } .station.side { order: 7; }
       .station { min-height: auto; overflow: visible; margin-bottom: 4px; }
       .station:hover { transform: none; }
       .station-content { overflow-y: visible; }
@@ -298,6 +298,7 @@
     .station-content > .sub-line:first-child { margin-top: 2px; }
     .data-title .pdf-link { margin-left: 3px; font-size: var(--fs-2xs); font-weight: 800; letter-spacing: 0.06em; color: var(--link); text-decoration: none; vertical-align: 1px; }
     .data-title .pdf-link:hover { text-decoration: underline; }
+    .contact .sub-alt { font-size: var(--fs-sm); color: var(--sub); }
     .station-header a.feed-link { display: inline; color: var(--mta-yellow); opacity: 1; text-decoration: none; }
     .station-header a.feed-link:hover, .station-header a.feed-link:focus-visible { text-decoration: underline; }
     .bullet.mini { width: 1.15rem; height: 1.15rem; font-size: 0.6rem; border-width: 1.5px; box-shadow: none; }
@@ -322,36 +323,3 @@
     .essay-body sup { line-height: 0; }
     .essay-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 22px; }
     .essay-date a { text-transform: none; letter-spacing: 0.02em; }
-
-    /* Essay provenance: Essay / Markup / Provenance tabs */
-    .provenance { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 16px; }
-    .provenance .portal-btn[aria-selected="true"] { background: var(--ink); color: var(--surface); }
-    .prov-hint { flex-basis: 100%; font-size: var(--fs-sm); color: var(--sub); margin-top: 4px; }
-    .prov-note { margin-bottom: 14px; max-width: 40rem; font-size: var(--fs-sm); line-height: 1.5; color: var(--sub-strong);
-      border-left: 4px solid var(--mta-orange); background: var(--hl-warm); padding: 8px 12px; }
-    .prov-orig-head, .prov-legend { font-size: var(--fs-xs); font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sub); margin-bottom: 1em; }
-    .prov-legend { text-transform: none; letter-spacing: 0; font-weight: 600; }
-    .prov-orig-head em { text-transform: none; letter-spacing: 0; font-weight: 700; }
-    .essay-body del { color: var(--mta-red); text-decoration: line-through; text-decoration-thickness: 1.5px; }
-    .essay-body ins { text-decoration: underline; text-decoration-color: var(--mta-green); text-decoration-thickness: 2px; text-underline-offset: 3px;
-      background: var(--hl-green); }
-    .essay-body a:not(.ref-url):not(sup a) { color: var(--link); }
-
-    /* Citations: dotted claim + superscript number; hover/focus/tap opens the source and its verbatim quote */
-    .essay-body .claim { text-decoration: underline dotted var(--sub); text-decoration-thickness: 1px; text-underline-offset: 3px; cursor: help; }
-    .essay-body .claim.on, .essay-body .claim:focus-visible { text-decoration: underline solid var(--mta-green); text-decoration-thickness: 2px; outline: none; }
-    .essay-body sup.ref a { font-size: .72em; font-weight: 800; color: var(--mta-green); text-decoration: none; padding: 0 1px; }
-    .ref-pop { position: fixed; z-index: 50; max-height: 70vh; overflow-y: auto; background: var(--surface); color: var(--ink); border: 2px solid var(--border);
-      box-shadow: 5px 5px 0 var(--sh-2); padding: 10px 12px; font-size: var(--fs-sm); line-height: 1.45; }
-    .ref-pop .pop-num { font-size: var(--fs-2xs); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mta-green); margin-bottom: 4px; }
-    .ref-pop .ref-url { display: block; margin-top: 4px; word-break: break-all; color: var(--link); }
-    .ref-pop .ref-quote { margin: 8px 0 0; }
-    .refs { border-top: 2px solid var(--ink); margin-top: 2em; padding-top: .6em; font-size: .88rem; color: var(--sub-strong); }
-    .refs h2 { font-size: var(--fs-xs) !important; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin: 0 0 .6em !important; }
-    .refs ol { padding-left: 1.4rem; }
-    .refs li { margin-bottom: .8em; scroll-margin-top: 20px; }
-    .refs li:target { background: var(--hl-green); }
-    .refs .ref-url { word-break: break-all; color: var(--link); }
-    .ref-quote { margin: 4px 0 0; padding: 2px 0 2px 10px; border-left: 3px solid var(--mta-green); font-style: italic; color: var(--ink); }
-    .ref-quote .ref-where { display: block; font-style: normal; font-size: var(--fs-2xs); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sub); margin-top: 2px; }
-    .ref-quote.ref-none { font-style: normal; color: var(--sub); border-left-color: var(--rule); }

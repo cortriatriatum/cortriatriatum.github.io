@@ -4,6 +4,11 @@ date: 2026-11-17
 pdf: /docs/essays/Mathews_2026_Peer_Review_Scaled_and_Continuous.pdf
 keywords: "peer review, preprints, research integrity, scientific publishing, essay"
 description: "A paper should not be peer reviewed just once."
+route: "R"
+route_color: "#FCCC0A"
+route_text: "#111111"
+transfers: [atomic-unit-single-experiment]
+image: /img/og/peer-review-scaled-and-continuous.png
 
 original_title: "Peer Review Should be Scaled and Continuous for Every Paper"
 original_date: "2026-11-17"
