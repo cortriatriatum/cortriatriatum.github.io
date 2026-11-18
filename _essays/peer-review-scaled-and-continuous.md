@@ -1,6 +1,7 @@
 ---
 title: "Peer Review Should Be Scaled and Continuous for Every Paper"
 date: 2026-11-17
+updated: 2026-11-18
 pdf: /docs/essays/Mathews_2026_Peer_Review_Scaled_and_Continuous.pdf
 keywords: "peer review, preprints, research integrity, scientific publishing, essay"
 description: "A paper should not be peer reviewed just once."
@@ -127,7 +128,22 @@ edits:
     why: "My revision."
     by: Rick
 
+  - where: "¶2"
+    what: "Now opens “Peer review verifies far less than its stamp suggests,” followed by the BMJ planted-errors study; the misconduct and replication figures follow as “points the same way.” References renumbered."
+    why: "Claude’s suggestion, which I accepted. The BMJ study is the only figure here that measures what reviewers catch; the others show that the problems exist."
+    by: Rick
+    words: Claude
+  - where: "¶3"
+    what: "“Scientists are paid primarily by public funders” became “Much academic research is paid for by public funders”; added a closing line: “All of that money and time buys a judgment made once and never revisited.”"
+    why: "Claude’s suggestion, which I accepted. Many scientists are paid by institutions or industry, and the closing line ties the economics back to the argument."
+    by: Rick
+    words: Claude
 references:
+  - id: schroter2008
+    cite: "Schroter S, Black N, Evans S, Godlee F, Osorio L, Smith R. What errors do peer reviewers detect, and does training improve their ability to detect them? <i>J R Soc Med</i>. 2008;101(10):507–514."
+    url: https://doi.org/10.1258/jrsm.2008.080062
+    quote: "At baseline (Paper 1) reviewers found an average of 2.58 of the nine major errors"
+    where: Abstract, Results
   - id: fanelli2009
     cite: "Fanelli D. How many scientists fabricate and falsify research? A systematic review and meta-analysis of survey data. <i>PLoS ONE</i>. 2009;4(5):e5738."
     url: https://doi.org/10.1371/journal.pone.0005738
@@ -143,11 +159,6 @@ references:
     url: https://doi.org/10.1126/science.aac4716
     quote: "Thirty-six percent of replications had statistically significant results"
     where: Abstract
-  - id: schroter2008
-    cite: "Schroter S, Black N, Evans S, Godlee F, Osorio L, Smith R. What errors do peer reviewers detect, and does training improve their ability to detect them? <i>J R Soc Med</i>. 2008;101(10):507–514."
-    url: https://doi.org/10.1258/jrsm.2008.080062
-    quote: "At baseline (Paper 1) reviewers found an average of 2.58 of the nine major errors"
-    where: Abstract, Results
   - id: butler2023
     cite: "Butler LA, Matthias L, Simard MA, Mongeon P, Haustein S. The oligopoly’s shift to open access: how the big five academic publishers profit from article processing charges. <i>Quant Sci Stud</i>. 2023;4(4):778–799."
     url: https://doi.org/10.1162/qss_a_00272
@@ -202,9 +213,9 @@ references:
 
 <p>Formal peer review, as practiced today, is significantly flawed. Perhaps chief among its problems is that we treat the judgment of two or three people, made at a single point in time, as a permanent label of quality. At a minimum, we must scale the number of peer reviewers and the length of time a paper undergoes peer review.</p>
 
-<p>The scale of plagiarism, falsification, fabrication, and irreproducibility is evidence for how little peer review verifies. <span class="claim" data-ref="fanelli2009">About 2 percent of scientists admit to fabricating or falsifying data</span><sup class="ref"><a href="#ref-fanelli2009">1</a></sup>, and <span class="claim" data-ref="fang2012">two-thirds of retracted papers were pulled for misconduct, not honest error</span><sup class="ref"><a href="#ref-fang2012">2</a></sup>. <span class="claim" data-ref="osc2015">When researchers repeated 100 published psychology studies, only about a third held up</span><sup class="ref"><a href="#ref-osc2015">3</a></sup>. <span class="claim" data-ref="schroter2008">When the <i>BMJ</i> planted nine major errors in a paper, reviewers caught fewer than three on average</span><sup class="ref"><a href="#ref-schroter2008">4</a></sup>. Peer review was never designed to catch fraud; reviewers rarely see the raw data. That is exactly the problem: we give its stamp a weight it cannot carry.</p>
+<p>Peer review verifies far less than its stamp suggests. <span class="claim" data-ref="schroter2008">When the <i>BMJ</i> planted nine major errors in a paper, reviewers caught fewer than three on average</span><sup class="ref"><a href="#ref-schroter2008">1</a></sup>. The scale of plagiarism, falsification, fabrication, and irreproducibility points the same way: <span class="claim" data-ref="fanelli2009">about 2 percent of scientists admit to fabricating or falsifying data</span><sup class="ref"><a href="#ref-fanelli2009">2</a></sup>, <span class="claim" data-ref="fang2012">two-thirds of retracted papers were pulled for misconduct, not honest error</span><sup class="ref"><a href="#ref-fang2012">3</a></sup>, and <span class="claim" data-ref="osc2015">when researchers repeated 100 published psychology studies, only about a third held up</span><sup class="ref"><a href="#ref-osc2015">4</a></sup>. Peer review was never designed to catch fraud; reviewers rarely see the raw data. That is exactly the problem: we give its stamp a weight it cannot carry.</p>
 
-<p>The economics of peer review are strange too, to say the least. Scientists are paid primarily by public funders such as the NIH. That money pays for the salaries, machines, services, reagents, and employees needed to do research, and the output is a scientific paper. The paper must be published to count as a complete output, so scientists often pay journals, sometimes thousands of dollars, to publish their own work: <span class="claim" data-ref="butler2023">authors paid the five largest publishers about a billion dollars in open-access fees from 2015 to 2018 alone</span><sup class="ref"><a href="#ref-butler2023">5</a></sup>. Journals then charge universities and libraries subscription or pay-per-view fees to read it. <span class="claim" data-ref="buranyi2017"><a href="https://www.theguardian.com/science/2017/jun/27/profitable-business-scientific-publishing-bad-for-science"><i>The Guardian</i></a> has described how publishers take unpaid labor from scientists, who write and review the papers, and sell the results back to those same scientists’ institutions</span><sup class="ref"><a href="#ref-buranyi2017">6</a></sup>. <span class="claim" data-ref="lariviere2015">Five publishers now account for more than half of all papers</span><sup class="ref"><a href="#ref-lariviere2015">7</a></sup>, and <span class="claim" data-ref="aczel2021">researchers donated more than 100 million hours to peer review in 2020 alone</span><sup class="ref"><a href="#ref-aczel2021">8</a></sup>. Scientists should be paid for their own work, not pay again to read it, yet academia still ties careers to <span class="claim" data-ref="koltun2021">h-indices, publication counts, and impact factors, none of which truly measure research impact</span><sup class="ref"><a href="#ref-koltun2021">9</a></sup>. Meanwhile, editors struggle every day to find two or three reviewers, who may not be the best suited to the task, and the label those reviewers confer is often unjustified.</p>
+<p>The economics of peer review are strange too, to say the least. Much academic research is paid for by public funders such as the NIH. That money pays for the salaries, machines, services, reagents, and employees needed to do research, and the output is a scientific paper. The paper must be published to count as a complete output, so scientists often pay journals, sometimes thousands of dollars, to publish their own work: <span class="claim" data-ref="butler2023">authors paid the five largest publishers about a billion dollars in open-access fees from 2015 to 2018 alone</span><sup class="ref"><a href="#ref-butler2023">5</a></sup>. Journals then charge universities and libraries subscription or pay-per-view fees to read it. <span class="claim" data-ref="buranyi2017"><a href="https://www.theguardian.com/science/2017/jun/27/profitable-business-scientific-publishing-bad-for-science"><i>The Guardian</i></a> has described how publishers take unpaid labor from scientists, who write and review the papers, and sell the results back to those same scientists’ institutions</span><sup class="ref"><a href="#ref-buranyi2017">6</a></sup>. <span class="claim" data-ref="lariviere2015">Five publishers now account for more than half of all papers</span><sup class="ref"><a href="#ref-lariviere2015">7</a></sup>, and <span class="claim" data-ref="aczel2021">researchers donated more than 100 million hours to peer review in 2020 alone</span><sup class="ref"><a href="#ref-aczel2021">8</a></sup>. Scientists should be paid for their own work, not pay again to read it, yet academia still ties careers to <span class="claim" data-ref="koltun2021">h-indices, publication counts, and impact factors, none of which truly measure research impact</span><sup class="ref"><a href="#ref-koltun2021">9</a></sup>. Meanwhile, editors struggle every day to find two or three reviewers, who may not be the best suited to the task, and the label those reviewers confer is often unjustified. All of that money and time buys a judgment made once and never revisited.</p>
 
 <p>For peer review, at least, a scaled and continuous alternative is workable today. Papers posted to preprint servers such as <a href="https://www.biorxiv.org/">bioRxiv</a> could invite comment and record consensus from a verifiably informed group of peers. Each paper would become a living, breathing document, reviewed continuously by a scaled and informed crowd rather than a few overworked strangers. There is early evidence this works. <span class="claim" data-ref="ritter2017">The chemistry journal <i>Synlett</i> gave a crowd of about 100 reviewers 72 hours to comment on submitted papers</span><sup class="ref"><a href="#ref-ritter2017">10</a></sup>, and <span class="claim" data-ref="vangemmeren2020">crowd review is now its default method</span><sup class="ref"><a href="#ref-vangemmeren2020">11</a></sup>. Readers already catch what reviewers miss: <span class="claim" data-ref="bik2016">screening published papers, one team found problematic images in 3.8 percent of more than 20,000 biomedical papers</span><sup class="ref"><a href="#ref-bik2016">12</a></sup>.</p>
 

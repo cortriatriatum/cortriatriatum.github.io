@@ -6,6 +6,9 @@ layout: null
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="32x32">
+  <link rel="icon" href="{{ '/img/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ '/img/apple-touch-icon.png' | relative_url }}">
   <title>Essays | {{ site.title }}</title>
   <meta name="description" content="Essays by Rick Mathews, PhD, on how science and medicine discover questions, evaluate evidence, and share results.">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
@@ -29,14 +32,17 @@ layout: null
     .map .station-content { padding: 22px 28px 28px; }
     .map-intro { font-size: var(--fs-base); color: var(--sub-strong); max-width: 46rem; margin: 0 0 22px; }
     .line { position: relative; list-style: none; margin: 0; padding: 0 0 0 64px; }
-    .line::before { content: ""; position: absolute; left: 23px; top: 10px; bottom: 10px; width: 8px; border-radius: 4px;
-      background: var(--mta-dark-gray); transform-origin: top; animation: draw .9s cubic-bezier(.2,.7,.2,1) both; }
+    /* The trunk is drawn stop to stop, so it starts and ends at a station and is centered on the dots. */
+    .stop:not(:last-child)::after { content: ""; position: absolute; left: -45px; top: 18px; bottom: -18px; width: 8px;
+      background: var(--mta-dark-gray); transform-origin: top; animation: draw .45s cubic-bezier(.2,.7,.2,1) both; }
+    .stop:nth-child(2)::after { animation-delay: .35s; } .stop:nth-child(3)::after { animation-delay: .7s; }
+    .stop:nth-child(n+4)::after { animation-delay: 1.05s; }
     @keyframes draw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-    @media (prefers-reduced-motion: reduce) { .line::before { animation: none; } }
+    @media (prefers-reduced-motion: reduce) { .stop::after { animation: none !important; } }
     .stop { position: relative; padding: 4px 0 30px; }
     .stop:last-child { padding-bottom: 4px; }
     .stop::before { content: ""; position: absolute; left: -50px; top: 9px; width: 18px; height: 18px; border-radius: 50%;
-      background: var(--surface); border: 4px solid var(--ink); box-sizing: border-box; }
+      background: var(--surface); border: 4px solid var(--ink); box-sizing: border-box; z-index: 1; }
     .stop-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .route { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%;
       font-weight: 800; font-size: 17px; flex: none; }
@@ -50,12 +56,14 @@ layout: null
     .stop-meta a { color: var(--link); text-decoration: none; }
     .stop-meta a:hover { text-decoration: underline; }
     .xfer { display: inline-flex; align-items: center; gap: 5px; }
-    .xfer .route { width: 20px; height: 20px; font-size: 11px; }
+    .xfer { min-height: 24px; }
+    .xfer .route { width: 24px; height: 24px; font-size: 13px; }
     .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     .stop:target .stop-title { background: var(--hl-green); }
     @media (max-width: 600px) {
       .map .station-content { padding: 16px 14px 20px; }
-      .line { padding-left: 44px; } .line::before { left: 13px; width: 6px; } .stop::before { left: -38px; width: 16px; height: 16px; }
+      .line { padding-left: 44px; } .stop::before { left: -38px; width: 16px; height: 16px; }
+      .stop:not(:last-child)::after { left: -33px; width: 6px; top: 16px; bottom: -16px; }
       .stop-title { font-size: 1.15rem; }
     }
   </style>
@@ -66,7 +74,7 @@ layout: null
   <span class="sb-msg"><a href="{{ '/' | relative_url }}" style="color:inherit">{{ site.title }}</a></span>
 </div>
 <main class="station line-green map">
-  <div class="station-header"><div class="bullet green">W</div><span class="station-title">Writing</span></div>
+  <div class="station-header"><div class="bullet green" aria-hidden="true">W</div><span class="station-title">Writing</span></div>
   <div class="station-content">
     <p class="map-intro">Essays on how science and medicine discover questions, evaluate evidence, and share results. Each one shows its original draft, every edit, and the exact words of its sources.</p>
     <ol class="line">
@@ -86,7 +94,7 @@ layout: null
           {%- if e.references %}<span>{{ e.references | size }} sources</span>{% endif %}
           {%- if e.pdf %}<a href="{{ e.pdf | relative_url }}" target="_blank" rel="noopener">PDF</a>{% endif %}
           {%- for t in e.transfers %}{% for other in site.essays %}{% if other.url contains t %}
-            <a class="xfer" href="#{{ t }}" title="Transfer to {{ other.title | escape }}">Transfer <span class="route" style="background:{{ other.route_color }};color:{{ other.route_text }}" aria-hidden="true">{{ other.route }}</span><span class="sr-only">to {{ other.title }}</span></a>
+            <a class="xfer" href="{{ other.url | relative_url }}" title="Transfer to {{ other.title | escape }}">Transfer <span class="route" style="background:{{ other.route_color }};color:{{ other.route_text }}" aria-hidden="true">{{ other.route }}</span><span class="sr-only">to {{ other.title }}</span></a>
           {%- endif %}{% endfor %}{% endfor %}
         </div>
       </li>

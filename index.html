@@ -6,6 +6,9 @@ layout: null
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="32x32">
+<link rel="icon" href="{{ '/img/favicon.svg' | relative_url }}" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{{ '/img/apple-touch-icon.png' | relative_url }}">
 <title>Rick Mathews, PhD</title>
 <meta content="Rick Mathews. Biomedical engineer and Physician-Scientist in training at the Oregon Health &amp; Science University." name="description"/>
 <link href="https://cortriatriatum.github.io/" rel="canonical"/>
@@ -39,19 +42,20 @@ layout: null
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <canvas aria-hidden="true" id="ambient"></canvas>
 <div aria-live="polite" class="service-board" role="status">
 <span class="sb-live"><span class="sb-dot live" id="sbDot"></span><span>Service</span></span>
-<span class="sb-msg" id="sbMsg">Checking the board…</span>
+<span class="sb-msg" id="sbMsg">Good service on all lines.</span>
 <span class="sb-time" id="sbTime"></span>
 <button aria-label="Switch color theme" aria-pressed="false" class="theme-toggle" id="themeToggle" title="Toggle light / dark" type="button">☾</button>
 </div>
-<div class="station-grid">
+<div class="station-grid" id="main">
 <!-- Three columns. Each card takes the height its content needs; the last card in a column takes what is left and scrolls. -->
 <div class="col col-a">
 <!-- 0 IDENTITY (Bio) -->
 <div class="station line-orange identity">
-<div class="station-header"><div class="bullet orange">B</div><span class="station-title">Bio</span></div>
+<div class="station-header"><div class="bullet orange" aria-hidden="true">B</div><span class="station-title">Bio</span></div>
 <div class="station-content">
 <div class="bio-head">
 <button aria-label="Show next photo of Rick Mathews" class="avatar" id="avatar" type="button">
@@ -63,6 +67,7 @@ layout: null
 <h1>Rick Mathews, PhD</h1>
 <div class="bio-sub">Physician-Scientist in Training at the <a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a> <a href="https://www.ohsu.edu/school-of-medicine/md-phd-program/rick-mathews-phd">Medical Scientist Training Program</a></div>
 <div class="bio-loc">Portland, Oregon</div>
+<div class="print-only bio-print">cortriatriatum.github.io · ORCID 0000-0003-2723-5646</div>
 </div>
 </div>
 <div class="button-group primary">
@@ -81,7 +86,7 @@ layout: null
 </div>
 <!-- 3 EDUCATION -->
 <div class="station line-blue education">
-<div class="station-header"><div class="bullet blue">E</div><span class="station-title">Education</span></div>
+<div class="station-header"><div class="bullet blue" aria-hidden="true">E</div><span class="station-title">Education</span></div>
 <div class="station-content">
 <div class="data-row"><div class="data-year">2018 to Present</div><div class="data-title"><a href="https://www.ohsu.edu/school-of-medicine/md-program">Doctor of Medicine</a><div class="data-sub"><a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a></div></div></div>
 <div class="data-row"><div class="data-year">2020 to 2024</div><div class="data-title"><a href="https://www.ohsu.edu/school-of-medicine/biomedical-engineering">Doctor of Philosophy, Biomedical Engineering</a><div class="data-sub"><a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a></div></div></div>
@@ -90,7 +95,7 @@ layout: null
 </div>
 <!-- 4 HONORS -->
 <div class="station line-blue honors">
-<div class="station-header"><div class="bullet blue">A</div><span class="station-title">Awards</span></div>
+<div class="station-header"><div class="bullet blue" aria-hidden="true">A</div><span class="station-title">Awards</span></div>
 <div class="station-content">
 <div class="data-row"><div class="data-year">2026</div><div class="data-title">Member, <a href="https://www.alphaomegaalpha.org/">Alpha Omega Alpha</a><div class="data-sub">National Medical Honor Society</div></div></div>
 <div class="data-row"><div class="data-year">2026</div><div class="data-title">Robert Bigley Scholarship<div class="data-sub"><a href="https://osacapps.hecc.oregon.gov/ScholarshipList.aspx">Office of Student Access and Completion (OSAC)</a></div></div></div>
@@ -109,7 +114,7 @@ layout: null
 <div class="col col-b">
 <!-- 1 WRITING: filled from _essays/ by Jekyll; newest four, then RSS -->
 <div class="station line-green writing">
-<div class="station-header"><div class="bullet green">W</div><span class="station-title">Writing</span><a class="station-tag feed-link" href="#subscribe" id="subBtn">Subscribe</a></div>
+<div class="station-header"><div class="bullet green" aria-hidden="true">W</div><span class="station-title">Writing</span><a class="station-tag feed-link" href="#subscribe" id="subBtn">Subscribe</a></div>
 <div class="station-content">
 {%- assign recent = site.essays | sort: "date" | reverse -%}
 {%- for e in recent limit: 4 %}
@@ -119,14 +124,14 @@ layout: null
 </div>
 <!-- 5 WORK EXPERIENCE + LEADERSHIP & SERVICE -->
 <div class="station line-gray experience">
-<div class="station-header"><div class="bullet gray">L</div><span class="station-title">Leadership, Work Experience, &amp; Service</span></div>
+<div class="station-header"><div class="bullet gray" aria-hidden="true">L</div><span class="station-title">Leadership, Work Experience, &amp; Service</span></div>
 <div class="station-content">
-<div class="sub-line"><span class="bullet mini yellow">W</span>Work Experience</div>
+<div class="sub-line"><span class="bullet mini yellow" aria-hidden="true">W</span>Work Experience</div>
 <div class="data-row"><div class="data-year">2021 to 2022</div><div class="data-title">Platform and Portfolio Company Support<div class="data-sub"><a href="https://www.groovecap.com/">Groove Capital</a>, Minneapolis, Minnesota</div></div></div>
 <div class="data-row"><div class="data-year">2018</div><div class="data-title">Project Manager, Pathology Applications<div class="data-sub"><a href="https://www.epic.com/software/?searchText=beaker">Epic Systems</a>, Verona, Wisconsin</div></div></div>
 <div class="data-row"><div class="data-year">2014 to 2018</div><div class="data-title">Research Assistant<div class="data-sub">Wallace H. Coulter Laboratory for Cardiovascular Dynamics and Biomolecular Transport, <a href="https://www.ccny.cuny.edu/">City College of New York</a></div></div></div>
 <div class="data-row"><div class="data-year">2014 to 2015</div><div class="data-title">Head Teaching Assistant, Chemistry<div class="data-sub"><a href="https://www.ccny.cuny.edu/">City College of New York</a></div></div></div>
-<div class="sub-line"><span class="bullet mini gray">L</span>Leadership &amp; Service</div>
+<div class="sub-line"><span class="bullet mini gray" aria-hidden="true">L</span>Leadership &amp; Service</div>
 <div class="data-row"><div class="data-year">2018 to 2022</div><div class="data-title">Volunteer<div class="data-sub"><a href="https://www.tprojects.org/">Transition Projects</a>, Portland, Oregon</div></div></div>
 <div class="data-row"><div class="data-year">2018 to 2021</div><div class="data-title">Director, Board of Trustees<div class="data-sub"><a href="https://www.marquamhillcoop.org/">Phi Beta Pi: Marquam Hill Cooperative</a>, 501(c)(3), Portland, Oregon</div></div></div>
 <div class="data-row"><div class="data-year">2016 to 2018</div><div class="data-title">Co-founder<div class="data-sub">Gol: Water Filtration Solutions for Developing Areas, New York</div></div></div>
@@ -138,7 +143,7 @@ layout: null
 </div>
 <!-- 6 SIDE PROJECTS (Dev) -->
 <div class="station line-orange side">
-<div class="station-header"><div class="bullet orange">D</div><span class="station-title">Dev</span></div>
+<div class="station-header"><div class="bullet orange" aria-hidden="true">D</div><span class="station-title">Dev</span></div>
 <div class="station-content">
 <div class="build-item">
 <div class="build-tag">Anki Add-on</div>
@@ -161,11 +166,11 @@ layout: null
 <div class="col col-c">
 <!-- 2 RESEARCH: Current Research Focus + Manuscripts & Publications + Research Funding -->
 <div class="station line-blue pubs">
-<div class="station-header"><div class="bullet blue">R</div><span class="station-title">Research</span></div>
+<div class="station-header"><div class="bullet blue" aria-hidden="true">R</div><span class="station-title">Research</span></div>
 <div class="station-content">
-<div class="sub-line"><span class="bullet mini blue">C</span>Current Research Focus</div>
+<div class="sub-line"><span class="bullet mini blue" aria-hidden="true">C</span>Current Research Focus</div>
 <div class="focus-line">
-<strong>No cause. No cure. <span style="color:var(--mta-red);">No map.</span></strong><br/>
+<strong>No cause. No cure. <span style="color:var(--red-text);">No map.</span></strong><br/>
           Building the missing developmental baseline for coarctation of the aorta.
         </div>
 <div class="highlight">
@@ -183,7 +188,7 @@ layout: null
 <a href="https://doi.org/10.1152/ajpheart.00741.2025">Territory mapping the ductal-aortic junction throughout gestation is a critical and missing baseline for coarctation of the aorta</a><br/>
 <span class="micro">Mathews R, et al. Volume 330, issue 3, pages H869 to H873.</span>
 </div>
-<div class="sub-line"><span class="bullet mini orange">M</span>Manuscripts &amp; Publications</div>
+<div class="sub-line"><span class="bullet mini orange" aria-hidden="true">M</span>Manuscripts &amp; Publications</div>
 <div class="pub-sec">Journal articles <span>(13)</span></div>
 <div class="data-row"><div class="data-year">2026 <span class="fa">First author</span></div><div class="data-title"><a href="https://doi.org/10.1152/ajpheart.00741.2025">Territory mapping the ductal-aortic junction throughout gestation is a critical and missing baseline for coarctation of the aorta</a><div class="data-sub">American Journal of Physiology – Heart and Circulatory Physiology, volume 330, issue 3</div></div></div>
 <div class="data-row"><div class="data-year">2025</div><div class="data-title"><a href="https://doi.org/10.1080/10428194.2024.2405874">Thromboprophylaxis with intermediate dose enoxaparin during asparaginase containing induction for young adults with acute lymphoblastic leukemia</a><div class="data-sub">Leukemia &amp; Lymphoma, volume 66, issue 1</div></div></div>
@@ -209,7 +214,7 @@ layout: null
 <div class="data-row"><div class="data-year">2022</div><div class="data-title"><a href="https://doi.org/10.1182/blood-2022-170582">Use of hormonal therapy increases the risk of venous thrombosis in COVID-19 patients; results of 1071 patient cohort</a><div class="data-sub">Blood, volume 140, supplement 1</div></div></div>
 <div class="data-row"><div class="data-year">2017</div><div class="data-title"><a href="https://doi.org/10.1016/j.bpj.2016.11.1685">The short term response of PECAM-1 to mechanical loading: cyclooxygenase-2 and nitric oxide production with AFM pulling and shear stress</a><div class="data-sub">Biophysical Journal, volume 112, issue 3</div></div></div>
 <div class="data-row" style="border:none;"><div class="data-year">All</div><div class="data-title">Complete list<div class="data-sub"><a href="https://scholar.google.com/citations?user=uRJdT64AAAAJ">Google Scholar</a> · <a href="https://orcid.org/0000-0003-2723-5646">ORCID</a> · <a href="https://www.ncbi.nlm.nih.gov/myncbi/rick.mathews.1/bibliography/public/">PubMed</a></div></div></div>
-<div class="sub-line"><span class="bullet mini yellow">R</span>Research Funding</div>
+<div class="sub-line"><span class="bullet mini yellow" aria-hidden="true">R</span>Research Funding</div>
 <div class="data-row"><div class="data-year">2026 to 2027</div><div class="data-title"><a href="https://ohsufoundation.org/community-programs/friends-of-doernbecher/">Friends of Doernbecher Grant</a><div class="data-sub"><a href="https://www.ohsu.edu/">OHSU</a> <a href="https://www.ohsu.edu/doernbecher">Doernbecher Children's Hospital</a></div></div></div>
 <div class="data-row"><div class="data-year">2022 to 2026</div><div class="data-title"><a href="https://reporter.nih.gov/search/8vWhhl7XrkWNEWflMzs6Gw/project-details/11127691">Ruth L. Kirschstein NRSA (F30HL163918)</a><div class="data-sub"><a href="https://www.nhlbi.nih.gov/">National Heart, Lung, and Blood Institute</a></div></div></div>
 <div class="data-row"><div class="data-year">2023 to 2024</div><div class="data-title"><a href="https://www.ohsu.edu/octri/your-path-funding-starts-here">N.L. Tartar Trust Award</a><div class="data-sub">OHSU School of Medicine</div></div></div>
@@ -222,7 +227,7 @@ layout: null
 </div>
 <!-- Contact: posts to a Formspree endpoint that forwards privately. No email address appears anywhere in this page. -->
 <dialog aria-labelledby="contactTitle" class="contact" id="contactDlg">
-<div class="station-header"><div style="display:flex;align-items:center;gap:8px;"><div class="bullet orange">✉</div><span class="station-title" id="contactTitle">Contact Rick</span></div>
+<div class="station-header"><div style="display:flex;align-items:center;gap:8px;"><div class="bullet orange" aria-hidden="true">✉</div><span class="station-title" id="contactTitle">Contact Rick</span></div>
 <button aria-label="Close" class="close" id="contactClose" type="button">✕</button></div>
 <form id="contactForm" method="POST" novalidate="">
 <label>Name<input autocomplete="name" maxlength="120" name="name" required=""/></label>
@@ -235,7 +240,7 @@ layout: null
 </form>
 </dialog>
 <dialog aria-labelledby="subTitle" class="contact" id="subDlg">
-<div class="station-header"><div style="display:flex;align-items:center;gap:8px;"><div class="bullet green">W</div><span class="station-title" id="subTitle">Subscribe to new essays</span></div>
+<div class="station-header"><div style="display:flex;align-items:center;gap:8px;"><div class="bullet green" aria-hidden="true">W</div><span class="station-title" id="subTitle">Subscribe to new essays</span></div>
 <button aria-label="Close" class="close" id="subClose" type="button">✕</button></div>
 <form id="subForm" method="POST" novalidate="">
 <label>Your email<input autocomplete="email" maxlength="200" name="email" required="" type="email"/></label>
@@ -338,7 +343,11 @@ layout: null
   function loadWeather(){
     var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
               '&current=temperature_2m,weather_code&daily=sunrise,sunset&temperature_unit=fahrenheit&timezone=auto';
-    fetch(url).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
+    // The board never waits on the weather service: give it 6 seconds, then run the standard messages.
+    var ctl = window.AbortController ? new AbortController() : null, gaveUp = false;
+    var timer = setTimeout(function(){ gaveUp = true; if (ctl) ctl.abort(); rebuildMessages(null); }, 6000);
+    fetch(url, ctl ? { signal: ctl.signal } : {}).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
+      clearTimeout(timer); if (gaveUp) return;
       if (!j || !j.current) { rebuildMessages(null); return; }
       if (j.daily && j.daily.sunrise && j.daily.sunset) {
         daylightLine = 'Daylight in ' + CITY + ': ' + fmtISOtime(j.daily.sunrise[0]) + ' to ' + fmtISOtime(j.daily.sunset[0]) + '.';
@@ -346,7 +355,7 @@ layout: null
       var w = weatherLine(j.current.weather_code, j.current.temperature_2m);
       rebuildMessages(w);
       setAmbient(w.code);
-    }).catch(function(){ rebuildMessages(null); });
+    }).catch(function(){ clearTimeout(timer); if (!gaveUp) rebuildMessages(null); });
   }
 
   var canvas = document.getElementById('ambient'), ctx = canvas.getContext('2d');
@@ -550,6 +559,17 @@ layout: null
 })();
 </script>
 <script>
+/* Form sending, shared by the contact and subscribe dialogs. If the form service cannot be reached
+   (offline, blocked, or down) the visitor keeps what they typed and is told to try again. */
+var OFFLINE = 'Could not reach the mail service. What you typed is still here; please try again in a few minutes.';
+function postForm(endpoint, form){
+  var ctl = window.AbortController ? new AbortController() : null;
+  var timer = setTimeout(function(){ if (ctl) ctl.abort(); }, 15000);
+  return fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' }, signal: ctl ? ctl.signal : undefined })
+    .then(function(r){ clearTimeout(timer); return r; }, function(e){ clearTimeout(timer); throw e; });
+}
+</script>
+<script>
 /* ===== Contact form =====
    SETUP: paste your Formspree form ID below (the part after /f/ in https://formspree.io/f/xxxxxxx).
    Until it is set, the Email button stays hidden, so the page never shows a broken button.
@@ -575,12 +595,11 @@ layout: null
     if (!form.checkValidity()) { status.textContent = 'Please fill in all three fields with a valid email.'; return; }
     if (form.elements._gotcha.value || Date.now() - openedAt < 3000) { status.textContent = 'Sent. Thank you.'; form.reset(); return; }
     send.disabled = true; status.textContent = 'Sending…';
-    fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
-      .then(function(r){
+    postForm(endpoint, form).then(function(r){
         if (r.ok) { status.textContent = 'Sent. Thank you, I will reply soon.'; form.reset(); setTimeout(function(){ dlg.close(); }, 1800); }
         else { form.submit(); }   /* e.g. CAPTCHA required: fall back to Formspree's own page */
       })
-      .catch(function(){ form.submit(); })
+      .catch(function(){ status.textContent = OFFLINE; })
       .then(function(){ send.disabled = false; });
   });
 })();
@@ -607,12 +626,11 @@ layout: null
     if (!form.checkValidity()) { status.textContent = 'Please enter a valid email.'; return; }
     if (form.elements._gotcha.value || Date.now() - openedAt < 2000) { status.textContent = 'Subscribed. Thank you.'; form.reset(); return; }
     send.disabled = true; status.textContent = 'Sending…';
-    fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
-      .then(function(r){
+    postForm(endpoint, form).then(function(r){
         if (r.ok) { status.textContent = 'Subscribed. Thank you.'; form.reset(); setTimeout(function(){ dlg.close(); }, 1800); }
         else { form.submit(); }
       })
-      .catch(function(){ form.submit(); })
+      .catch(function(){ status.textContent = OFFLINE; })
       .then(function(){ send.disabled = false; });
   });
 })();

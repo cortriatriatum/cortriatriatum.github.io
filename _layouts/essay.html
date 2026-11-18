@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="32x32">
+  <link rel="icon" href="{{ '/img/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ '/img/apple-touch-icon.png' | relative_url }}">
   <title>{{ page.title }} | {{ site.title }}</title>
   <meta name="description" content="{{ page.description | default: site.description | escape }}">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
@@ -121,6 +124,32 @@
     .ref-quote .ref-where { font-style: normal; font-size: .85em; color: var(--sub); }
     .ref-none { font-style: normal; color: var(--sub); }
 
+    .title-block .revised { font-size: .8em; margin-top: 3px; color: var(--sub); font-style: italic; }
+    .title-block .revised a { color: var(--link); text-decoration: none; border-bottom: .5px solid #b9c4dd; font-style: normal; }
+
+    /* Cite this essay, and transfers to related essays. Web only. */
+    .cite { font-size: .8em; line-height: 1.38; margin-top: 1.6em; }
+    .cite-text { text-indent: 0 !important; margin: 0 0 .5em !important; }
+    .cite-bib { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82em; line-height: 1.45; background: #f6f5f1;
+      border: .5px solid var(--faint); padding: 8px 10px; margin: 0 0 .6em; overflow-x: auto; white-space: pre; }
+    .cite-acts { display: flex; gap: 8px; flex-wrap: wrap; }
+    .cite-acts button { font: 600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: var(--ink);
+      background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 6px 10px; min-height: 32px; cursor: pointer; }
+    .cite-acts button:hover { background: #f1efe9; }
+    .transfer { margin-top: 1.8em; padding-top: .9em; border-top: .5px solid var(--rule); display: grid; gap: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14px; }
+    .transfer a { display: flex; align-items: center; gap: 8px; min-height: 32px; color: var(--ink); text-decoration: none; }
+    .transfer a:hover .xfer-title, .transfer a:focus-visible .xfer-title { text-decoration: underline; }
+    .transfer .xfer-label { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sub); }
+    .transfer .route { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%;
+      font-weight: 800; font-size: 14px; flex: none; }
+    .transfer .xfer-title { font-weight: 600; }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--bar); color: var(--bar-ink);
+      font: 500 14px -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; padding: 9px 14px; border-radius: 6px;
+      opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 60; }
+    .toast.show { opacity: 1; }
+    .bar button:focus-visible, .bar a:focus-visible, .cite-acts button:focus-visible { outline: 2px solid #8ab4ff; outline-offset: 2px; }
+
     .copyright { text-align: center; font-size: .72em; margin-top: 2.2em; color: var(--ink); }
 
     /* Hover box for a citation. */
@@ -157,7 +186,8 @@
     /* Printing ("Save as PDF") gives the essay, references, then the provenance page. */
     @page { size: letter; margin: .7in 1in .75in; }
     @media print {
-      body { background: #fff; } .bar, .ref-pop { display: none !important; }
+      body { background: #fff; } .bar, .ref-pop, .toast, .cite-acts, .transfer { display: none !important; }
+      .cite-bib { background: none; border: 0; padding: 0; }
       .sheet { box-shadow: none; margin: 0; padding: 0; max-width: none; font-size: 13pt; line-height: 18.85pt; }
       .view p { margin-bottom: 6.5pt; orphans: 3; widows: 3; }
       .refs li { break-inside: avoid; }
@@ -174,13 +204,14 @@
   <a class="home" href="{{ '/' | relative_url }}">Rick Mathews, PhD</a>
   {%- if page.original %}
   <div class="tabs" role="tablist" aria-label="View">
-    <button type="button" role="tab" data-show="revised" aria-selected="true">Essay</button>
-    <button type="button" role="tab" data-show="markup" aria-selected="false">Markup</button>
-    {%- if page.edits %}<button type="button" role="tab" data-show="edits" aria-selected="false">Edits</button>{% endif %}
-    <button type="button" role="tab" data-show="original" aria-selected="false">Provenance</button>
+    <button type="button" role="tab" data-show="revised" aria-controls="view-revised" aria-selected="true">Essay</button>
+    <button type="button" role="tab" data-show="markup" aria-controls="view-markup" aria-selected="false">Markup</button>
+    {%- if page.edits %}<button type="button" role="tab" data-show="edits" aria-controls="view-edits" aria-selected="false">Edits</button>{% endif %}
+    <button type="button" role="tab" data-show="original" aria-controls="view-original" aria-selected="false">Provenance</button>
   </div>
   {%- endif %}
   <div class="acts">
+    <button type="button" class="act" id="shareBtn">Share</button>
     <button type="button" class="act" onclick="window.print()">Print</button>
     {%- if page.pdf %}<a class="act" href="{{ page.pdf | relative_url }}">PDF</a>{% endif %}
     <a class="act" href="{{ '/essays/' | relative_url }}">All essays</a>
@@ -193,10 +224,13 @@
     <h1>{{ page.title }}</h1>
     <div class="author">Rick Mathews, PhD</div>
     <div class="date"><time datetime="{{ page.date | date_to_xml_schema }}">{% assign _d = page.date | date: "%-d" | plus: 0 -%}{%- assign _m = _d | modulo: 10 -%}{%- if _d >= 11 and _d <= 13 -%}{%- assign _s = "th" -%}{%- elsif _m == 1 -%}{%- assign _s = "st" -%}{%- elsif _m == 2 -%}{%- assign _s = "nd" -%}{%- elsif _m == 3 -%}{%- assign _s = "rd" -%}{%- else -%}{%- assign _s = "th" -%}{%- endif -%}{{ page.date | date: "%B %-d" }}<sup class="ord">{{ _s }}</sup>, {{ page.date | date: "%Y" }}</time></div>
+    {%- if page.updated %}
+    <div class="revised">Revised <time datetime="{{ page.updated | date_to_xml_schema }}">{% assign _d = page.updated | date: "%-d" | plus: 0 -%}{%- assign _m = _d | modulo: 10 -%}{%- if _d >= 11 and _d <= 13 -%}{%- assign _s = "th" -%}{%- elsif _m == 1 -%}{%- assign _s = "st" -%}{%- elsif _m == 2 -%}{%- assign _s = "nd" -%}{%- elsif _m == 3 -%}{%- assign _s = "rd" -%}{%- else -%}{%- assign _s = "th" -%}{%- endif -%}{{ page.updated | date: "%B %-d" }}<sup class="ord">{{ _s }}</sup>, {{ page.updated | date: "%Y" }}</time>{% if page.edits %} · <a href="#edits" data-goto="edits">see every edit</a>{% endif %}</div>
+    {%- endif %}
   </header>
   <hr class="title-rule">
 
-  <div class="view" data-version="revised">
+  <div class="view" data-version="revised" id="view-revised" role="tabpanel">
 {{ content }}
   {%- if page.references %}
     <section class="refs" aria-labelledby="refs-h">
@@ -214,16 +248,35 @@
       </ol>
     </section>
   {%- endif %}
+  {% assign _slug = page.url | split: "/" | last %}{% assign _key = _slug | split: "-" | first %}
+    <section class="cite" aria-labelledby="cite-h">
+      <h2 id="cite-h" class="sec-h">Cite this essay</h2>
+      <p class="cite-text" id="citeText">Mathews R. {{ page.title }}. Published {{ page.date | date: "%B %-d, %Y" }}{% if page.updated %}; revised {{ page.updated | date: "%B %-d, %Y" }}{% endif %}. {{ page.url | absolute_url }}</p>
+      <pre class="cite-bib" id="citeBib">@online{mathews{{ page.date | date: "%Y" }}{{ _key }},
+  author = {Mathews, Rick},
+  title = &#123;{{ page.title }}&#125;,
+  date = &#123;{{ page.date | date: "%Y-%m-%d" }}&#125;,
+  url = &#123;{{ page.url | absolute_url }}&#125;
+}</pre>
+      <div class="cite-acts"><button type="button" data-copy="citeText">Copy citation</button><button type="button" data-copy="citeBib">Copy BibTeX</button></div>
+    </section>
+  {%- if page.transfers and page.transfers.size > 0 %}
+    <nav class="transfer" aria-label="Related essays">
+    {%- for t in page.transfers %}{% for other in site.essays %}{% if other.url contains t %}
+      <a href="{{ other.url | relative_url }}"><span class="xfer-label">Transfer</span> {% if other.route %}<span class="route" style="background:{{ other.route_color }};color:{{ other.route_text }}" aria-hidden="true">{{ other.route }}</span>{% endif %} <span class="xfer-title">{{ other.title }}</span></a>
+    {%- endif %}{% endfor %}{% endfor %}
+    </nav>
+  {%- endif %}
   </div>
 
   {%- if page.original %}
-  <div class="view" data-version="markup" hidden>
+  <div class="view" data-version="markup" id="view-markup" role="tabpanel" hidden>
     <p class="legend"><del>Struck through</del>: in the original, since removed. <ins>Underlined</ins>: added or rewritten in revision. Citations and links are left out of this view; the Edits tab says who made each change and why.</p>
     <div id="markupOut"></div>
   </div>
 
   {%- if page.edits %}
-  <div class="view" data-version="edits" hidden>
+  <div class="view" data-version="edits" id="view-edits" role="tabpanel" hidden>
     <h2 class="sec-h">Edit log</h2>
     <p class="legend"><span class="who rick">Rick</span> or <span class="who claude">Claude</span> under <em>Decided</em> is who chose the change; <em>Words</em> is who wrote the new wording, when someone else did.</p>
     <table class="edits">
@@ -238,7 +291,7 @@
   </div>
   {%- endif %}
 
-  <div class="view" data-version="original" hidden>
+  <div class="view" data-version="original" id="view-original" role="tabpanel" hidden>
     <h2 class="sec-h">Provenance</h2>
     {%- if page.editing %}<p class="note">{{ page.editing }}</p>{% endif %}
     <p class="orig-head"><strong>Original version</strong>{% if page.original_title %}: <em>{{ page.original_title }}</em>{% endif %}{% if page.original_date %}, {% assign _d = page.original_date | date: "%-d" | plus: 0 -%}{%- assign _m = _d | modulo: 10 -%}{%- if _d >= 11 and _d <= 13 -%}{%- assign _s = "th" -%}{%- elsif _m == 1 -%}{%- assign _s = "st" -%}{%- elsif _m == 2 -%}{%- assign _s = "nd" -%}{%- elsif _m == 3 -%}{%- assign _s = "rd" -%}{%- else -%}{%- assign _s = "th" -%}{%- endif -%}{{ page.original_date | date: "%B %-d" }}<sup class="ord">{{ _s }}</sup>, {{ page.original_date | date: "%Y" }}{% endif %}. {% if page.original_note %}{{ page.original_note }}{% else %}Unedited.{% endif %}</p>
@@ -252,6 +305,7 @@
   <div class="copyright">© {{ page.date | date: "%Y" }} Rick Mathews. All rights reserved.</div>
 </article>
 <div class="ref-pop" id="refPop" role="tooltip" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function(){
@@ -387,6 +441,64 @@
 
   var h0 = location.hash.replace('#', '');
   if (h0 === 'markup' || h0 === 'edits' || h0 === 'original') show(h0);
+
+  // Screen readers: each claim and number is described by its reference entry.
+  revised.querySelectorAll('.claim, sup.ref').forEach(function(el){
+    var li = refFor(el); if (li) el.setAttribute('aria-describedby', li.id);
+  });
+
+  // Tabs: arrow keys move between them; only the selected tab is in the Tab order.
+  function roving(){ btns.forEach(function(b){ b.tabIndex = b.getAttribute('aria-selected') === 'true' ? 0 : -1; }); }
+  roving();
+  btns.forEach(function(b, i){
+    b.addEventListener('click', roving);
+    b.addEventListener('keydown', function(e){
+      var n = btns.length, j = e.key === 'ArrowRight' ? (i + 1) % n : e.key === 'ArrowLeft' ? (i - 1 + n) % n :
+              e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : -1;
+      if (j < 0) return;
+      e.preventDefault(); btns[j].click(); btns[j].focus();
+    });
+  });
+
+  // "See every edit" under the title opens the Edits tab.
+  document.querySelectorAll('[data-goto]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var b = document.querySelector('.tabs [data-show="' + a.getAttribute('data-goto') + '"]');
+      if (!b) return;
+      e.preventDefault(); b.click(); b.focus(); window.scrollTo(0, 0);
+    });
+  });
+
+  // Share and copy: the system share sheet where there is one, otherwise copy to the clipboard.
+  var toast = document.getElementById('toast'), tt = null;
+  function say(msg){ toast.textContent = msg; toast.classList.add('show'); clearTimeout(tt); tt = setTimeout(function(){ toast.classList.remove('show'); }, 2200); }
+  function copy(text, done){
+    function fallback(){
+      var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta); say(ok ? done : 'Copy did not work here. Select the text to copy it.');
+    }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function(){ say(done); }, fallback);
+    else fallback();
+  }
+  var canonical = document.querySelector('link[rel="canonical"]');
+  var url = canonical ? canonical.href : location.href.split('#')[0];
+  var shareBtn = document.getElementById('shareBtn');
+  if (shareBtn) shareBtn.addEventListener('click', function(){
+    var title = document.querySelector('.title-block h1').textContent;
+    if (navigator.share) {
+      navigator.share({ title: title, text: title + ', by Rick Mathews, PhD', url: url }).catch(function(e){
+        if (e && e.name !== 'AbortError') copy(url, 'Link copied.');
+      });
+    } else copy(url, 'Link copied.');
+  });
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var el = document.getElementById(b.getAttribute('data-copy'));
+      copy(el.textContent.trim(), b.getAttribute('data-copy') === 'citeBib' ? 'BibTeX copied.' : 'Citation copied.');
+    });
+  });
 })();
 </script>
 </body>

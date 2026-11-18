@@ -7,6 +7,9 @@ permalink: /404.html
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="32x32">
+  <link rel="icon" href="{{ '/img/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ '/img/apple-touch-icon.png' | relative_url }}">
   <title>Not in service | {{ site.title }}</title>
   <meta name="robots" content="noindex">
   <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
@@ -28,7 +31,7 @@ permalink: /404.html
   <span class="sb-msg"><a href="{{ '/' | relative_url }}" style="color:inherit">{{ site.title }}</a></span>
 </div>
 <main class="station line-gray lost">
-  <div class="station-header"><div class="bullet gray">?</div><span class="station-title">Not in service</span></div>
+  <div class="station-header"><div class="bullet gray" aria-hidden="true">?</div><span class="station-title">Not in service</span></div>
   <div class="station-content">
     <h1>This page is not in service.</h1>
     <p>The address may have changed, or the page was taken down. The site moved from <code>/me/</code> to the root address, so older links may need updating.</p>

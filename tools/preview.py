@@ -118,6 +118,9 @@ def build(drafts=False):
         doc = dict(fm)
         doc.update(url=f"/essays/{p.stem}/", collection="essays", layout=fm.get("layout", "essay"),
                    date=to_date(fm.get("date")), _body=body)
+        for k in ("updated", "original_date"):  # Jekyll parses any YAML date; match it here
+            if fm.get(k):
+                doc[k] = to_date(fm[k])
         essays.append(doc)
 
     site = dict(cfg)

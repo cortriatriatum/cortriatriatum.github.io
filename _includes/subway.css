@@ -9,7 +9,7 @@
       /* semantic tokens — LIGHT (default) */
       --bg:#EDEEF0; --surface:#FFFFFF;
       --board-bg:#111111; --board-ink:#FFFFFF;
-      --ink:#14161A; --sub:#4C525A; --sub-strong:#52565B;
+      --ink:#14161A; --sub:#4C525A; --sub-strong:#52565B; --red-text:#C62D26;
       --border:#111111; --rule:#E4E7EA; --link:#0039A6;
       --hl-warm:#FFF9F0; --hl-blue:#F2F5FC; --hl-green:#F0FAF3;
       --scroll-thumb:#CBD0D5; --scroll-thumb-h:#A7A9AC;
@@ -20,7 +20,7 @@
     :root[data-theme="dark"] {
       --bg:#121214; --surface:#1C1C20;
       --board-bg:#000000; --board-ink:#FFFFFF;
-      --ink:#EAEAEA; --sub:#ADB3BA; --sub-strong:#9CA2A9;
+      --ink:#EAEAEA; --sub:#ADB3BA; --sub-strong:#9CA2A9; --red-text:#FF6E66;
       --border:#34353B; --rule:#2A2B31; --link:#7FA8FF;
       --hl-warm:#221C15; --hl-blue:#141C28; --hl-green:#12211A;
       --scroll-thumb:#3A3B42; --scroll-thumb-h:#4C4D55;
@@ -31,7 +31,7 @@
       :root:not([data-theme="light"]) {
         --bg:#121214; --surface:#1C1C20;
         --board-bg:#000000; --board-ink:#FFFFFF;
-        --ink:#EAEAEA; --sub:#ADB3BA; --sub-strong:#9CA2A9;
+        --ink:#EAEAEA; --sub:#ADB3BA; --sub-strong:#9CA2A9; --red-text:#FF6E66;
         --border:#34353B; --rule:#2A2B31; --link:#7FA8FF;
         --hl-warm:#221C15; --hl-blue:#141C28; --hl-green:#12211A;
         --scroll-thumb:#3A3B42; --scroll-thumb-h:#4C4D55;
@@ -132,7 +132,7 @@
     }
     .bullet.red{background:var(--mta-red);} .bullet.blue{background:var(--mta-blue);}
     .bullet.green{background:var(--mta-green);} .bullet.orange{background:var(--mta-orange);}
-    .bullet.purple{background:var(--mta-purple);} .bullet.gray{background:var(--mta-gray);}
+    .bullet.purple{background:var(--mta-purple);} .bullet.gray{background:var(--mta-dark-gray);} /* dark gray keeps the white letter legible */
     .bullet.yellow{background:var(--mta-yellow); color:var(--black);}
     .bullet.brown{background:var(--mta-brown);} .bullet.light-green{background:var(--mta-light-green);}
     .station-title { font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; color: white; font-size: var(--fs-sm); }
@@ -323,3 +323,38 @@
     .essay-body sup { line-height: 0; }
     .essay-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 22px; }
     .essay-date a { text-transform: none; letter-spacing: 0.02em; }
+
+    /* Skip link: hidden until a keyboard user tabs to it. */
+    .skip { position: absolute; left: 12px; top: -48px; z-index: 100; background: var(--black, #000); color: #fff; padding: 8px 12px;
+      font-weight: 700; text-decoration: none; border: 2px solid var(--mta-yellow); }
+    .skip:focus { top: 12px; }
+
+    /* Printing: a clean, light, one-column summary in reading order, without the board, buttons, or dialogs. */
+    .print-only { display: none; }
+    @media print {
+      @page { size: letter; margin: .55in .6in; }
+      :root, :root[data-theme="dark"] {
+        --bg:#fff; --surface:#fff; --ink:#000; --sub:#333; --sub-strong:#333; --border:#999; --rule:#ddd; --link:#000;
+        --hl-warm:#fff; --hl-blue:#fff; --hl-green:#fff; --red-text:#000; --board-bg:#fff; --board-ink:#000;
+      }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+      html { font-size: 10pt; }
+      body { height: auto !important; width: auto; overflow: visible !important; display: block !important; padding: 0;
+        background: #fff !important; color: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      #ambient, .service-board, .theme-toggle, .skip, dialog, .toast, .button-group, .station-tag, .essay-nav, .cite-btn, .avatar img:not(.on) { display: none !important; }
+      .print-only { display: block; }
+      .bio-print { margin-top: 2px; font-size: var(--fs-xs); }
+      .station-grid { display: flex !important; flex-direction: column; max-width: none; }
+      .col { display: contents; }
+      .station { display: block; border: 0; border-left: 4px solid var(--mta-gray); box-shadow: none !important; margin: 0 0 12pt; padding: 0;
+        overflow: visible !important; max-height: none !important; min-height: 0 !important; transform: none !important; break-inside: auto; }
+      .station-header { position: static !important; box-shadow: none !important; background: #fff !important; color: #000 !important;
+        border-bottom: 1px solid #000; break-after: avoid; }
+      .station-title { color: #000 !important; }
+      .station-content { overflow: visible !important; max-height: none !important; padding: 6pt 0 0 10pt; }
+      .data-row { break-inside: avoid; }
+      a { color: #000; text-decoration: none; }
+      .writing .data-title > a:first-child::after { content: " (cortriatriatum.github.io" attr(href) ")"; font-size: .85em; color: #333; }
+      .station.identity { order: 1; } .station.writing { order: 2; } .station.pubs { order: 3; }
+      .station.education { order: 4; } .station.experience { order: 5; } .station.honors { order: 6; } .station.side { order: 7; }
+    }
