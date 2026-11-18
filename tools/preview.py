@@ -158,7 +158,7 @@ def build(drafts=False):
             continue
         if p.name in ("_config.yml",):
             continue
-        fm, body = (read(p) if p.suffix in (".html", ".md", ".xml") else (None, None))
+        fm, body = (read(p) if p.suffix in (".html", ".md", ".xml", ".txt") else (None, None))
         if fm is None:
             dest = out / rel
             dest.parent.mkdir(parents=True, exist_ok=True)

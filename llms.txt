@@ -1,0 +1,18 @@
+---
+layout: null
+permalink: /llms.txt
+---
+# Rick Mathews, PhD
+
+> Physician-scientist in training (MD/PhD) and biomedical engineer. Essays on how science and medicine discover questions, evaluate evidence, and share results. Each essay page shows the original draft, every edit, and verbatim quotes from its sources.
+
+## Essays
+{%- assign essays = site.essays | sort: "date" | reverse %}
+{%- for e in essays %}
+- [{{ e.title }}]({{ e.url | absolute_url }}): {{ e.description }}{% if e.pdf %} (PDF: {{ e.pdf | absolute_url }}){% endif %}
+{%- endfor %}
+
+## About
+- [Home]({{ '/' | absolute_url }})
+- [All essays]({{ '/essays/' | absolute_url }})
+- [Feed]({{ '/essays/feed.xml' | absolute_url }})

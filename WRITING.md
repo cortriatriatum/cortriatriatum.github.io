@@ -22,6 +22,9 @@ Each essay has a web page at `/me/essays/<name>/` and a PDF. Both come from one 
    by hand (copy the existing row); the essays list and RSS feed update on their own. Commit and push;
    GitHub Pages rebuilds in about a minute.
 
+6. After the push deploys, tell search engines: `python3 tools/indexnow.py`. Google reads the sitemap
+   (`/me/sitemap.xml`) through Search Console on its own schedule.
+
 Feed: `/me/essays/feed.xml`.
 
 Preview without Ruby: `pip install "python-liquid>=3" markdown pyyaml`, then
