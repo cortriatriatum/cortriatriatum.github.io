@@ -221,6 +221,6 @@ references:
 
 <p>None of this argues against curiosity-driven work, which is free to wander, and should be. It argues for a better fit between medical science and the clinic. Research that claims clinical relevance should be able to point to its exact place on a shared map.</p>
 
-*If you are working on solutions to this problem, or would like to discuss this further, [please get in touch](/me/#contact).*
+*If you are working on solutions to this problem, or would like to discuss this further, [please get in touch](/#contact).*
 
 Rick Mathews, PhD, is an MD/PhD candidate at the Oregon Health & Science University (OHSU), currently on leave.

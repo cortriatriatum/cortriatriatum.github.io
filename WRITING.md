@@ -1,6 +1,6 @@
 # Publishing an essay
 
-Each essay has a web page at `/me/essays/<name>/` and a PDF. Both come from one Markdown file in `_essays/`.
+Each essay has a web page at `/essays/<name>/` and a PDF. Both come from one Markdown file in `_essays/`.
 
 1. Copy `_essays/_template.md` to `_essays/<name>.md`. Fill in `title`, `date`, `description`, `keywords`
    and `pdf: /docs/essays/<file>.pdf`, and write the essay below the second `---`.
@@ -23,9 +23,9 @@ Each essay has a web page at `/me/essays/<name>/` and a PDF. Both come from one 
    GitHub Pages rebuilds in about a minute.
 
 6. After the push deploys, tell search engines: `python3 tools/indexnow.py`. Google reads the sitemap
-   (`/me/sitemap.xml`) through Search Console on its own schedule.
+   (`/sitemap.xml`) through Search Console on its own schedule.
 
-Feed: `/me/essays/feed.xml`.
+Feed: `/essays/feed.xml`.
 
 Preview without Ruby: `pip install "python-liquid>=3" markdown pyyaml`, then
-`python3 tools/preview.py --drafts` and `python3 -m http.server -d _preview 8000` → http://localhost:8000/me/
+`python3 tools/preview.py --drafts` and `python3 -m http.server -d _preview 8000` → http://localhost:8000/

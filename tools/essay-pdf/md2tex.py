@@ -101,7 +101,7 @@ def main(md_path):
   pdfsubject={Essay},
   pdfkeywords={%s},
   pdfcopyright={Copyright (C) %d Rick Mathews. All rights reserved.},
-  pdfcontacturl={https://cortriatriatum.github.io/me/},
+  pdfcontacturl={https://cortriatriatum.github.io/},
   pdflang={en-US},
   pdfcreator={Rick Mathews},
   pdfproducer={LaTeX}
@@ -137,7 +137,7 @@ def main(md_path):
     for t in tail:
         if t.startswith("*"):
             msg = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", t.strip("*")).rstrip(".")
-            w("{\\itshape %s: \\href{https://cortriatriatum.github.io/me/\\#contact}{\\upshape cortriatriatum.github.io/me}.}\n\n" % esc(msg))
+            w("{\\itshape %s: \\href{https://cortriatriatum.github.io/\\#contact}{\\upshape cortriatriatum.github.io}.}\n\n" % esc(msg))
         else:
             w(esc(t) + "\n\n")
     w("}\n")

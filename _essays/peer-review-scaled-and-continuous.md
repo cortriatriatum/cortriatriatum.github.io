@@ -209,6 +209,6 @@ references:
 
 <p>A paper should not be peer reviewed once and stamped clean forever. It should stay under review for as long as it is relevant to the scientific enterprise, if not longer.</p>
 
-*If you are working on this problem, or would like to discuss it further, [please get in touch](/me/#contact).*
+*If you are working on this problem, or would like to discuss it further, [please get in touch](/#contact).*
 
 Rick Mathews, PhD, is an MD/PhD candidate at the Oregon Health & Science University (OHSU), currently on leave.

@@ -3,7 +3,7 @@ title: Rick Mathews, PhD
 author: Rick Mathews
 description: "Rick Mathews. Biomedical engineer and Physician-Scientist in training at the Oregon Health & Science University."
 url: https://cortriatriatum.github.io
-baseurl: /me
+baseurl: ""
 
 markdown: kramdown
 kramdown:

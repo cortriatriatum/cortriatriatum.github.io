@@ -8,7 +8,7 @@ keep it in the repo. Google does not use IndexNow; it reads the sitemap through 
 """
 import json, re, sys, urllib.request
 
-SITE = "https://cortriatriatum.github.io/me/"
+SITE = "https://cortriatriatum.github.io/"
 KEY = "f2c54b12d47404b0be436884b1f8e747"
 
 xml = urllib.request.urlopen(SITE + "sitemap.xml", timeout=30).read().decode()

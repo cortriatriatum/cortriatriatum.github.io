@@ -8,7 +8,7 @@ so you can check pages and essays before pushing.
     pip install "python-liquid>=3" markdown pyyaml
     python3 tools/preview.py            # builds into _preview/
     python3 tools/preview.py --drafts   # also renders essays marked published: false
-    python3 -m http.server -d _preview 8000   then open http://localhost:8000/me/
+    python3 -m http.server -d _preview 8000   then open http://localhost:8000/
 """
 import argparse, datetime as dt, html, json, os, re, shutil, sys
 from pathlib import Path

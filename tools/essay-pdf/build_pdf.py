@@ -24,7 +24,7 @@ FM = re.compile(r"\A---[ \t]*\n(.*?)^---[ \t]*\n", re.S | re.M)
 PAGE = fitz.paper_rect("letter")
 MARGIN = (72, 38, 72, 54)  # left, top, right, bottom: 1in sides, 0.75in bottom; top trimmed so the
 # title sits where LaTeX puts it at 0.7in (Story adds its own space above the first line)
-SITE = "https://cortriatriatum.github.io/me/"
+SITE = "https://cortriatriatum.github.io/"
 
 CSS = """
 @font-face { font-family: LM; src: url(LM-regular.ttf); }
@@ -69,7 +69,7 @@ def inline(h):
     h = re.sub(r"</?span[^>]*>", "", h)
     h = re.sub(r"\*([^*]+)\*", r"<i>\1</i>", h)  # Markdown italics in the closing note
     h = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", lambda m: '<a href="%s">%s</a>' % (
-        SITE + m.group(2).split("/me/", 1)[-1] if m.group(2).startswith("/me/") else m.group(2), m.group(1)), h)
+        SITE + m.group(2).lstrip("/") if m.group(2).startswith("/") else m.group(2), m.group(1)), h)
     return h
 
 
@@ -91,7 +91,7 @@ def page_html(fm, paras, coda):
     out.append('<div class="short-rule">&nbsp;</div>')
     for c in coda:
         if c.startswith("<i>"):  # contact line: show the site address, as in the original PDF
-            c = re.sub(r'<a href="([^"]+)">([^<]+)</a>', r'\2: <a href="\1">cortriatriatum.github.io/me</a>', c)
+            c = re.sub(r'<a href="([^"]+)">([^<]+)</a>', r'\2: <a href="\1">cortriatriatum.github.io</a>', c)
             c = c.replace("get in touch: <a", "get in touch: </i><a").replace("</a>.</i>", "</a>.")
         out.append(f'<p class="coda">{c}</p>')
     refs = fm.get("references") or []
