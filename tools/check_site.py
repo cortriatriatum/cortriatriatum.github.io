@@ -9,7 +9,9 @@ Checks every HTML page outside the me/ redirect stubs:
   - every JSON-LD block parses;
   - images carry alt text;
   - no link or asset points at the old /me/ address or at localhost;
-  - every internal link and asset resolves to a file in the build (anchors included, for same-page links).
+  - every internal link and asset resolves to a file in the build (anchors included, for same-page links);
+  - Cite and Share: the #citable registry parses, every data-cite-id / data-cite-panel / data-share on the
+    page names an entry in it, and every entry has what the citation formats need.
 Exits 1 and lists the problems if any check fails.
 """
 import json
@@ -34,6 +36,8 @@ class Page(HTMLParser):
         self.ids = set()
         self.links = []           # (tag, url)
         self.ld = []
+        self.citable = None
+        self.cite_refs = []      # ids named by data-cite-id, data-cite-panel, data-share
         self.no_alt = 0
         self._in = None
         self._buf = []
@@ -46,6 +50,11 @@ class Page(HTMLParser):
             self.ids.add(a["name"])
         if tag == "title" or (tag == "script" and a.get("type") == "application/ld+json"):
             self._in, self._buf = tag, []
+        if tag == "script" and a.get("id") == "citable":
+            self._in, self._buf = "citable", []
+        for attr in ("data-cite-id", "data-cite-panel", "data-share"):
+            if a.get(attr):
+                self.cite_refs.append(a[attr])
         if tag == "link" and a.get("rel") == "canonical":
             self.canonical = a.get("href")
         if tag == "img" and a.get("alt") is None:
@@ -59,10 +68,12 @@ class Page(HTMLParser):
             self._buf.append(data)
 
     def handle_endtag(self, tag):
-        if self._in == tag:
+        if self._in == tag or (self._in == "citable" and tag == "script"):
             text = "".join(self._buf).strip()
             if tag == "title":
                 self.title = text
+            elif self._in == "citable":
+                self.citable = text
             else:
                 self.ld.append(text)
             self._in = None
@@ -94,6 +105,41 @@ def target(root, page_path, url):
     return f, parts.fragment
 
 
+# Fields cite-share.js needs to write the citation, BibTeX, and RIS for each kind of item.
+NEEDS = {
+    "essay": ("title", "url", "date", "cite", "key"),
+    "article": ("title", "url", "cite", "authors", "cite_title", "journal", "year"),
+    "abstract": ("title", "url", "cite", "authors", "cite_title", "journal", "year"),
+    "preprint": ("title", "url", "cite", "authors", "cite_title", "journal", "year"),
+    "chapter": ("title", "url", "cite", "authors", "cite_title", "book", "publisher", "year"),
+}
+
+
+def check_citable(rel, pg):
+    if not pg.cite_refs and pg.citable is None:
+        return []
+    if pg.citable is None:
+        return [f"{rel}: has Cite/Share hooks but no #citable registry"]
+    try:
+        db = json.loads(pg.citable)
+    except ValueError as e:
+        return [f"{rel}: #citable registry does not parse ({e})"]
+    out = []
+    for group, entries in db.items():
+        for key, r in entries.items():
+            kind = r.get("type") or r.get("kind")
+            missing = [f for f in NEEDS.get(kind, ("title", "url", "cite")) if not r.get(f)]
+            if kind not in NEEDS:
+                out.append(f"{rel}: citable {group}:{key} has unknown kind {kind!r}")
+            if missing:
+                out.append(f"{rel}: citable {group}:{key} is missing {', '.join(missing)}")
+    for ref in sorted(set(pg.cite_refs)):
+        group, _, key = ref.partition(":")
+        if key not in db.get(group, {}):
+            out.append(f"{rel}: Cite/Share names {ref}, which is not in the registry")
+    return out
+
+
 def main(root):
     root = Path(root).resolve()
     problems = []
@@ -116,6 +162,7 @@ def main(root):
                 json.loads(block)
             except ValueError as e:
                 problems.append(f"{rel}: JSON-LD block {i + 1} does not parse ({e})")
+        problems += check_citable(rel, pg)
         if pg.no_alt:
             problems.append(f"{rel}: {pg.no_alt} image(s) without alt text")
         for tag, url in pg.links:

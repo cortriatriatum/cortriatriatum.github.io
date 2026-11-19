@@ -1,0 +1,14 @@
+    /* Cite and Share (cite-share.js). Structure only; each page skins .cite-btn, .cs-panel and .cs-toast
+       with its own tokens: subway.css for the home page and essays map, the essay layout for essay pages. */
+    .cs-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.35rem; }
+    .cs-row .cite-btn { margin-top: 0; }
+    .cs-row .cite-btn[aria-expanded="true"] { transform: translate(1px,1px); box-shadow: none; }
+    .cs-panel { margin-top: 0.5rem; max-width: 46rem; }
+    .cs-text { margin: 0 0 0.5rem; overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; }
+    .cs-bib { margin: 0 0 0.6rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .cs-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cs-toast { position: fixed; left: 50%; bottom: 24px; z-index: 100; transform: translate(-50%, 8px); opacity: 0;
+      pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+    .cs-toast.show { opacity: 1; transform: translate(-50%, 0); }
+    @media (prefers-reduced-motion: reduce) { .cs-toast { transition: none; } }
+    @media print { .cs-row, .cs-panel:not(.cs-inline), .cs-acts, .cs-toast { display: none !important; } }

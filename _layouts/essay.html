@@ -129,13 +129,13 @@
 
     /* Cite this essay, and transfers to related essays. Web only. */
     .cite { font-size: .8em; line-height: 1.38; margin-top: 1.6em; }
-    .cite-text { text-indent: 0 !important; margin: 0 0 .5em !important; }
-    .cite-bib { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82em; line-height: 1.45; background: #f6f5f1;
-      border: .5px solid var(--faint); padding: 8px 10px; margin: 0 0 .6em; overflow-x: auto; white-space: pre; }
-    .cite-acts { display: flex; gap: 8px; flex-wrap: wrap; }
-    .cite-acts button { font: 600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: var(--ink);
+{% include cite-share.css %}
+    .cite .cs-text { text-indent: 0 !important; margin: 0 0 .5em !important; user-select: text; -webkit-user-select: text; }
+    .cs-bib { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82em; line-height: 1.45; background: #f6f5f1;
+      border: .5px solid var(--faint); padding: 8px 10px; }
+    .cs-acts .cite-btn { font: 600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: var(--ink);
       background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 6px 10px; min-height: 32px; cursor: pointer; }
-    .cite-acts button:hover { background: #f1efe9; }
+    .cs-acts .cite-btn:hover { background: #f1efe9; }
     .transfer { margin-top: 1.8em; padding-top: .9em; border-top: .5px solid var(--rule); display: grid; gap: 8px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14px; }
     .transfer a { display: flex; align-items: center; gap: 8px; min-height: 32px; color: var(--ink); text-decoration: none; }
@@ -144,11 +144,9 @@
     .transfer .route { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%;
       font-weight: 800; font-size: 14px; flex: none; }
     .transfer .xfer-title { font-weight: 600; }
-    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--bar); color: var(--bar-ink);
-      font: 500 14px -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; padding: 9px 14px; border-radius: 6px;
-      opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 60; }
-    .toast.show { opacity: 1; }
-    .bar button:focus-visible, .bar a:focus-visible, .cite-acts button:focus-visible { outline: 2px solid #8ab4ff; outline-offset: 2px; }
+    .cs-toast { background: var(--bar); color: var(--bar-ink);
+      font: 500 14px -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; padding: 9px 14px; border-radius: 6px; }
+    .bar button:focus-visible, .bar a:focus-visible, .cs-acts .cite-btn:focus-visible { outline: 2px solid #8ab4ff; outline-offset: 2px; }
 
     .copyright { text-align: center; font-size: .72em; margin-top: 2.2em; color: var(--ink); }
 
@@ -186,8 +184,8 @@
     /* Printing ("Save as PDF") gives the essay, references, then the provenance page. */
     @page { size: letter; margin: .7in 1in .75in; }
     @media print {
-      body { background: #fff; } .bar, .ref-pop, .toast, .cite-acts, .transfer { display: none !important; }
-      .cite-bib { background: none; border: 0; padding: 0; }
+      body { background: #fff; } .bar, .ref-pop, .transfer { display: none !important; }
+      .cs-bib { background: none; border: 0; padding: 0; }
       .sheet { box-shadow: none; margin: 0; padding: 0; max-width: none; font-size: 13pt; line-height: 18.85pt; }
       .view p { margin-bottom: 6.5pt; orphans: 3; widows: 3; }
       .refs li { break-inside: avoid; }
@@ -200,6 +198,7 @@
   </style>
 </head>
 <body>
+{%- assign _slug = page.url | split: "/" | last %}
 <nav class="bar" aria-label="Essay">
   <a class="home" href="{{ '/' | relative_url }}">Rick Mathews, PhD</a>
   {%- if page.original %}
@@ -211,7 +210,8 @@
   </div>
   {%- endif %}
   <div class="acts">
-    <button type="button" class="act" id="shareBtn">Share</button>
+    <a class="act" href="#cite">Cite</a>
+    <button type="button" class="act" data-share="essay:{{ _slug }}">Share</button>
     <button type="button" class="act" onclick="window.print()">Print</button>
     {%- if page.pdf %}<a class="act" href="{{ page.pdf | relative_url }}">PDF</a>{% endif %}
     <a class="act" href="{{ '/essays/' | relative_url }}">All essays</a>
@@ -248,17 +248,9 @@
       </ol>
     </section>
   {%- endif %}
-  {% assign _slug = page.url | split: "/" | last %}{% assign _key = _slug | split: "-" | first %}
-    <section class="cite" aria-labelledby="cite-h">
+    <section class="cite" id="cite" aria-labelledby="cite-h">
       <h2 id="cite-h" class="sec-h">Cite this essay</h2>
-      <p class="cite-text" id="citeText">Mathews R. {{ page.title }}. Published {{ page.date | date: "%B %-d, %Y" }}{% if page.updated %}; revised {{ page.updated | date: "%B %-d, %Y" }}{% endif %}. {{ page.url | absolute_url }}</p>
-      <pre class="cite-bib" id="citeBib">@online{mathews{{ page.date | date: "%Y" }}{{ _key }},
-  author = {Mathews, Rick},
-  title = &#123;{{ page.title }}&#125;,
-  date = &#123;{{ page.date | date: "%Y-%m-%d" }}&#125;,
-  url = &#123;{{ page.url | absolute_url }}&#125;
-}</pre>
-      <div class="cite-acts"><button type="button" data-copy="citeText">Copy citation</button><button type="button" data-copy="citeBib">Copy BibTeX</button></div>
+      <div data-cite-panel="essay:{{ _slug }}"><p class="cs-text">{% assign e = page %}{% include essay-citation.txt %}</p></div>
     </section>
   {%- if page.transfers and page.transfers.size > 0 %}
     <nav class="transfer" aria-label="Related essays">
@@ -305,7 +297,7 @@
   <div class="copyright">© {{ page.date | date: "%Y" }} Rick Mathews. All rights reserved.</div>
 </article>
 <div class="ref-pop" id="refPop" role="tooltip" hidden></div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="cs-toast" role="status" aria-live="polite"></div>
 
 <script>
 (function(){
@@ -469,37 +461,19 @@
     });
   });
 
-  // Share and copy: the system share sheet where there is one, otherwise copy to the clipboard.
-  var toast = document.getElementById('toast'), tt = null;
-  function say(msg){ toast.textContent = msg; toast.classList.add('show'); clearTimeout(tt); tt = setTimeout(function(){ toast.classList.remove('show'); }, 2200); }
-  function copy(text, done){
-    function fallback(){
-      var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select();
-      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta); say(ok ? done : 'Copy did not work here. Select the text to copy it.');
-    }
-    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function(){ say(done); }, fallback);
-    else fallback();
-  }
-  var canonical = document.querySelector('link[rel="canonical"]');
-  var url = canonical ? canonical.href : location.href.split('#')[0];
-  var shareBtn = document.getElementById('shareBtn');
-  if (shareBtn) shareBtn.addEventListener('click', function(){
-    var title = document.querySelector('.title-block h1').textContent;
-    if (navigator.share) {
-      navigator.share({ title: title, text: title + ', by Rick Mathews, PhD', url: url }).catch(function(e){
-        if (e && e.name !== 'AbortError') copy(url, 'Link copied.');
-      });
-    } else copy(url, 'Link copied.');
-  });
-  document.querySelectorAll('[data-copy]').forEach(function(b){
-    b.addEventListener('click', function(){
-      var el = document.getElementById(b.getAttribute('data-copy'));
-      copy(el.textContent.trim(), b.getAttribute('data-copy') === 'citeBib' ? 'BibTeX copied.' : 'Citation copied.');
+  // "Cite" in the top bar: the citation lives in the Essay view, so show that view before jumping to it.
+  document.querySelectorAll('a[href="#cite"]').forEach(function(a){
+    a.addEventListener('click', function(){
+      var b = document.querySelector('.tabs [data-show="revised"]');
+      if (b && b.getAttribute('aria-selected') !== 'true') b.click();
     });
   });
+
 })();
+</script>
+{% include citable.html %}
+<script>
+{% include cite-share.js %}
 </script>
 </body>
 </html>

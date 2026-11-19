@@ -82,7 +82,7 @@ layout: null
       {%- assign words = e.content | number_of_words %}
       {%- assign minutes = words | divided_by: 230 | plus: 1 %}
       {%- assign slug = e.url | split: "/" | last %}
-      <li class="stop" id="{{ slug }}">
+      <li class="stop" id="{{ slug }}" data-cite-id="essay:{{ slug }}">
         <div class="stop-head">
           {%- if e.route %}<span class="route" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span>{% endif %}
           <span class="stop-date"><time datetime="{{ e.date | date_to_xml_schema }}">{{ e.date | date: "%B %-d, %Y" }}</time></span>
@@ -97,6 +97,7 @@ layout: null
             <a class="xfer" href="{{ other.url | relative_url }}" title="Transfer to {{ other.title | escape }}">Transfer <span class="route" style="background:{{ other.route_color }};color:{{ other.route_text }}" aria-hidden="true">{{ other.route }}</span><span class="sr-only">to {{ other.title }}</span></a>
           {%- endif %}{% endfor %}{% endfor %}
         </div>
+        <div class="cs-slot"></div>
       </li>
     {%- endfor %}
     </ol>
@@ -107,5 +108,9 @@ layout: null
     </div>
   </div>
 </main>
+{% include citable.html %}
+<script>
+{% include cite-share.js %}
+</script>
 </body>
 </html>

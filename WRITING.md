@@ -15,7 +15,9 @@ Each essay has a web page at `/essays/<name>/` and a PDF. Both come from one Mar
    order of first use. Paragraphs with citations must be written as `<p>…</p>`.
 3. Revisions. When you change a published essay, set `updated: <date>` in the front matter and add a row to
    `edits:`. The page then shows "Revised <date> · see every edit" under the title, and search engines and
-   feed readers see the new date. The "Cite this essay" box, Share button, and transfer links are automatic.
+   feed readers see the new date. Cite and Share (on the essay page, the essays map, and the home Writing
+   card) and the transfer links are automatic. The citation is NLM / Vancouver style, written once in
+   `_includes/essay-citation.txt`; Cite also offers BibTeX and an RIS file for reference managers.
 4. Provenance (optional). Put the unedited first draft in `original:` (plus `original_title`, `original_date`)
    and say who changed what in `editing:`. The page gets Essay / Markup / Provenance tabs: Markup is a
    redline of the original against the current text, computed in the browser, so there is nothing to mark
@@ -34,6 +36,15 @@ Each essay has a web page at `/essays/<name>/` and a PDF. Both come from one Mar
 
 8. After the push deploys, tell search engines: `python3 tools/indexnow.py`. Google reads the sitemap
    (`/sitemap.xml`) through Search Console on its own schedule.
+
+## Publications
+
+The Research card on the home page lists `_data/publications.yml`, grouped by `kind` (article, preprint,
+chapter, abstract) with counts filled in. To add a paper, add an entry in its place (newest first within its
+kind). `title`, `url`, `venue` are what the page shows; `cite` is the citation exactly as readers copy it;
+`authors`, `cite_title`, `journal` (or `book` and `publisher`), `volume`, `issue`, `pages`, `doi` and `pmid`
+are the same facts as fields, from which BibTeX and RIS are generated. Every row gets Cite and Share; Share
+links to the DOI when there is one. The site check flags an entry that is missing a field.
 
 Feed: `/essays/feed.xml`.
 

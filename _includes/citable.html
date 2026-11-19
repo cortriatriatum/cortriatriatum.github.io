@@ -1,0 +1,14 @@
+{%- comment -%}
+  Citation registry: every essay and every publication in _data/publications.yml, as JSON, for
+  cite-share.js. Ids: "essay:<slug>" and "pub:<doi, or url when there is no DOI>". Any element with
+  data-cite-id="<id>" gets Cite and Share buttons. tools/check_site.py fails the build if an id on a page
+  is missing from this registry.
+{%- endcomment -%}
+<script type="application/json" id="citable">{"essay": {
+{%- for e in site.essays %}{% assign _slug = e.url | split: "/" | last %}{% capture _cite %}{% include essay-citation.txt %}{% endcapture %}
+  {{ _slug | jsonify }}: {"type": "essay", "key": {{ _slug | split: "-" | first | jsonify }}, "title": {{ e.title | jsonify }}, "description": {{ e.description | jsonify }}, "url": {{ e.url | absolute_url | jsonify }}, "date": {{ e.date | date: "%Y-%m-%d" | jsonify }}, "updated": {% if e.updated %}{{ e.updated | date: "%Y-%m-%d" | jsonify }}{% else %}null{% endif %}, "pdf": {% if e.pdf %}{{ e.pdf | absolute_url | jsonify }}{% else %}null{% endif %}, "keywords": {{ e.keywords | default: "" | jsonify }}, "cite": {{ _cite | strip | jsonify }}}{% unless forloop.last %},{% endunless %}
+{%- endfor %}},
+"pub": {
+{%- for p in site.data.publications %}
+  {{ p.doi | default: p.url | jsonify }}: {{ p | jsonify }}{% unless forloop.last %},{% endunless %}
+{%- endfor %}}}</script>
