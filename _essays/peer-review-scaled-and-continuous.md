@@ -1,14 +1,14 @@
 ---
 title: "Peer Review Should Be Scaled and Continuous for Every Paper"
 date: 2026-11-17
-updated: 2026-11-18
+updated: 2026-11-19
 pdf: /docs/essays/Mathews_2026_Peer_Review_Scaled_and_Continuous.pdf
 keywords: "peer review, preprints, research integrity, scientific publishing, essay"
 description: "A paper should not be peer reviewed just once."
 route: "R"
 route_color: "#FCCC0A"
 route_text: "#111111"
-transfers: [atomic-unit-single-experiment]
+transfers: [atomic-unit-single-experiment, medicines-missing-experiments]
 image: /img/og/peer-review-scaled-and-continuous.png
 
 original_title: "Peer Review Should be Scaled and Continuous for Every Paper"
@@ -146,6 +146,26 @@ edits:
     what: "“The chemistry journal Synlett” became “The journal Synlett.”"
     why: "My revision, November 18."
     by: Rick
+  - where: "¶7"
+    what: "Added a paragraph: Google’s Deep Review has reviewed more than 16,000 manuscripts before submission and found critical errors in pilots, so research may become preprints under continuous automated review. Two new sources."
+    why: "My direction, November 19. Automated review may make the crowd unnecessary; the paragraph also notes the tension with my call to moderate AI-generated reviews."
+    by: Rick
+    words: Claude
+  - where: "¶6"
+    what: "“AI-generated reviews should be heavily moderated or banned” became “AI-generated reviews should be harnessed and steered, not pasted in unread.”"
+    why: "My revision, November 19. AI content should be harnessed and steered, not banned."
+    by: Rick
+    words: Claude
+  - where: "¶7"
+    what: "Replaced the closing sentence about tension with my earlier stance with “AI-generated content should be harnessed and steered, as far as it can be and as far as we are capable of steering it,” followed by the point that checking is not judging."
+    why: "My revision, November 19."
+    by: Rick
+    words: Claude
+  - where: "¶8"
+    what: "Added a paragraph: as review scales, the wet lab becomes the bottleneck; what matters is choosing the next most important experiment and curating results, with clinical goals set by the clinic (links to Medicine’s Missing Experiments)."
+    why: "From my notes, November 19."
+    by: Rick
+    words: Claude
 
 references:
   - id: schroter2008
@@ -218,6 +238,16 @@ references:
     url: https://doi.org/10.1126/science.1240466
     quote: "created accumulating positive herding that increased final ratings by 25% on average"
     where: Abstract
+  - id: jayaram2026
+    cite: "Jayaram R, Cohen-Addad V. Analyzing technical documents with Deep Review. <i>Google Research Blog</i>. October 14, 2026."
+    url: https://research.google/blog/analyzing-technical-documents-with-deep-review/
+    quote: "to provide private, pre-submission feedback to authors of more than 16,000 manuscripts who opted in … Deep Review is now accessible worldwide … It addresses some of the most cognitively burdensome facets of review, while leaving higher-level judgements to humans."
+    where: "Blog post text (three excerpts, in page order)"
+  - id: jayaram2026pat
+    cite: "Jayaram R, Tyler D, Woodruff D, Cortes C, Matias Y, Mirrokni V, Cohen-Addad V. Towards automating scientific review with Google’s Paper Assistant Tool. <i>arXiv</i>. 2026:2606.28277."
+    url: https://doi.org/10.48550/arXiv.2606.28277
+    quote: "Pilot deployments of PAT as a pre-submission tool for authors at two major Computer Science conferences -- STOC and ICML -- demonstrate its ability to identify critical errors and suggest substantive improvements to research papers."
+    where: Abstract
 ---
 
 <p>Formal peer review, as practiced today, is significantly flawed. Perhaps chief among its problems is that we treat the judgment of two or three people, made at a single point in time, as a permanent label of quality. At a minimum, we must scale the number of peer reviewers and the length of time a paper undergoes peer review.</p>
@@ -230,7 +260,11 @@ references:
 
 <p>Pieces of this already exist. <a href="https://pubpeer.com/">PubPeer</a> hosts post-publication critique, <a href="https://elifesciences.org/about/peer-review">eLife</a> publishes reviewed preprints with public assessments, and <a href="https://www.researchhub.com/">ResearchHub</a> has gone as far as creating its own currency to pay reviewers. What is missing is the whole: verified expertise, real incentives to take part, and a visible, evolving record of where each paper stands, with methods, statistics, and conclusions assessed separately.</p>
 
-<p>None of this is easy. Open commenting draws little real review: <span class="claim" data-ref="malicki2021">in one analysis of <a href="https://www.biorxiv.org/">bioRxiv</a> preprints, only 12 percent of readers’ comments were full review reports</span><sup class="ref"><a href="#ref-malicki2021">13</a></sup>. Crowds also herd: <span class="claim" data-ref="muchnik2013">in a randomized experiment, a single early up-vote inflated final ratings by 25 percent on average</span><sup class="ref"><a href="#ref-muchnik2013">14</a></sup>. A continuous system would have to verify who counts as an informed peer, reward unique and valuable input whether it challenges the crowd or confirms it, and hide the running score until each reviewer has given their own judgment. AI-generated reviews should be heavily moderated or banned; reviewers should write free-form critiques or redline the paper itself, which may help ensure they have read it in full. These are design problems, not reasons to keep a system whose label we already know we cannot fully trust and rely on.</p>
+<p>None of this is easy. Open commenting draws little real review: <span class="claim" data-ref="malicki2021">in one analysis of <a href="https://www.biorxiv.org/">bioRxiv</a> preprints, only 12 percent of readers’ comments were full review reports</span><sup class="ref"><a href="#ref-malicki2021">13</a></sup>. Crowds also herd: <span class="claim" data-ref="muchnik2013">in a randomized experiment, a single early up-vote inflated final ratings by 25 percent on average</span><sup class="ref"><a href="#ref-muchnik2013">14</a></sup>. A continuous system would have to verify who counts as an informed peer, reward unique and valuable input whether it challenges the crowd or confirms it, and hide the running score until each reviewer has given their own judgment. AI-generated reviews should be harnessed and steered, not pasted in unread; reviewers should write free-form critiques or redline the paper itself, which may help ensure they have read it in full. These are design problems, not reasons to keep a system whose label we already know we cannot fully trust and rely on.</p>
+
+<p>Perhaps none of this will matter. <span class="claim" data-ref="jayaram2026">Google’s <a href="https://research.google/deepreview/">Deep Review</a>, an AI system that checks a manuscript’s logic, mathematics, and claims, has given private feedback to the authors of more than 16,000 manuscripts before they were submitted to four major computer science conferences, and it is now open to anyone</span><sup class="ref"><a href="#ref-jayaram2026">15</a></sup>. <span class="claim" data-ref="jayaram2026pat">In pilots at two of those conferences, it identified critical errors and suggested substantive improvements to the papers</span><sup class="ref"><a href="#ref-jayaram2026pat">16</a></sup>. If tools like it keep improving, research may become a stream of preprints under continuous automated review, with people left to judge what matters. That is still scaled and continuous review, just not by a crowd of peers. AI-generated content should be harnessed and steered, as far as it can be and as far as we are capable of steering it. Checking a proof is not the same as writing the verdict, and Google says its tool leaves higher-level judgements to humans<sup class="ref"><a href="#ref-jayaram2026">15</a></sup>.</p>
+
+<p>If reading and reviewing scale, the bottleneck moves to the wet lab, and a horde of companies are now trying to automate wet-lab operations. What matters then is the choice of experiment: knowing which piece of data is the next most important for progress toward a goal, and curating what comes back. In medicine, the goal should come from the clinic; I have written about that alignment in <a href="/essays/medicines-missing-experiments/">Medicine’s Missing Experiments</a>.</p>
 
 <p>A paper should not be peer reviewed once and stamped clean forever. It should stay under review for as long as it is relevant to the scientific enterprise, if not longer.</p>
 
