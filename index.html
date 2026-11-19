@@ -112,26 +112,26 @@ layout: null
 </div>
 </div>
 <div class="col col-b">
-<!-- 1 WRITING: filled from _essays/ by Jekyll; newest four, then RSS -->
-<div class="station line-green writing">
-<div class="station-header"><div class="bullet green" aria-hidden="true">W</div><span class="station-title">Writing</span><a class="station-tag feed-link" href="#subscribe" id="subBtn">Subscribe</a></div>
+<!-- 1 NOTES (N line): filled from _essays/ by Jekyll; newest four, then RSS. Every essay is a work in progress. -->
+<div class="station line-yellow writing">
+<div class="station-header"><div class="bullet yellow" aria-hidden="true">N</div><span class="station-title">Notes, Scribbles &amp; Ideas in Progress</span><a class="station-tag feed-link" href="#subscribe" id="subBtn">Subscribe</a></div>
 <div class="station-content">
 {%- assign recent = site.essays | sort: "date" | reverse -%}
 {%- for e in recent limit: 4 %}
-{%- assign _slug = e.url | split: "/" | last %}<div class="data-row" data-cite-id="essay:{{ _slug }}"><div class="data-year">{{ e.date | date: "%b %Y" }}</div><div class="data-title"><a href="{{ e.url | relative_url }}">{{ e.title }}</a>{% if e.pdf %} <a class="pdf-link" href="{{ e.pdf | relative_url }}" rel="noopener" target="_blank">PDF</a>{% endif %}{% if e.description %}<div class="data-sub">{{ e.description }}</div>{% endif %}</div></div>
+{%- assign _slug = e.url | split: "/" | last %}<div class="data-row" data-cite-id="essay:{{ _slug }}"><div class="data-year">{{ e.date | date: "%b %Y" }}</div><div class="data-title"><a href="{{ e.url | relative_url }}">{{ e.title }}</a>{% if e.status and e.status != "" %} <span class="wip-tag">{{ e.status }}</span>{% endif %}{% if e.pdf %} <a class="pdf-link" href="{{ e.pdf | relative_url }}" rel="noopener" target="_blank">PDF</a>{% endif %}{% if e.description %}<div class="data-sub">{{ e.description }}</div>{% endif %}</div></div>
 {%- endfor %}
 </div>
 </div>
-<!-- 5 WORK EXPERIENCE + LEADERSHIP & SERVICE -->
-<div class="station line-gray experience">
-<div class="station-header"><div class="bullet gray" aria-hidden="true">L</div><span class="station-title">Leadership, Work Experience, &amp; Service</span></div>
+<!-- 5 WORK EXPERIENCE + COMMUNITY SERVICE (W line) -->
+<div class="station line-yellow experience">
+<div class="station-header"><div class="bullet yellow" aria-hidden="true">W</div><span class="station-title">Work Experience &amp; Community Service</span></div>
 <div class="station-content">
 <div class="sub-line"><span class="bullet mini yellow" aria-hidden="true">W</span>Work Experience</div>
 <div class="data-row"><div class="data-year">2021 to 2022</div><div class="data-title">Platform and Portfolio Company Support<div class="data-sub"><a href="https://www.groovecap.com/">Groove Capital</a>, Minneapolis, Minnesota</div></div></div>
 <div class="data-row"><div class="data-year">2018</div><div class="data-title">Project Manager, Pathology Applications<div class="data-sub"><a href="https://www.epic.com/software/?searchText=beaker">Epic Systems</a>, Verona, Wisconsin</div></div></div>
 <div class="data-row"><div class="data-year">2014 to 2018</div><div class="data-title">Research Assistant<div class="data-sub">Wallace H. Coulter Laboratory for Cardiovascular Dynamics and Biomolecular Transport, <a href="https://www.ccny.cuny.edu/">City College of New York</a></div></div></div>
 <div class="data-row"><div class="data-year">2014 to 2015</div><div class="data-title">Head Teaching Assistant, Chemistry<div class="data-sub"><a href="https://www.ccny.cuny.edu/">City College of New York</a></div></div></div>
-<div class="sub-line"><span class="bullet mini gray" aria-hidden="true">L</span>Leadership &amp; Service</div>
+<div class="sub-line"><span class="bullet mini blue" aria-hidden="true">C</span>Community Service</div>
 <div class="data-row"><div class="data-year">2018 to 2022</div><div class="data-title">Volunteer<div class="data-sub"><a href="https://www.tprojects.org/">Transition Projects</a>, Portland, Oregon</div></div></div>
 <div class="data-row"><div class="data-year">2018 to 2021</div><div class="data-title">Director, Board of Trustees<div class="data-sub"><a href="https://www.marquamhillcoop.org/">Phi Beta Pi: Marquam Hill Cooperative</a>, 501(c)(3), Portland, Oregon</div></div></div>
 <div class="data-row"><div class="data-year">2016 to 2018</div><div class="data-title">Co-founder<div class="data-sub">Gol: Water Filtration Solutions for Developing Areas, New York</div></div></div>
@@ -226,7 +226,7 @@ layout: null
 </form>
 </dialog>
 <dialog aria-labelledby="subTitle" class="contact" id="subDlg">
-<div class="station-header"><div style="display:flex;align-items:center;gap:8px;"><div class="bullet green" aria-hidden="true">W</div><span class="station-title" id="subTitle">Subscribe to new essays</span></div>
+<div class="station-header"><div style="display:flex;align-items:center;gap:8px;"><div class="bullet yellow" aria-hidden="true">N</div><span class="station-title" id="subTitle">Subscribe to new notes</span></div>
 <button aria-label="Close" class="close" id="subClose" type="button">✕</button></div>
 <form id="subForm" method="POST" novalidate="">
 <label>Your email<input autocomplete="email" maxlength="200" name="email" required="" type="email"/></label>
@@ -535,7 +535,7 @@ function postForm(endpoint, form){
 </script>
 <script>
 /* ===== Subscribe: emails go to the same Formspree inbox as the contact form (free plan). New essays are
-   sent to subscribers by hand. Opens from the Writing card or from /#subscribe (essay pages link here). */
+   sent to subscribers by hand. Opens from the Notes card or from /#subscribe (essay pages link here). */
 (function(){
   var FORMSPREE_ID = 'mwlllezg';
   var dlg = document.getElementById('subDlg'), btn = document.getElementById('subBtn');

@@ -1,6 +1,6 @@
 {%- comment -%}
   The one formatted citation for an essay (NLM / Vancouver style for a web page), used by the essay page,
-  the essays map, the home Writing card, and the citation registry. Set `e` to the essay before including.
+  the essays map, the home Notes card, and the citation registry. Set `e` to the essay before including.
   When a reader copies it, cite-share.js adds the "cited" date (the day they copied it), as NLM asks.
 {%- endcomment -%}
 Mathews R. {{ e.title }} [Internet]. {{ e.date | date: "%Y %b %-d" }}{% if e.updated %} [updated {{ e.updated | date: "%Y %b %-d" }}]{% endif %}. Available from: {{ e.url | absolute_url }}

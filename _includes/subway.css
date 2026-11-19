@@ -298,6 +298,10 @@
     .station-content > .sub-line:first-child { margin-top: 2px; }
     .data-title .pdf-link { margin-left: 3px; font-size: var(--fs-2xs); font-weight: 800; letter-spacing: 0.06em; color: var(--link); text-decoration: none; vertical-align: 1px; }
     .data-title .pdf-link:hover { text-decoration: underline; }
+    /* "Work in progress" on every essay: a yellow service-change tag (status: in essay front matter). */
+    .wip-tag { display: inline-block; margin-left: 4px; font-size: var(--fs-2xs); font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--black); background: var(--mta-yellow); padding: 0 5px; vertical-align: 1px; white-space: nowrap; }
+    .stop-head .wip-tag { margin-left: 0; }
     .contact .sub-alt { font-size: var(--fs-sm); color: var(--sub); }
     .station-header a.feed-link { display: inline; color: var(--mta-yellow); opacity: 1; text-decoration: none; }
     .station-header a.feed-link:hover, .station-header a.feed-link:focus-visible { text-decoration: underline; }

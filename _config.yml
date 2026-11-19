@@ -18,6 +18,6 @@ collections:
 
 defaults:
   - scope: { type: essays }
-    values: { layout: essay }
+    values: { layout: essay, status: "Work in progress" }   # set status: "" on an essay to drop the label
 
 exclude: [README.md, WRITING.md, assets/fonts/README.md, tools/, Gemfile, Gemfile.lock, vendor/, me-site-v3/]

@@ -9,7 +9,7 @@ permalink: /llms.txt
 ## Essays
 {%- assign essays = site.essays | sort: "date" | reverse %}
 {%- for e in essays %}
-- [{{ e.title }}]({{ e.url | absolute_url }}): {{ e.description }}{% if e.pdf %} (PDF: {{ e.pdf | absolute_url }}){% endif %}
+- [{{ e.title }}]({{ e.url | absolute_url }}): {{ e.description }}{% if e.status and e.status != "" %} ({{ e.status | downcase }}){% endif %}{% if e.pdf %} (PDF: {{ e.pdf | absolute_url }}){% endif %}
 {%- endfor %}
 
 ## About

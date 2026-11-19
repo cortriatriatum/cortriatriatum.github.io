@@ -45,6 +45,7 @@
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "Article",
    "headline": {{ page.title | jsonify }},
+   {%- if page.status and page.status != "" %}"creativeWorkStatus": {{ page.status | jsonify }},{% endif %}
    "description": {{ page.description | default: site.description | jsonify }},
    "author": {"@type": "Person", "@id": {{ '/#rick' | absolute_url | jsonify }}, "name": "Rick Mathews", "honorificSuffix": "PhD", "url": {{ '/' | absolute_url | jsonify }}},
    {%- if page.references %}
@@ -126,6 +127,12 @@
 
     .title-block .revised { font-size: .8em; margin-top: 3px; color: var(--sub); font-style: italic; }
     .title-block .revised a { color: var(--link); text-decoration: none; border-bottom: .5px solid #b9c4dd; font-style: normal; }
+    /* Work-in-progress label: every essay is open to revision (status: in front matter; default in _config.yml). */
+    .title-block .wip { font-size: .8em; margin-top: 8px; color: var(--sub); font-style: italic; }
+    .wip-tag { display: inline-block; font: 700 10.5px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      letter-spacing: .08em; text-transform: uppercase; font-style: normal; color: #6b4a00; background: #fff4cc; border: 1px solid #e0b400;
+      border-radius: 3px; padding: 0 6px; margin-right: 4px; vertical-align: 1px; }
+    @media print { .wip-tag { background: none; color: #000; border-color: #000; } }
 
     /* Cite this essay, and transfers to related essays. Web only. */
     .cite { font-size: .8em; line-height: 1.38; margin-top: 1.6em; }
@@ -226,6 +233,9 @@
     <div class="date"><time datetime="{{ page.date | date_to_xml_schema }}">{% assign _d = page.date | date: "%-d" | plus: 0 -%}{%- assign _m = _d | modulo: 10 -%}{%- if _d >= 11 and _d <= 13 -%}{%- assign _s = "th" -%}{%- elsif _m == 1 -%}{%- assign _s = "st" -%}{%- elsif _m == 2 -%}{%- assign _s = "nd" -%}{%- elsif _m == 3 -%}{%- assign _s = "rd" -%}{%- else -%}{%- assign _s = "th" -%}{%- endif -%}{{ page.date | date: "%B %-d" }}<sup class="ord">{{ _s }}</sup>, {{ page.date | date: "%Y" }}</time></div>
     {%- if page.updated %}
     <div class="revised">Revised <time datetime="{{ page.updated | date_to_xml_schema }}">{% assign _d = page.updated | date: "%-d" | plus: 0 -%}{%- assign _m = _d | modulo: 10 -%}{%- if _d >= 11 and _d <= 13 -%}{%- assign _s = "th" -%}{%- elsif _m == 1 -%}{%- assign _s = "st" -%}{%- elsif _m == 2 -%}{%- assign _s = "nd" -%}{%- elsif _m == 3 -%}{%- assign _s = "rd" -%}{%- else -%}{%- assign _s = "th" -%}{%- endif -%}{{ page.updated | date: "%B %-d" }}<sup class="ord">{{ _s }}</sup>, {{ page.updated | date: "%Y" }}</time>{% if page.edits %} · <a href="#edits" data-goto="edits">see every edit</a>{% endif %}</div>
+    {%- endif %}
+    {%- if page.status and page.status != "" %}
+    <div class="wip"><span class="wip-tag">{{ page.status }}</span> I revise this as I learn{% if page.edits %}; every change is logged{% endif %}.</div>
     {%- endif %}
   </header>
   <hr class="title-rule">

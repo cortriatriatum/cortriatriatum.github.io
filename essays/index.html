@@ -73,10 +73,10 @@ layout: null
   <span class="sb-live"><span class="sb-dot"></span><span>Service</span></span>
   <span class="sb-msg"><a href="{{ '/' | relative_url }}" style="color:inherit">{{ site.title }}</a></span>
 </div>
-<main class="station line-green map">
-  <div class="station-header"><div class="bullet green" aria-hidden="true">W</div><span class="station-title">Writing</span></div>
+<main class="station line-yellow map">
+  <div class="station-header"><div class="bullet yellow" aria-hidden="true">N</div><span class="station-title">Notes, Scribbles &amp; Ideas in Progress</span></div>
   <div class="station-content">
-    <p class="map-intro">Essays on how science and medicine discover questions, evaluate evidence, and share results. Each one shows its original draft, every edit, and the exact words of its sources.</p>
+    <p class="map-intro">Essays on how science and medicine discover questions, evaluate evidence, and share results. Each one is a work in progress: I revise it as I learn, and each shows its original draft, every edit, and the exact words of its sources.</p>
     <ol class="line">
     {%- for e in listed %}
       {%- assign words = e.content | number_of_words %}
@@ -85,7 +85,8 @@ layout: null
       <li class="stop" id="{{ slug }}" data-cite-id="essay:{{ slug }}">
         <div class="stop-head">
           {%- if e.route %}<span class="route" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span>{% endif %}
-          <span class="stop-date"><time datetime="{{ e.date | date_to_xml_schema }}">{{ e.date | date: "%B %-d, %Y" }}</time></span>
+          <span class="stop-date"><time datetime="{{ e.date | date_to_xml_schema }}">{{ e.date | date: "%B %-d, %Y" }}</time>{% if e.updated %} · revised <time datetime="{{ e.updated | date_to_xml_schema }}">{{ e.updated | date: "%B %-d" }}</time>{% endif %}</span>
+          {%- if e.status and e.status != "" %}<span class="wip-tag">{{ e.status }}</span>{% endif %}
         </div>
         <a class="stop-title" href="{{ e.url | relative_url }}">{{ e.title }}</a>
         {%- if e.description %}<div class="stop-sub">{{ e.description }}</div>{% endif %}

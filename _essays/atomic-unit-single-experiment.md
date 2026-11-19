@@ -249,7 +249,7 @@ references:
     quote: "a repository of semantic predications (subject-predicate-object triples) extracted from the entire set of PubMed citations."
     where: Abstract
   - id: schultes2022
-    cite: "Schultes E, Magagna B, Hettne KM, Pergl R, Suchánek M, Kuhn T. The comparative anatomy of nanopublications and FAIR digital objects. <i>Res Ideas Outcomes</i>. 2022;8:e94150."
+    cite: "Schultes E, Magagna B, Kuhn T, Suchánek M, Bonino da Silva Santos L, Mons B. The comparative anatomy of nanopublications and FAIR digital objects. <i>Res Ideas Outcomes</i>. 2022;8:e94150."
     url: https://doi.org/10.3897/rio.8.e94150
     quote: "Nanopublications can be used to expose quantitative and qualitative data, as well as hypotheses, claims, negative results, and opinions that are typically unavailable as structured data or go unpublished altogether."
     where: Abstract
@@ -279,7 +279,7 @@ references:
     quote: "PaperQA2, a frontier language model agent optimized for improved factuality, matches or exceeds subject matter expert performance on three realistic literature research tasks"
     where: Abstract
   - id: asai2026
-    cite: "Asai A, He J, Shao R, et al. Synthesizing scientific literature with retrieval-augmented language models. <i>Nature</i>. 2026."
+    cite: "Asai A, He J, Shao R, et al. Synthesizing scientific literature with retrieval-augmented language models. <i>Nature</i>. 2026;650(8103):857–863."
     url: https://doi.org/10.1038/s41586-025-10072-4
     quote: "Although GPT-4o hallucinates citations 78–90% of the time, OpenScholar achieves citation accuracy on par with human experts."
     where: Abstract

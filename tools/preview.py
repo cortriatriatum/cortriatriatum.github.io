@@ -109,14 +109,19 @@ def build(drafts=False):
         layouts[p.stem] = (fm or {}, jekyll_includes(body))
 
     # essays collection
+    essay_defaults = {}
+    for d in cfg.get("defaults") or []:
+        if (d.get("scope") or {}).get("type") == "essays":
+            essay_defaults.update(d.get("values") or {})
     essays = []
     for p in sorted(q for q in (ROOT / "_essays").glob("*.md") if not q.name.startswith("_")):
         fm, body = read(p)
         fm = fm or {}
         if fm.get("published") is False and not drafts:
             continue
-        doc = dict(fm)
-        doc.update(url=f"/essays/{p.stem}/", collection="essays", layout=fm.get("layout", "essay"),
+        doc = dict(essay_defaults)  # front-matter defaults from _config.yml, as Jekyll applies them
+        doc.update(fm)
+        doc.update(url=f"/essays/{p.stem}/", collection="essays", layout=doc.get("layout", "essay"),
                    date=to_date(fm.get("date")), _body=body)
         for k in ("updated", "original_date"):  # Jekyll parses any YAML date; match it here
             if fm.get(k):

@@ -1,4 +1,4 @@
-/* Cite and Share: one implementation for every page that lists writing (home, essays map, essay pages).
+/* Cite and Share: one implementation for every page that lists writing (home Notes card, essays map, essay pages).
 
    Data: the #citable JSON registry (_includes/citable.html), built from _essays/ and _data/publications.yml.
    Markup contract, all optional per page:

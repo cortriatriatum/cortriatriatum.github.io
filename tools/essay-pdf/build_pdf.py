@@ -38,6 +38,7 @@ p { margin: 0 0 6.5pt 0; text-indent: 19.5pt; text-align: left; }
 .title { font-size: 21pt; line-height: 25.2pt; font-weight: bold; text-align: center; text-indent: 0; margin: 0 0 9pt 0; }
 .author { font-size: 14.4pt; line-height: 18pt; text-align: center; text-indent: 0; margin: 0 0 3pt 0; }
 .date { font-size: 10.95pt; line-height: 13.6pt; text-align: center; text-indent: 0; margin: 0 0 6pt 0; }
+.wip { font-size: 9.5pt; line-height: 12pt; text-align: center; text-indent: 0; font-style: italic; margin: -3pt 0 6pt 0; }
 .rule { border-top: 0.4pt solid #999; margin: 0 0 6pt 0; font-size: 1pt; line-height: 1pt; }
 .short-rule { border-top: 0.4pt solid #999; width: 30%; margin: 14pt 0 6pt 0; font-size: 1pt; line-height: 1pt; }
 .coda { font-size: 11.7pt; line-height: 16.38pt; text-indent: 0; margin: 0 0 5pt 0; }
@@ -83,10 +84,27 @@ def esc(s):
     return html.escape(s, quote=False)
 
 
+def essay_status(fm):
+    """The essay's status label: its own `status:`, else the essays default in _config.yml (as Jekyll does)."""
+    if "status" in fm:
+        return fm["status"] or ""
+    cfg = yaml.safe_load((ROOT / "_config.yml").read_text(encoding="utf-8")) or {}
+    for d in cfg.get("defaults", []):
+        if (d.get("scope") or {}).get("type") == "essays" and "status" in (d.get("values") or {}):
+            return d["values"]["status"] or ""
+    return ""
+
+
 def page_html(fm, paras, coda):
     year = as_date(fm["date"]).year
     out = [f'<p class="title">{esc(fm["title"])}</p>', '<p class="author">Rick Mathews, PhD</p>',
-           f'<p class="date">{date_line(fm["date"])}</p>', '<div class="rule">&nbsp;</div>']
+           f'<p class="date">{date_line(fm["date"])}</p>']
+    status = essay_status(fm)
+    if status:
+        rev = f", revised {date_line(fm['updated'])}" if fm.get("updated") else ""
+        url = SITE.rstrip("/") + fm.get("_url", "/")
+        out.append(f'<p class="wip">{esc(status)}{rev}. <a href="{esc(url)}">Read the current version online</a>.</p>')
+    out.append('<div class="rule">&nbsp;</div>')
     out += [f"<p>{p}</p>" for p in paras]
     out.append('<div class="short-rule">&nbsp;</div>')
     for c in coda:
@@ -192,6 +210,7 @@ def main(md_path):
     m = FM.match(text)
     fm, body = yaml.safe_load(m.group(1)), text[m.end():]
     paras, coda = split_body(body)
+    fm["_url"] = f"/essays/{Path(md_path).stem}/"  # where the current version lives, for the status line
     year = as_date(fm["date"]).year
     small = {"and", "or", "of", "the", "for", "a", "an", "in", "on", "to"}
     name = Path(fm["pdf"]).stem if fm.get("pdf") else "Mathews_%d_%s" % (year, "_".join(

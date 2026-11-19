@@ -199,7 +199,7 @@ references:
     quote: "gave a stable of about 100 of the journal’s reviewers 72 hours to respond anonymously to papers of their choosing"
     where: Article text
   - id: vangemmeren2020
-    cite: "van Gemmeren M, List B. How and why crowd reviewing works. <i>Synlett</i>. 2020."
+    cite: "van Gemmeren M, List B. How and why crowd reviewing works. <i>Synlett</i>. 2021;32(9):885–891."
     url: https://doi.org/10.1055/s-0040-1705955
     quote: "it is now used as the default method for the evaluation of manuscripts at Synlett and SynOpen"
     where: Abstract

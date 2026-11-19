@@ -15,7 +15,7 @@ Each essay has a web page at `/essays/<name>/` and a PDF. Both come from one Mar
    order of first use. Paragraphs with citations must be written as `<p>…</p>`.
 3. Revisions. When you change a published essay, set `updated: <date>` in the front matter and add a row to
    `edits:`. The page then shows "Revised <date> · see every edit" under the title, and search engines and
-   feed readers see the new date. Cite and Share (on the essay page, the essays map, and the home Writing
+   feed readers see the new date. Cite and Share (on the essay page, the essays map, and the home Notes
    card) and the transfer links are automatic. The citation is NLM / Vancouver style, written once in
    `_includes/essay-citation.txt`; Cite also offers BibTeX and an RIS file for reference managers.
 4. Provenance (optional). Put the unedited first draft in `original:` (plus `original_title`, `original_date`)
@@ -28,7 +28,7 @@ Each essay has a web page at `/essays/<name>/` and a PDF. Both come from one Mar
    the same essay as a .tex file for `latexmk -xelatex`.
 6. Share card: set `image: /img/og/<name>.png` in the front matter and run `python3 tools/og_cards.py`
    (rerun it if the title changes). It draws the 1200 x 630 picture that link previews show.
-7. Delete the `published: false` line when it is ready. The home Writing card (latest four), the essays
+7. Delete the `published: false` line when it is ready. The home Notes card ("Notes, Scribbles & Ideas in Progress", the N line; latest four), the essays
    map, the RSS feed, the sitemap, and llms.txt all update on their own. Commit and push; GitHub Pages
    rebuilds in about a minute, and the "Check site" action (`.github/workflows/check.yml`) builds it again
    and flags broken internal links, missing titles, bad structured data, or images without alt text.
@@ -45,6 +45,10 @@ kind). `title`, `url`, `venue` are what the page shows; `cite` is the citation e
 `authors`, `cite_title`, `journal` (or `book` and `publisher`), `volume`, `issue`, `pages`, `doi` and `pmid`
 are the same facts as fields, from which BibTeX and RIS are generated. Every row gets Cite and Share; Share
 links to the DOI when there is one. The site check flags an entry that is missing a field.
+
+Work in progress: every essay is labeled "Work in progress" on its page, on the essays map, on the home
+Notes card, in its PDF, and in its structured data (`creativeWorkStatus`). The default is set once in
+`_config.yml`; give an essay its own `status:` to change the wording, or `status: ""` to drop the label.
 
 Feed: `/essays/feed.xml`.
 
