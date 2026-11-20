@@ -1,52 +1,97 @@
 # Food recommendations, shown behind the food cart on the home page and on the Directory page.
 # From my Google Maps lists. Each place links to Google Maps. vegan: true marks fully vegan places;
 # closed: "<note>" labels a place reported closed; maybe_closed: "<note>" one with mixed reports (checked November 2026).
+# cuisine, price and note: my own notes on a place, shown with it.
 # Remove a place once it is gone for good.
 cities:
 - name: Portland, OR
   places:
   - name: Thai Peacock
     url: https://www.google.com/maps/search/?api=1&query=Thai+Peacock+Portland%2C+OR
+    cuisine: "Thai"
+    price: "$20–30"
+    note: "Delivers exactly what I was hoping for every time. Very impressed."
   - name: LaVerne’s
     url: https://www.google.com/maps/search/?api=1&query=LaVerne%27s%2C+700+NE+Dekum+St%2C+Portland%2C+OR
   - name: Luce
     url: https://www.google.com/maps/search/?api=1&query=Luce+Portland%2C+OR
+    cuisine: "Italian"
+    price: "$30–70"
+    note: "Half portions."
   - name: John's Marketplace
     url: https://www.google.com/maps/search/?api=1&query=John%27s+Marketplace+Portland%2C+OR
+    cuisine: "Beer store"
+    note: "Casual grub with drinks."
   - name: Les Caves Wine Bar
     url: https://www.google.com/maps/search/?api=1&query=Les+Caves+Wine+Bar+Portland%2C+OR
+    cuisine: "Wine bar"
+    price: "$10–40"
+    note: "Hungarian preference by the owner, apparently. Couch appropriately placed in the cave."
   - name: Kenny's Noodle House
     url: https://www.google.com/maps/search/?api=1&query=Kenny%27s+Noodle+House+Portland%2C+OR
+    cuisine: "Chinese"
+    price: "$10–20"
+    note: "Excellent. A tad salty. Very casual; cash only?"
   - name: E&R Wine Shop
     url: https://www.google.com/maps/search/?api=1&query=E%26R+Wine+Shop+Portland%2C+OR
+    cuisine: "Wine store"
   - name: Toji Korean Grill House
     url: https://www.google.com/maps/search/?api=1&query=Toji+Korean+Grill+House+Portland%2C+OR
+    cuisine: "Korean"
+    price: "$40–50"
+    note: "K-BBQ."
   - name: Oma's Hideaway
     url: https://www.google.com/maps/search/?api=1&query=Oma%27s+Hideaway+Portland%2C+OR
+    cuisine: "Southeast Asian"
+    price: "$30–80"
+    note: "Delicious bites. An occasional visit. Similar vibes to Eem and Gado Gado."
   - name: ASTERA
     url: https://www.google.com/maps/search/?api=1&query=ASTERA+Portland%2C+OR
+    cuisine: "Vegan"
+    price: "$100+"
+    note: "Special occasions."
+    vegan: true
   - name: Floyd's Coffeehouse
     url: https://www.google.com/maps/search/?api=1&query=Floyd%27s+Coffeehouse+Portland%2C+OR
+    cuisine: "Coffee shop"
+    price: "$1–10"
+    note: "A cozy sit in Ladd’s Addition."
   - name: Bialy Bird
     url: https://www.google.com/maps/search/?api=1&query=Bialy+Bird+Portland%2C+OR
+    cuisine: "Cafe"
+    price: "$10–20"
+    note: "Expensive. Starting out; needs a wider menu. Excellent flavors."
   - name: Scotch Lodge
     url: https://www.google.com/maps/search/?api=1&query=Scotch+Lodge+Portland%2C+OR
+    cuisine: "Cocktail bar"
+    price: "$30–90"
+    note: "Great vibes, a long list, excellent bites."
   - name: The Focacceria by Montelupo
     url: https://www.google.com/maps/search/?api=1&query=The+Focacceria+by+Montelupo+Portland%2C+OR
+    note: "Both the focaccia and the tiramisu."
   - name: Yaowarat
     url: https://www.google.com/maps/search/?api=1&query=Yaowarat+Portland%2C+OR
+    note: "Good food and vibes. Love the Montavilla area."
   - name: East India Co. Grill & Bar
     url: https://www.google.com/maps/search/?api=1&query=East+India+Co.+Grill+%26+Bar+Portland%2C+OR
+    note: "Relatively better decor, for Indian."
   - name: Orange & Blossom Patisserie
     url: https://www.google.com/maps/search/?api=1&query=Orange+%26+Blossom+Patisserie+Portland%2C+OR
+    note: "Out of the way, but a cute spot for a morning. Fully vegan."
+    vegan: true
   - name: Wu-Rons
     url: https://www.google.com/maps/search/?api=1&query=Wu-Rons+Portland%2C+OR
+    note: "Excellent ramen broth (fat-heavy, salty). A great lunch."
   - name: Boxcar Pizza
     url: https://www.google.com/maps/search/?api=1&query=Boxcar+Pizza+Portland%2C+OR
+    note: "Vegan Detroit-style pizza. Delicious."
+    vegan: true
   - name: Matt's BBQ
     url: https://www.google.com/maps/search/?api=1&query=Matt%27s+BBQ+Portland%2C+OR
+    note: "Classic boozy Sunday BBQ, after a hike."
   - name: Nostrana
     url: https://www.google.com/maps/search/?api=1&query=Nostrana+Portland%2C+OR
+    note: "Pizza, pasta and tiramisu."
   - name: Lilla
     url: https://www.google.com/maps/search/?api=1&query=Lilla+Portland%2C+OR
     vegan: true

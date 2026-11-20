@@ -165,12 +165,17 @@
     var io = new IntersectionObserver(function(es){ es.forEach(function(e){ var v = vigs.find(function(v){ return v.cv === e.target; }); if (v) v.on = e.isIntersecting; }); }, { rootMargin: '80px' });
     vigs.forEach(function(v){ io.observe(v.cv); });
   } else vigs.forEach(function(v){ v.on = true; });
-  vigs.forEach(function(v){ v.cv.addEventListener('pointerenter', function(){ v.hov = true; }); v.cv.addEventListener('pointerleave', function(){ v.hov = false; }); });
+  vigs.forEach(function(v){ v.cv.addEventListener('pointerenter', function(){ v.hov = true; }); v.cv.addEventListener('pointerleave', function(){ v.hov = false; }); v.cv.addEventListener('pointerdown', function(e){ if (e.pointerType !== 'mouse'){ v.hov = true; clearTimeout(v.tm); v.tm = setTimeout(function(){ v.hov = false; }, 6000); } }); });
   var running = false;
   function frame(now){
     if (I.plain()){ running = false; return; }
     I.tick(now);
-    vigs.forEach(function(v){ if (v.still && v.drawn) return; if (v.on && VIG[v.name] && I.fit(v.cv, v.ctx, 300, 200)){ I.use(v.ctx); if (v.still) I.tick(2000); VIG[v.name](v.still ? 2 : I.T, v.still ? null : I.lookIn(v.cv, 300, 200), v.still ? false : v.hov); if (v.still){ v.drawn = true; I.tick(now); } } });
+    vigs.forEach(function(v){
+      var play = !v.still || (v.hov && !I.reduce.matches);          // still drawings play while you hover or tap them
+      if (!play && v.drawn) return;
+      if (v.on && VIG[v.name] && I.fit(v.cv, v.ctx, 300, 200)){ I.use(v.ctx);
+        if (play){ if (v.still && !v.t0) v.t0 = now; VIG[v.name](v.still ? 2 + (now - v.t0) / 1000 : I.T, I.lookIn(v.cv, 300, 200), v.hov); v.drawn = false; }
+        else { I.tick(2000); VIG[v.name](2, null, false); v.drawn = true; v.t0 = 0; I.tick(now); } } });
     requestAnimationFrame(frame);
   }
   function start(){ if (!running && !I.plain()){ running = true; requestAnimationFrame(frame); } }

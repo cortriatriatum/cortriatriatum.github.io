@@ -35,14 +35,15 @@ layout: null
 </head>
 <body class="strip-page" data-scene="gallery">
 {% assign navpage = "photos" %}{% include ink/nav.html %}
-<canvas id="strip" class="strip-ui" role="img" aria-label="An ink drawing of a gallery. The photographs hang on the wall in frames, newest first, each with a label giving the place and the date. The figure walks from one to the next as you scroll."></canvas>
+<canvas id="strip" class="strip-ui" role="img" aria-label="An ink drawing of a gallery. The photographs, in black and white, hang on the wall in frames, newest first, each with a label giving the place and the date. The figure walks from one to the next as you scroll."></canvas>
 <div id="stripHot" class="strip-ui"></div>
 <div id="stripLen" class="strip-ui"></div>
 <header class="strip-top strip-ui">
   <h1>The gallery</h1>
-  <div class="mode" role="group" aria-label="Show photos in"><button type="button" data-mode="c" aria-pressed="true">Color</button><button type="button" data-mode="bw" aria-pressed="false">Black &amp; white</button></div>
-  <a href="{{ '/photos/all/' | relative_url }}">All at once</a>
+  <a href="{{ '/photos/all/' | relative_url }}">See them all at once</a>
+  <button type="button" class="pill" data-open="contact" data-prefill="Could I see one of your photos in color?">Ask for one in color</button>
   <span class="sky" id="stripSky" aria-live="off"></span>
+  <span class="sky">Photos © Rick Mathews</span>
 </header>
 <nav class="sr sr-list strip-ui" aria-label="Every photo, in order"><ol id="stripList"></ol></nav>
 <nav class="strip-bar strip-ui" aria-label="Move through the gallery">
@@ -54,10 +55,11 @@ layout: null
   <h1>Photos</h1>
   <p class="wall-link"><a href="{{ '/photos/all/' | relative_url }}">See all {{ site.data.photos.photos.size }} photographs</a></p>
   <p><a href="{{ '/explore/' | relative_url }}#room">Back to the room</a></p>
+  <p class="copy">Photos © 2021–2025 Rick Mathews. All rights reserved. Please ask before using one.</p>
 </main>
 <dialog class="lb" id="lb" aria-label="Photo viewer">
   <div class="stage"><img id="lbImg" alt=""></div>
-  <div class="bar"><span class="cap" id="lbCap" aria-live="polite"></span></div>
+  <div class="bar"><span class="cap" id="lbCap" aria-live="polite"></span><span class="cap">© Rick Mathews</span><button type="button" id="lbColor" data-open="contact" data-prefill="">Ask for it in color</button></div>
   <button type="button" class="x" id="lbX">Close</button>
   <button type="button" class="nav-b prev" id="lbPrev" aria-label="Previous photo">←</button>
   <button type="button" class="nav-b next" id="lbNext" aria-label="Next photo">→</button>

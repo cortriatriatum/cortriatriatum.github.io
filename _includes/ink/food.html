@@ -5,8 +5,8 @@
   </div>
   {%- for c in site.data.food.cities %}
   <ul class="food-list" data-city-list="{{ forloop.index }}"{% unless forloop.first %} hidden{% endunless %} aria-label="{{ c.name }}">
-    {%- for p in c.places %}<li{% if p.closed %} class="closed"{% endif %}><a href="{{ p.url }}" rel="noopener" target="_blank">{{ p.name }}</a>{% if p.vegan %} <b class="ft vegan">Vegan</b>{% endif %}{% if p.closed %} <b class="ft shut">{{ p.closed }}</b>{% endif %}{% if p.maybe_closed %} <b class="ft shut">{{ p.maybe_closed }}</b>{% endif %}{% if p.where %} <span>{{ p.where }}</span>{% endif %}</li>{% endfor %}
+    {%- for p in c.places %}{% capture _meta %}{{ p.cuisine }}{% if p.cuisine and p.price %} · {% endif %}{{ p.price }}{% endcapture %}<li{% if p.closed %} class="closed"{% endif %}{% if p.note %} data-note="{{ p.note | escape }}"{% endif %}{% if _meta != '' %} data-meta="{{ _meta | escape }}"{% endif %}><a href="{{ p.url }}" rel="noopener" target="_blank">{{ p.name }}</a>{% if p.vegan %} <b class="ft vegan">Vegan</b>{% endif %}{% if p.closed %} <b class="ft shut">{{ p.closed }}</b>{% endif %}{% if p.maybe_closed %} <b class="ft shut">{{ p.maybe_closed }}</b>{% endif %}{% if p.where %} <span>{{ p.where }}</span>{% endif %}{% if _meta != '' %} <span class="fm">{{ _meta }}</span>{% endif %}{% if p.note %}<span class="fn">{{ p.note }}</span>{% endif %}</li>{% endfor %}
   </ul>
   {%- endfor %}
-  <p class="note">From my Google Maps lists. Each name opens it on Google Maps. <b class="ft vegan">Vegan</b> means fully vegan. Closures checked November 2026.</p>
+  <p class="note">From my Google Maps lists, with my own notes. Each name opens it on Google Maps. <b class="ft vegan">Vegan</b> means fully vegan. Closures checked November 2026.</p>
 </div>

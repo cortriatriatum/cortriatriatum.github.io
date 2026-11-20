@@ -8,9 +8,11 @@ order: the street at South Waterfront, the subway stairs, the mezzanine (Notes),
 streetcar along the Willamette back to South Waterfront (Work and service), the Aerial Tram up to OHSU (Education),
 the sky bridge (Awards), the room, out its door, and the tram back down to the street (Dev). Scrolling backward runs
 it in reverse. Scroll, swipe or arrow keys move through it; the loop indicator on the right jumps to any stop;
-`/explore/#room`, `/explore/#train` and so on link to a stop. The home page `/` is the simple version: everything on
-one page with the route rail and a still drawing per section, and a choice at the top between Simple (default) and
-Animated (`/explore/`). Picking Animated is remembered and makes the home page drawings move. Photos and food recs are only in the animated walk
+`/explore/#room`, `/explore/#train` and so on link to a stop. The home page `/` is everything on one page, in one column,
+with the route rail and a drawing per section (still; it plays on hover or tap). At the end of the page, scrolling on
+walks the figure into the station and on into the walk at `/explore/`, which loops; its street leads back to the page.
+The Drawings switch in the top bar hides every drawing. Photos are black and white only; each has an "Ask for it in
+color" link to the contact form. Food recs carry my own notes (cuisine, price, a line) from `_data/food.yml`. Photos and food recs are only in the animated walk
 (neither is indexed): the photo wall in the room opens the gallery (`/photos/`, prints in date order with wall labels;
 clicking one zooms into it), and the food cart on the street leads to the food walk (`/food/`, `assets/pod.js`): one street per city drawn from
 its real landmarks, with that city's live weather and daylight, and every place as its own cart or shop; the subway

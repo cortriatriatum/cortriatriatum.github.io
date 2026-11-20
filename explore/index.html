@@ -148,7 +148,7 @@ layout: null
 </style>
 </head>
 <body class="world">
-<a class="skip-dir" href="{{ '/' | relative_url }}">Skip the drawing: the simple version</a>
+<a class="skip-dir" href="{{ '/' | relative_url }}">Skip the drawing: everything on one page</a>
 {% assign navpage = "explore" %}{% include ink/nav.html %}
 <canvas id="world" role="img" aria-label="A looping ink drawing of a day in Portland: a street at South Waterfront, stairs down into a station with a room inside it, a platform, a train to Marquam Hill, an elevator up to a lab at OHSU, and the Aerial Tram back down to the street. Scroll, swipe, the arrow keys or the Next button move along it."></canvas>
 <div id="hot" data-directory="{{ '/' | relative_url }}" data-food="{{ '/food/' | relative_url }}"></div>
@@ -166,7 +166,7 @@ layout: null
       <a href="#room" data-goto-zone="room">Down to the station ↓</a>
       <a href="#lab" data-goto-zone="lab">Aerial Tram up to OHSU ↑</a>
       <a href="{{ '/food/' | relative_url }}">Into the food cart pod</a>
-      <a href="{{ '/' | relative_url }}" data-pick="simple">The simple version</a>
+      <a href="{{ '/' | relative_url }}" data-pick="simple">Everything on one page</a>
     </nav>
   </section>
 
@@ -226,9 +226,9 @@ layout: null
 <aside class="panel" id="panel" aria-label="Details">
   <button type="button" class="pill close" id="panelClose">Close</button>
   <section data-c="photos" hidden><span class="k">The photos on the wall · a door to the gallery</span><h2>Photos</h2>
-    <div class="ph-strip">{% assign _ph = "img-6761-c,img-7451-c,img-e1873-c,oytf2732-c,img-7177-c,img-6843-c" | split: "," %}{% for id in _ph %}<a href="{{ '/photos/' | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ '/img/photos/' | append: id | append: '-640.webp' | relative_url }}" alt="" loading="lazy" decoding="async"></a>{% endfor %}</div>
+    <div class="ph-strip">{% assign _ph = "img-6761-bw,img-7451-bw,img-e1873-bw,oytf2732-bw,img-7177-bw,img-6843-bw" | split: "," %}{% for id in _ph %}<a href="{{ '/photos/' | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ '/img/photos/' | append: id | append: '-640.webp' | relative_url }}" alt="" loading="lazy" decoding="async"></a>{% endfor %}</div>
     <div class="links"><a class="key" href="{{ '/photos/' | relative_url }}">Walk into the gallery</a><a href="{{ '/photos/all/' | relative_url }}">All {{ site.data.photos.photos.size }} at once</a></div>
-    <p class="hint">Each one in color or black and white.</p></section>
+    <p class="hint">In black and white. Ask me if you would like one in color.</p></section>
   <section data-c="notes" hidden><span class="k">The notebook</span><h2>Notes, Scribbles &amp; Ideas in Progress</h2>{% include ink/notes.html %}
     <div class="links"><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/' | relative_url }}">The whole line</a></div></section>
   <section data-c="research" hidden><span class="k">The microscope</span><h2>Research</h2><h3 class="sub">Current research focus</h3>{% include ink/focus.html %}

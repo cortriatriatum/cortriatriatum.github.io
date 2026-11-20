@@ -66,9 +66,8 @@
   function skyLine(){ var kind = WX ? WX.kind : null; if (!WX) return 'Portland'; return 'Portland · ' + WX.tempF + '°F · ' + I.WORDS[kind]; }
 
   /* ================= the gallery ================= */
-  var imgs = {}, mode = 'c';
-  try { if (localStorage.getItem('photoMode') === 'bw') mode = 'bw'; } catch (e) {}
-  function src(p, w){ var kind = (mode === 'bw' || p.bwonly) ? 'bw' : 'c'; return p.base + '-' + kind + '-' + w + '.webp'; }
+  var imgs = {};
+  function src(p, w){ return p.base + '-bw-' + w + '.webp'; }   // black and white only; color on request
   function img(p){ var u = src(p, 640); if (!imgs[u]){ var im = new Image(); im.decoding = 'async'; im.src = u; imgs[u] = im; } return imgs[u]; }
   var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   function when(d){ if (!d) return ''; var b = d.split('-'); return MONTHS[+b[1] - 1] + ' ' + b[0]; }
@@ -164,7 +163,8 @@
   /* the photo viewer */
   var lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCap'), lbI = 0;
   function showPhoto(i){ lbI = (i + stops.length) % stops.length; var s = stops[lbI]; lbImg.src = src(s.p, 1600); lbImg.alt = 'Photo: ' + s.label;
-    lbCap.textContent = s.label + (s.p.bwonly && mode === 'c' ? ' · shot in black and white' : '') + ' · ' + (lbI + 1) + ' / ' + stops.length; new Image().src = src(stops[(lbI + 1) % stops.length].p, 1600); }
+    lbCap.textContent = s.label + ' · ' + (lbI + 1) + ' / ' + stops.length; new Image().src = src(stops[(lbI + 1) % stops.length].p, 1600);
+    var ask = document.getElementById('lbColor'); if (ask) ask.dataset.prefill = 'Could I see your photo "' + s.label + '" in color?'; }
   if (lb){
     document.getElementById('lbX').addEventListener('click', function(){ lb.close(); });
     document.getElementById('lbPrev').addEventListener('click', function(){ showPhoto(lbI - 1); });
@@ -175,8 +175,7 @@
     lb.addEventListener('touchend', function(e){ if (x0 === null) return; var d = e.changedTouches[0].clientX - x0; if (Math.abs(d) > 50) showPhoto(lbI + (d < 0 ? 1 : -1)); x0 = null; });
     lb.addEventListener('close', function(){ lbImg.removeAttribute('src'); if (lbI !== curI) go(lbI, true); zoomGoal = 0; openBtn.focus(); });
   }
-  document.querySelectorAll('.mode button').forEach(function(m){ m.setAttribute('aria-pressed', String(m.dataset.mode === mode));
-    m.addEventListener('click', function(){ mode = m.dataset.mode; try { localStorage.setItem('photoMode', mode); } catch (e) {} document.querySelectorAll('.mode button').forEach(function(o){ o.setAttribute('aria-pressed', String(o.dataset.mode === mode)); }); if (lb && lb.open) showPhoto(lbI); }); });
+  var askC = document.getElementById('lbColor'); if (askC) askC.addEventListener('click', function(){ var ta = document.querySelector('#contactDlg textarea'); if (ta) ta.value = askC.dataset.prefill + ' '; });
 
   /* ---------- frame ---------- */
   var last = 0, labelEl = openBtn.querySelector('.l');

@@ -28,6 +28,7 @@
   function kindOf(name, look){
     var n = name.toLowerCase();
     if (/coffee|caf[eé]|espresso|chai|tea\b/.test(n)) return 'cafe';
+    if (/wine|cocktail|beer store/.test(n)) return /beer store/.test(n) ? 'market' : 'bar';
     if (/bak|bagel|bialy|patisser|pasticcer|bread|baguette|doughnut|donut|biscott|sourdough|focacc|honor/.test(n)) return 'bakery';
     if (/pizz|apizza/.test(n)) return 'pizza';
     if (/wine|bar\b|lodge|distill|legion|bellwether|inn\b|cave|stammtisch|tavern|pub\b/.test(n)) return 'bar';
@@ -63,8 +64,8 @@
     x += GATE;
     [].slice.call(ul.children).forEach(function(li, j){
       var a = li.querySelector('a'), shut = li.classList.contains('closed'), maybe = !shut && !!li.querySelector('.ft.shut');
-      var sp = { name: a.textContent.trim(), href: a.href, vegan: !!li.querySelector('.ft.vegan'), closed: shut, maybe: maybe, city: city, j: j, x: x, li: li };
-      sp.kind = kindOf(sp.name, c.look); spots.push(sp); city.spots.push(sp);
+      var sp = { name: a.textContent.trim(), note: li.dataset.note || '', meta: li.dataset.meta || '', href: a.href, vegan: !!li.querySelector('.ft.vegan'), closed: shut, maybe: maybe, city: city, j: j, x: x, li: li };
+      sp.kind = kindOf(sp.name + ' ' + sp.meta, c.look); spots.push(sp); city.spots.push(sp);
       x += GAP + (c.look === 'pdx' && j % 12 === 11 ? 260 : 0);   // in Portland, a crosswalk between pods
     });
     city.b = x + 260; x = city.b; cities.push(city);
@@ -245,7 +246,10 @@
       b.type = 'button'; b.textContent = s.name; b.addEventListener('click', function(){ goSpot(s); if (innerWidth <= 900) closeSide(); });
       m.href = s.href; m.target = '_blank'; m.rel = 'noopener'; m.className = 'mp'; m.textContent = 'Maps ↗'; m.setAttribute('aria-label', s.name + ' on Google Maps');
       li.appendChild(b); if (s.vegan){ var v = document.createElement('b'); v.className = 'ft vegan'; v.textContent = 'Vegan'; li.appendChild(v); } if (s.closed || s.maybe){ var z = document.createElement('b'); z.className = 'ft shut'; z.textContent = s.closed ? 'Closed' : 'May have closed'; li.appendChild(z); if (s.closed) li.classList.add('closed'); }
-      li.appendChild(m); s.row = li; sideList.appendChild(li); });
+      li.appendChild(m);
+      if (s.meta){ var mt = document.createElement('span'); mt.className = 'sm'; mt.textContent = s.meta; li.appendChild(mt); }
+      if (s.note){ var nt = document.createElement('span'); nt.className = 'sn'; nt.textContent = s.note; li.appendChild(nt); }
+      s.row = li; sideList.appendChild(li); });
   }
   var listBtn = document.getElementById('podListBtn');
   function closeSide(){ document.documentElement.classList.remove('side-open'); if (listBtn) listBtn.setAttribute('aria-expanded', 'false'); }
@@ -298,7 +302,7 @@
     spots.forEach(function(s, i){ var a = toScreen(s.x - 84, FLOOR - 250), b = toScreen(s.x + 84, FLOOR), h = hits[i], on = b[0] > sideW() && a[0] < cw;
       h.style.left = a[0] + 'px'; h.style.top = a[1] + 'px'; h.style.width = (b[0] - a[0]) + 'px'; h.style.height = (b[1] - a[1]) + 'px'; h.style.visibility = on ? 'visible' : 'hidden'; });
     if (lit){ var top = toScreen(lit.x, FLOOR - (lit.kind === 'hall' ? 270 : lit.kind === 'ice' ? 246 : lit.kind === 'cart' ? 182 : lit.city.c.look === 'nyc' ? 252 : 232));
-      var t = lit.name + (lit.vegan ? ' · vegan' : '') + (lit.closed ? ' · closed' : lit.maybe ? ' · may have closed' : '');
+      var t = lit.name + (lit.meta ? ' · ' + lit.meta : '') + (lit.vegan && !/vegan/i.test(lit.meta) ? ' · vegan' : '') + (lit.closed ? ' · closed' : lit.maybe ? ' · may have closed' : '');
       if (labelEl.textContent !== t) labelEl.textContent = t; openA.href = lit.href; openA.setAttribute('aria-label', lit.name + ': open on Google Maps');
       var half = openA.offsetWidth / 2; openA.style.left = Math.max(sideW() + half + 8, Math.min(cw - half - 8, top[0])) + 'px'; openA.style.top = Math.max(topH + openA.offsetHeight + 6, top[1]) + 'px'; openA.style.visibility = 'visible';
     } else openA.style.visibility = 'hidden';
