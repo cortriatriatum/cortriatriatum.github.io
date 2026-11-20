@@ -193,7 +193,7 @@ layout: null
         <div class="xf">{{ e.date | date: "%Y" }} · <span class="wip">{{ e.status | downcase }}</span>{% for t in e.transfers %}{% for o in site.essays %}{% if o.url contains t %} · transfer <span class="rb sm" style="background:{{ o.route_color }};color:{{ o.route_text }}" title="{{ o.title | escape }}">{{ o.route }}</span>{% endif %}{% endfor %}{% endfor %}</div></div></li>
     {%- endfor %}
     </ol>
-    <a class="more" href="{{ '/essays/' | relative_url }}">The whole line</a>
+    <a class="more" href="{{ '/library/' | relative_url }}">Off at the library: every note as a book</a>
   </section>
 
   <section class="zp" data-zone-panel="hill" aria-labelledby="hill-h">
@@ -229,8 +229,9 @@ layout: null
     <div class="ph-strip">{% assign _ph = "img-6761-bw,img-7451-bw,img-e1873-bw,oytf2732-bw,img-7177-bw,img-6843-bw" | split: "," %}{% for id in _ph %}<a href="{{ '/photos/' | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ '/img/photos/' | append: id | append: '-640.webp' | relative_url }}" alt="" loading="lazy" decoding="async"></a>{% endfor %}</div>
     <div class="links"><a class="key" href="{{ '/photos/' | relative_url }}">Walk into the gallery</a><a href="{{ '/photos/all/' | relative_url }}">All {{ site.data.photos.photos.size }} at once</a></div>
     <p class="hint">In black and white. Ask me if you would like one in color.</p></section>
-  <section data-c="notes" hidden><span class="k">The notebook</span><h2>Notes, Scribbles &amp; Ideas in Progress</h2>{% include ink/notes.html %}
-    <div class="links"><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/' | relative_url }}">The whole line</a></div></section>
+  <section data-c="notes" hidden><span class="k">The notebook · a door to the library</span><h2>Notes, Scribbles &amp; Ideas in Progress</h2>
+    <div class="links"><a class="key" href="{{ '/library/' | relative_url }}">Walk into the library</a><a href="#subscribe" data-open="subscribe">Subscribe</a></div>
+    {% include ink/notes.html %}</section>
   <section data-c="research" hidden><span class="k">The microscope</span><h2>Research</h2><h3 class="sub">Current research focus</h3>{% include ink/focus.html %}
     <h3 class="sub">Manuscripts and publications</h3>{% include ink/pubs.html %}
     <h3 class="sub">Research funding</h3>{% include ink/funding.html %}</section>
@@ -247,8 +248,8 @@ layout: null
 <script>
 {% include cite-share.js %}
 </script>
-<script src="{{ '/assets/ink.js' | relative_url }}?v=20261120" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}?v=20261120" defer></script>
-<script src="{{ '/assets/world.js' | relative_url }}?v=20261120" defer></script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261121" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261121" defer></script>
+<script src="{{ '/assets/world.js' | relative_url }}?v=20261121" defer></script>
 </body>
 </html>

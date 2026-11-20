@@ -1,0 +1,50 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.classList.add('js');</script>
+{% include ink/head.html %}
+<title>The library · Rick Mathews, PhD</title>
+<meta name="description" content="Notes, scribbles and ideas in progress by Rick Mathews, PhD, as books in a library.">
+<link href="https://cortriatriatum.github.io/library/" rel="canonical"/>
+<meta name="robots" content="noindex">
+<meta content="https://cortriatriatum.github.io/img/share.jpg" property="og:image"/>
+<style>
+{% include strip.css %}
+</style>
+</head>
+<body class="strip-page" data-scene="library">
+{% assign navpage = "photos" %}{% include ink/nav.html %}
+<canvas id="strip" class="strip-ui" role="img" aria-label="An ink drawing of a library. Between tall bookcases, each note stands cover-out on its own shelf under a lamp, with its line's bullet, title and year. The figure walks from one to the next as you scroll."></canvas>
+<div id="stripHot" class="strip-ui"></div>
+<div id="stripLen" class="strip-ui"></div>
+<header class="strip-top strip-ui">
+  <h1>The library</h1>
+  <a href="{{ '/essays/' | relative_url }}">The whole line, as a list</a>
+  <span class="sky" id="stripSky" aria-live="off"></span>
+</header>
+<nav class="sr sr-list strip-ui" aria-label="Every note, in order"><ol id="stripList"></ol></nav>
+<nav class="strip-bar strip-ui" aria-label="Move through the library">
+  <button type="button" class="jb" id="stripPrev"><span aria-hidden="true">←</span> Back</button>
+  <span class="ct" id="stripCount" aria-live="polite"></span>
+  <button type="button" class="jb key" id="stripNext">Next <span aria-hidden="true">→</span></button>
+</nav>
+<main class="plain-view" id="main">
+  <h1>Notes, Scribbles &amp; Ideas in Progress</h1>
+  {% include ink/notes.html %}
+  <p><a href="{{ '/explore/' | relative_url }}#room">Back to the room</a></p>
+</main>
+{%- assign books = site.essays | sort: "date" | reverse %}
+<script type="application/json" id="bookData">[{% for e in books %}{"title":{{ e.title | jsonify }},"url":"{{ e.url | relative_url }}","route":"{{ e.route }}","color":"{{ e.route_color | default: '#808183' }}","text":"{{ e.route_text | default: '#fff' }}","year":"{{ e.date | date: '%Y' }}","status":"{{ e.status | default: 'Work in progress' }}"}{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
+{% include ink/foot.html %}
+{% include citable.html %}
+<script>
+{% include cite-share.js %}
+</script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261121" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261121" defer></script>
+<script src="{{ '/assets/strip.js' | relative_url }}?v=20261121" defer></script>
+</body>
+</html>

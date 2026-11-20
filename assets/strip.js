@@ -121,16 +121,59 @@
   }
   function fitText(t, x, y, w){ while (ctx.measureText(t).width > w && t.length > 4) t = t.slice(0, -2) + '…'; ctx.fillText(t, x, y); }
 
+  /* ================= the library: the notes, cover-out on display shelves between bookcases ================= */
+  function setupLibrary(){
+    var data = JSON.parse(document.getElementById('bookData').textContent), x = 640;
+    data.forEach(function(b){ stops.push({ b: b, x: x, w: 190, h: 250, cy: 268, stand: x - 175, act: 'stand', label: b.title, url: b.url }); x += 760; });
+    END = x + 300; stops.forEach(function(s){ s.look = { x: s.x, y: s.cy }; });
+  }
+  var SPINE = ['sky', 'rose', 'leaf', 'sun', 'tint'];
+  function bookcase(x0, w, seed){
+    var P = COL.paper; R(x0, 70, w, FLOOR - 70, 2.4, P);
+    for (var sh = 0; sh < 5; sh++){ var y = 90 + sh * 88, bx = x0 + 10, n = seed + sh * 7;
+      S([[x0, y + 80], [x0 + w, y + 80]], 2);
+      while (bx < x0 + w - 16){ var bw = 9 + (n * 37) % 11, bh = 56 + (n * 53) % 22, tilt = (n % 9 === 0); n++;
+        if (tilt){ S([[bx, y + 80], [bx + bh * .3, y + 80 - bh], [bx + bh * .3 + bw, y + 80 - bh], [bx + bw, y + 80], [bx, y + 80]], 1.4); bx += bw + 18; continue; }
+        R(bx, y + 80 - bh, bw, bh, 1.4, COL[SPINE[n % 5]]); Ln(bx + 2, y + 86 - bh, bx + bw - 2, y + 86 - bh, .8, .6); bx += bw + 2; } }
+  }
+  function wrapCover(t, x0, y0, w, lh, max){ var words = t.split(' '), line = '', yy = y0, n = 0; ctx.textAlign = 'left';
+    for (var i = 0; i < words.length; i++){ var test = line ? line + ' ' + words[i] : words[i]; if (ctx.measureText(test).width > w && line){ ctx.fillText(line, x0, yy); line = words[i]; yy += lh; if (++n >= max - 1){ break; } } else line = test; }
+    ctx.fillText(line, x0, yy); }
+  function drawLibrary(lo, hi, wk){
+    var P = COL.paper;
+    S([[lo, 40], [hi, 40]], 2.2); S([[lo, FLOOR], [hi, FLOOR]], 2.6);
+    for (var fb = Math.floor(lo / 60) * 60; fb < hi; fb += 60) Ln(fb, FLOOR, fb, FLOOR + 70, 1, .25); H(lo, FLOOR + 4, hi - lo, 70, 16, .08);
+    /* bookcases between the displays, a window onto the real sky now and then */
+    for (var bc = Math.floor((lo - 300) / 760) * 760 + 190; bc < hi + 300; bc += 760){ if (bc < 400 || bc > END - 260) continue; bookcase(bc - 130, 260, (bc / 760) | 0); }
+    if (lo < 400){ R(40, 200, 150, FLOOR - 200, 2.4, P); Ln(115, 210, 115, FLOOR, 1.6); R(40, 170, 150, 24, 1.8, P); TX('← THE ROOM', 115, 187, 12, 'center', MONO); }
+    if (hi > END - 300){ R(END - 220, 200, 150, FLOOR - 200, 2.4, P); R(END - 230, 170, 170, 24, 1.8, P); TX('BACK TO THE WALK →', END - 145, 187, 11, 'center', MONO); }
+    stops.forEach(function(s, i){
+      if (s.x + 200 < lo || s.x - 200 > hi) return;
+      var here = wk.i === i, hov = hoverI === i, x0 = s.x - s.w / 2, y0 = s.cy - s.h / 2, b = s.b;
+      /* the lamp and the display shelf */
+      ctx.save(); ctx.globalAlpha = here || hov ? .45 : .18; ctx.fillStyle = COL.sun; ctx.beginPath(); ctx.moveTo(s.x - 12, 50); ctx.lineTo(x0 - 26, y0 + s.h + 24); ctx.lineTo(x0 + s.w + 26, y0 + s.h + 24); ctx.lineTo(s.x + 12, 50); ctx.closePath(); ctx.fill(); ctx.restore();
+      Ln(s.x, 40, s.x, 50, 1.6); S([[s.x - 12, 50], [s.x - 8, 60], [s.x + 8, 60], [s.x + 12, 50]], 1.6);
+      R(x0 - 30, y0 + s.h + 4, s.w + 60, 12, 2, P); Ln(x0 - 14, y0 + s.h + 16, x0 - 14, FLOOR, 2); Ln(x0 + s.w + 14, y0 + s.h + 16, x0 + s.w + 14, FLOOR, 2);
+      /* the book, cover out: its line's bullet, title and year */
+      ctx.fillStyle = COL.ink; ctx.globalAlpha = .12; ctx.fillRect(x0 + 6, y0 + 6, s.w, s.h); ctx.globalAlpha = 1;
+      R(x0, y0, s.w, s.h, here || hov ? 3.2 : 2.6, P); WASH(s.x, y0 + 40, s.w * .45, 26, b.color, .35, 300 + i); Ln(x0 + 12, y0, x0 + 12, y0 + s.h, 1.2, .5);
+      ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(x0 + 44, y0 + 40, 18, 0, 6.3); ctx.fill(); O(x0 + 44, y0 + 40, 18, 2, null);
+      ctx.fillStyle = b.text || '#fff'; ctx.font = '800 19px "Bricolage Grotesque",sans-serif'; ctx.textAlign = 'center'; ctx.fillText(b.route, x0 + 44, y0 + 47);
+      ctx.fillStyle = COL.ink; ctx.font = '800 17px "Bricolage Grotesque",sans-serif'; wrapCover(b.title, x0 + 22, y0 + 92, s.w - 38, 21, 6);
+      ctx.font = '11px ' + MONO; ctx.fillStyle = COL.soft; ctx.textAlign = 'left'; ctx.fillText(b.year + ' · ' + b.status.toLowerCase(), x0 + 22, y0 + s.h - 16); ctx.fillStyle = COL.ink;
+      if (here || hov) R(x0 - 8, y0 - 8, s.w + 16, s.h + 16, 1.2, null);
+    });
+  }
+
   /* ---------- build ---------- */
-  if (scene !== 'gallery') return;
-  setupGallery();
+  if (scene === 'gallery') setupGallery(); else if (scene === 'library') setupLibrary(); else return;
   if (!stops.length) return;
   stops.forEach(function(s, i){ s.at = IN + i * (WALK + DWELL) + DWELL / 2; });
   var PX = 3.2;   // page pixels per scroll unit
   function setLen(){ spacer.style.height = Math.round(totalLen() * PX + innerHeight) + 'px'; }
 
   /* the clickable layer: one Open button for the lit stop, plus a hit area over every stop on screen */
-  var openBtn = document.createElement('button'); openBtn.type = 'button'; openBtn.className = 'obj now'; openBtn.innerHTML = '<span class="l"></span><span class="go" aria-hidden="true">Open</span>'; hot.appendChild(openBtn);
+  var openBtn = document.createElement('button'); openBtn.type = 'button'; openBtn.className = 'obj now'; openBtn.innerHTML = '<span class="l"></span><span class="go" aria-hidden="true">' + (scene === 'library' ? 'Read' : 'Open') + '</span>'; hot.appendChild(openBtn);
   var hits = stops.map(function(s, i){ var b = document.createElement('button'); b.type = 'button'; b.className = 'hit'; b.setAttribute('aria-label', 'Open ' + s.label); b.tabIndex = -1; hot.appendChild(b);
     b.addEventListener('mouseenter', function(){ hoverI = i; }); b.addEventListener('mouseleave', function(){ if (hoverI === i) hoverI = -1; }); b.addEventListener('click', function(){ open(i); }); return b; });
   var hoverI = -1, curI = 0;
@@ -144,6 +187,7 @@
   var u = 0, ut = 0;
   function readScroll(){ ut = cl(scrollY / PX, 0, totalLen()); }
   addEventListener('scroll', readScroll, { passive: true });
+  addEventListener('pageshow', function(e){ if (e.persisted){ zoomGoal = 0; zoomK = 0; zoomTo = null; openAfter = -1; } });
   function go(i, now){ i = cl(i, 0, stops.length - 1); var y = stops[i].at * PX; scrollTo({ top: y, behavior: now || still() ? 'auto' : 'smooth' }); if (now){ ut = u = stops[i].at; } }
   var nextB = document.getElementById('stripNext'), prevB = document.getElementById('stripPrev'), countEl = document.getElementById('stripCount');
   if (nextB) nextB.addEventListener('click', function(){ var w = walkerAt(ut); go(w.i >= 0 ? w.i + 1 : w.near); });
@@ -158,6 +202,7 @@
   function open(i){
     var s = stops[i]; if (!s) return;
     zoomTo = { x: s.x, y: s.cy, w: s.w + 32, h: s.h + 32 }; zoomGoal = 1; openAfter = i; if (still()){ zoomK = 1; }
+    if (scene === 'library' && still()){ location.href = s.url; }
   }
   var openAfter = -1;
   /* the photo viewer */
@@ -189,14 +234,14 @@
     camX = goal;
     if (cw < 700) camX = goal - 40;
     zoomK = still() ? zoomGoal : lerp(zoomK, zoomGoal, .14); if (Math.abs(zoomK - zoomGoal) < .01){ zoomK = zoomGoal; if (zoomGoal === 0) zoomTo = null; }
-    if (openAfter >= 0 && zoomK > .9){ var oi = openAfter; openAfter = -1; showPhoto(oi); lb.showModal(); }
+    if (openAfter >= 0 && zoomK > .9){ var oi = openAfter; openAfter = -1; if (scene === 'library') location.href = stops[oi].url; else { showPhoto(oi); lb.showModal(); } }
     /* draw */
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, cw, ch); ctx.fillStyle = COL.paper; ctx.fillRect(0, 0, cw, ch);
     I.use(ctx);
     var p0 = toScreen(0, 0), p1 = toScreen(1, 1), sc = p1[0] - p0[0];
     ctx.setTransform(dpr * sc, 0, 0, dpr * sc, dpr * p0[0], dpr * p0[1]);
     var lo = camX - cw / 2 / K - 100, hi = camX + cw / 2 / K + 100; if (lo < -400) lo = -400;
-    drawGallery(lo, hi, wk);
+    if (scene === 'library') drawLibrary(lo, hi, wk); else drawGallery(lo, hi, wk);
     /* the figure, to scale */
     var look = hoverI >= 0 ? stops[hoverI].look : (wk.i >= 0 ? s.look : null);
     var f = { x: 0, y: 0, mode: wk.mode, ph: wk.ph, face: wk.face, look: look ? { x: (look.x - wk.x) / ZOOM, y: (look.y - FLOOR) / ZOOM } : null, smile: wk.i >= 0 };

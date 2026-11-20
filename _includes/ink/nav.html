@@ -4,8 +4,9 @@
   <a class="navsec" href="{{ '/essays/' | relative_url }}"{% if navpage == "essays" or navpage == "essay" %} aria-current="page"{% endif %}>Notes</a>
   <a class="navsec" href="{{ '/' | relative_url }}#research">Research</a>
   <a class="navsec" href="{{ '/' | relative_url }}#contact" data-open="contact">Contact</a>
-  {% if navpage == "explore" or navpage == "photos" %}<a class="navsec" href="{{ '/' | relative_url }}" data-pick="simple">One page</a>{% else %}<a class="navsec" href="{{ '/explore/' | relative_url }}" data-pick="walk">The walk</a>{% endif %}
+  {% unless navpage == "explore" or navpage == "photos" %}<a class="navsec" href="{{ '/explore/' | relative_url }}" data-pick="walk">The walk</a>{% endunless %}
   <span class="tools">
+    {% if navpage == "explore" or navpage == "photos" %}<a class="pill out" href="{{ '/' | relative_url }}" data-pick="simple" title="Leave the walk: everything on one page">← One page</a>{% endif %}
     <button type="button" class="pill search-open" data-search aria-haspopup="dialog" title="Search this site (press / or Ctrl K)">Search <kbd>/</kbd></button>
     <button type="button" class="pill" id="plainToggle" aria-pressed="true" title="Show or hide the drawings">Drawings: On</button>
     <button type="button" class="pill" id="themeToggle" aria-pressed="false" aria-label="Switch color theme">Dark</button>
