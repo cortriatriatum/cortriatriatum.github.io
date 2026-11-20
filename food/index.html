@@ -49,7 +49,7 @@ layout: null
 <div id="stripLen" class="strip-ui"></div>
 <header class="strip-top strip-ui">
   <h1>Food recs</h1>
-  <a href="{{ '/explore/' | relative_url }}">Back to the walk</a>
+  <a href="{{ '/' | relative_url }}">Back to the CV</a>
   <span class="sky" id="stripSky" aria-live="off"></span>
 </header>
 <aside class="pod-side strip-ui" id="podSide" aria-labelledby="podCity">
@@ -59,20 +59,20 @@ layout: null
   <ol id="podList" aria-label="Spots in this city"></ol>
 </aside>
 <nav class="strip-bar strip-ui" aria-label="Move between cities">
-  <button type="button" class="jb" id="stripPrev" data-end="{{ '/explore/' | relative_url }}"><span aria-hidden="true">←</span> <span class="jl" id="prevCity">The street</span></button>
+  <button type="button" class="jb" id="stripPrev" data-end="{{ '/' | relative_url }}"><span aria-hidden="true">←</span> <span class="jl" id="prevCity">The CV</span></button>
   <button type="button" class="jb" id="podListBtn" aria-controls="podSide" aria-expanded="false">List</button>
   <span class="ct" id="stripCount" aria-live="polite"></span>
-  <button type="button" class="jb key" id="stripNext" data-end="{{ '/explore/' | relative_url }}"><span class="jl" id="nextCity">New York</span> <span aria-hidden="true">→</span></button>
+  <button type="button" class="jb key" id="stripNext" data-end="{{ '/' | relative_url }}"><span class="jl" id="nextCity">New York</span> <span aria-hidden="true">→</span></button>
 </nav>
 <div id="cartPanel" hidden>{% include ink/food.html %}</div>
 <main class="plain-view" id="main">
   <h1>Food recs</h1>
   {% include ink/food.html %}
-  <p><a href="{{ '/explore/' | relative_url }}">Back to the street</a></p>
+  <p><a href="{{ '/' | relative_url }}">Back to the CV</a></p>
 </main>
 {% include ink/foot.html %}
-<script src="{{ '/assets/ink.js' | relative_url }}?v=20261122" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}?v=20261122" defer></script>
-<script src="{{ '/assets/pod.js' | relative_url }}?v=20261122" defer></script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261124" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261124" defer></script>
+<script src="{{ '/assets/pod.js' | relative_url }}?v=20261124" defer></script>
 </body>
 </html>

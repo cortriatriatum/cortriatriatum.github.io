@@ -30,7 +30,7 @@ layout: null
 <style>
   html,body.world{height:100%;overflow:hidden;overscroll-behavior:none}
   body.world{padding:0;touch-action:none}
-  body.world>.nav{position:fixed;top:0;left:0;right:0;z-index:30;max-width:none;padding-inline:max(18px,env(safe-area-inset-left,0px)) max(18px,env(safe-area-inset-right,0px));pointer-events:none}
+  body.world>.nav{position:fixed;top:0;left:0;right:0;z-index:30;max-width:none;background:color-mix(in srgb,var(--paper) 90%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-sizing:border-box;padding-inline:max(18px,env(safe-area-inset-left,0px)) max(18px,env(safe-area-inset-right,0px));pointer-events:none}
   body.world>.nav>*{pointer-events:auto}
   body.world>.foot{display:none}
   #world{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;display:block}
@@ -45,7 +45,7 @@ layout: null
   .dir-line:focus-visible,.hot:focus-visible{outline:2.5px dashed var(--pop);outline-offset:2px}
   @keyframes boil{0%{border-radius:14px 11px 15px 10px}33%{border-radius:11px 15px 10px 14px}66%{border-radius:15px 10px 13px 12px}}
   /* one panel per stop, on the left; they fade in when you arrive */
-  .zp{position:fixed;z-index:10;left:max(18px,env(safe-area-inset-left,0px));top:calc(72px + env(safe-area-inset-top,0px));width:min(440px,calc(100vw - 36px));max-height:calc(100dvh - 100px);overflow-y:auto;
+  .zp{position:fixed;z-index:10;left:max(18px,env(safe-area-inset-left,0px));top:calc(var(--navh,72px) + 8px + env(safe-area-inset-top,0px));width:min(440px,calc(100vw - 36px));max-height:calc(100dvh - var(--navh,72px) - 90px);overflow-y:auto;
     background:color-mix(in srgb,var(--paper) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:18px 20px;border-radius:16px;box-shadow:0 14px 44px rgba(0,0,0,.1);
     opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease,visibility 0s linear .35s;overscroll-behavior:contain}
   .zp.on{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .35s ease}
@@ -65,6 +65,16 @@ layout: null
   .ways>*:hover,.ways>*:focus-visible{background:var(--ink);color:var(--paper)}
   .ways>*:focus-visible,.seek:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
   .hint{font:400 17px/1.3 var(--hand);color:var(--soft);margin:10px 0 0}
+  /* the platform's departures board: the main line first; the detours under it */
+  .dep{list-style:none;margin:8px 0 0;padding:10px;display:grid;gap:4px;background:var(--ink);color:var(--paper);border-radius:10px}
+  .dep a,.dep button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:center;padding:7px 8px;border-radius:8px}
+  .dep .bul{width:28px;height:28px;font-size:12px;background:var(--paper);color:var(--ink);border-color:var(--paper)}
+  .dep li:not(.now) .bul{border-style:dashed;background:transparent;color:var(--paper)}
+  .dep span{font:700 15px/1.2 var(--grot)}
+  .dep small{display:block;font:500 11px/1.3 var(--mono);opacity:.75;margin-top:2px}
+  .dep li.now span{color:var(--sun)}
+  .dep a:hover,.dep button:hover{background:color-mix(in srgb,var(--paper) 14%,transparent)}
+  .dep a:focus-visible,.dep button:focus-visible{outline:2px solid var(--sun);outline-offset:1px}
   .zp .rows>li{padding:9px 0}
   .zp .rows.two{grid-template-columns:minmax(0,1fr)}.zp .rows.two>li:nth-child(2){border-top:0}
   .zp ol.mini{list-style:none;margin:0;padding:0;display:grid;gap:10px}
@@ -143,7 +153,10 @@ layout: null
     .tag-in{font-size:15px;padding:6px 10px 7px}
     .panel{top:auto;left:0;width:100%;max-height:82vh;border-left:0;border-top:1.5px solid var(--ink);transform:translateY(104%);border-radius:16px 16px 0 0}
   }
-  @media (max-width: 600px){ .obj:not(.now),.loop,.tag-in.wide-only{display:none!important} .pass .pv{display:none!important} .pass button{padding:6px 8px} }
+  @media (max-width: 600px){ .obj:not(.now),.loop,.tag-in.wide-only{display:none!important} .pass .pv{display:none!important} .pass button{padding:6px 8px}
+    /* phones: the room's and the lab's panel shows only the thing you are at, so the drawing stays in view */
+    .pass li:not(.here){display:none} .zp .hint{display:none} .zp h2{font-size:22px;margin:2px 0 6px} .zp{padding:12px 14px}
+    .dep{padding:6px}.dep a,.dep button{padding:4px 6px}.dep small{display:none} }
   @media (prefers-reduced-motion: reduce){ .tag-in,.obj.now{animation:none} .zp,.panel{transition:none} }
 </style>
 </head>
@@ -154,22 +167,6 @@ layout: null
 <div id="hot" data-directory="{{ '/' | relative_url }}" data-food="{{ '/food/' | relative_url }}"></div>
 
 <main id="main">
-  <section class="zp intro" data-zone-panel="street" aria-label="Rick Mathews">
-    <div class="who">
-      <span class="me-photo"><img src="{{ '/img/rick-1.webp' | relative_url }}" alt="Rick Mathews" width="116" height="116" decoding="async" fetchpriority="high"></span>
-      <h1>Rick Mathews, PhD</h1>
-    </div>
-    <p class="bio">Physician-Scientist in Training at the <a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a> <a href="https://www.ohsu.edu/school-of-medicine/md-phd-program/rick-mathews-phd">Medical Scientist Training Program</a></p>
-    <span class="now" id="liveNow">Portland, Oregon</span>
-    <button type="button" class="seek" data-search aria-haspopup="dialog">Search notes, papers, awards, courses <kbd>/</kbd></button>
-    <nav class="ways" aria-label="Where to go from here">
-      <a href="#room" data-goto-zone="room">Down to the station ↓</a>
-      <a href="#lab" data-goto-zone="lab">Aerial Tram up to OHSU ↑</a>
-      <a href="{{ '/food/' | relative_url }}">Into the food cart pod</a>
-      <a href="{{ '/' | relative_url }}" data-pick="simple">Everything on one page</a>
-    </nav>
-  </section>
-
   <section class="zp" data-zone-panel="room" aria-labelledby="room-h">
     <span class="k">Inside the station</span>
     <h2 id="room-h">The room</h2>
@@ -178,9 +175,14 @@ layout: null
   </section>
 
   <section class="zp" data-zone-panel="platform" aria-labelledby="plat-h">
-    <span class="k">Platform</span>
-    <h2 id="plat-h">Train to Marquam Hill</h2>
-    <p class="hint">On the train, the cards over the windows are my notes.</p>
+    <span class="k">Platform · departures</span>
+    <h2 id="plat-h">Where to?</h2>
+    <ol class="dep">
+      <li class="now"><button type="button" data-goto-zone="train"><b class="bul">T</b><span>Marquam Hill · OHSU<small>now boarding · or just keep scrolling</small></span></button></li>
+      <li><a href="{{ '/photos/' | relative_url }}"><b class="bul">G</b><span>Gallery<small>detour · photos</small></span></a></li>
+      <li><a href="{{ '/library/' | relative_url }}"><b class="bul">B</b><span>Library<small>detour · notes and essays</small></span></a></li>
+      <li><a href="{{ '/food/' | relative_url }}"><b class="bul">F</b><span>Food recs<small>detour · city by city</small></span></a></li>
+    </ol>
   </section>
 
   <section class="zp" data-zone-panel="train" aria-labelledby="notes-h">
@@ -212,13 +214,13 @@ layout: null
   <section class="zp" data-zone-panel="tram" aria-labelledby="tram-h">
     <span class="k">OHSU Aerial Tram</span>
     <h2 id="tram-h">Down to South Waterfront</h2>
-    <p class="hint">It lands on the street you started on.</p>
+    <p class="hint">It lands back at the CV, the one page. Scroll on to get off.</p>
   </section>
 </main>
 
 <nav class="journey" aria-label="Move along the loop">
-  <button type="button" id="goPrev" class="jb"><span aria-hidden="true">↑</span> <span class="jl">Back: <span id="prevLabel">Aerial Tram</span></span></button>
-  <button type="button" id="goNext" class="jb key"><span class="jl">Next: <span id="nextLabel">Down to the station</span></span> <span aria-hidden="true">↓</span></button>
+  <button type="button" id="goPrev" class="jb"><span aria-hidden="true">↑</span> <span class="jl">Back: <span id="prevLabel">Up the stairs to the CV</span></span></button>
+  <button type="button" id="goNext" class="jb key"><span class="jl">Next: <span id="nextLabel">Platform</span></span> <span aria-hidden="true">↓</span></button>
 </nav>
 
 
@@ -247,8 +249,8 @@ layout: null
 <script>
 {% include cite-share.js %}
 </script>
-<script src="{{ '/assets/ink.js' | relative_url }}?v=20261122" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}?v=20261122" defer></script>
-<script src="{{ '/assets/world.js' | relative_url }}?v=20261122" defer></script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261124" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261124" defer></script>
+<script src="{{ '/assets/world.js' | relative_url }}?v=20261124" defer></script>
 </body>
 </html>

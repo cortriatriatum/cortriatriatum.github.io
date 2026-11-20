@@ -184,7 +184,7 @@
   /* the way down at the end of each street: the subway to the next city, with its route bullet */
   function exitTo(c, lo, hi){
     var nx = cities[c.i + 1], x0 = c.b - 250, P = COL.paper; if (x0 + 300 < lo || x0 > hi) return;
-    if (!nx){ R(x0 + 20, 300, 200, 44, 2, P); ctx.fillStyle = COL.ink; ctx.font = '700 12px ' + MONO; fitText('BACK TO THE STREET →', x0 + 120, 327, 180); Ln(x0 + 40, 344, x0 + 40, FLOOR, 2.2); Ln(x0 + 200, 344, x0 + 200, FLOOR, 2.2); return; }
+    if (!nx){ R(x0 + 20, 300, 200, 44, 2, P); ctx.fillStyle = COL.ink; ctx.font = '700 12px ' + MONO; fitText('BACK TO THE CV →', x0 + 120, 327, 180); Ln(x0 + 40, 344, x0 + 40, FLOOR, 2.2); Ln(x0 + 200, 344, x0 + 200, FLOOR, 2.2); return; }
     S([[x0 + 40, FLOOR], [x0 + 40, 420], [x0 + 200, 420], [x0 + 200, FLOOR]], 2.2); S([[x0 + 32, 420], [x0 + 208, 420]], 2.6); O(x0 + 50, 404, 9, 1.8, COL.leaf); O(x0 + 190, 404, 9, 1.8, COL.leaf);
     R(x0 + 46, 428, 148, 26, 1.8, P); bullet(x0 + 62, 441, 10, nx.c.bul, nx.c.col); ctx.fillStyle = COL.ink; ctx.font = '700 10px ' + MONO; fitText('TO ' + nx.c.short.toUpperCase(), x0 + 128, 445, 108);
     ctx.fillStyle = COL.ink; ctx.globalAlpha = .1; ctx.fillRect(x0 + 50, 458, 140, FLOOR - 458); ctx.globalAlpha = 1;
@@ -308,7 +308,7 @@
     } else openA.style.visibility = 'hidden';
     shownCity && shownCity.spots.forEach(function(s){ if (s.row){ var on = s === sp; if (s.row.classList.contains('here') !== on){ s.row.classList.toggle('here', on); if (on && innerWidth > 900) s.row.scrollIntoView({ block: 'nearest' }); } } });
     if (countEl){ var t2 = c.c.short + (sp ? ' · ' + (sp.j + 1) + ' of ' + c.spots.length : ' · ' + c.spots.length + (c.spots.length === 1 ? ' spot' : ' spots')); if (countEl.textContent !== t2) countEl.textContent = t2; }
-    var nx = cities[c.i + 1], pv = cities[c.i - 1]; if (nextL){ var nt2 = nx ? nx.c.short : 'The street'; if (nextL.textContent !== nt2) nextL.textContent = nt2; } if (prevL){ var pt = figX(ut) > c.a + 400 ? 'Start of ' + c.c.short : pv ? pv.c.short : 'The street'; if (prevL.textContent !== pt) prevL.textContent = pt; }
+    var nx = cities[c.i + 1], pv = cities[c.i - 1]; if (nextL){ var nt2 = nx ? nx.c.short : 'The CV'; if (nextL.textContent !== nt2) nextL.textContent = nt2; } if (prevL){ var pt = figX(ut) > c.a + 400 ? 'Start of ' + c.c.short : pv ? pv.c.short : 'The CV'; if (prevL.textContent !== pt) prevL.textContent = pt; }
     if (skyEl){ var t3 = c.c.short + (w ? ' now · ' + w.tempF + '°F · ' + I.WORDS[w.kind] + (w.day ? '' : ' · night') : ''); if (skyEl.textContent !== t3) skyEl.textContent = t3; }
     if (sideK){ var t4 = c.spots.length + (c.spots.length === 1 ? ' spot' : ' spots') + (w ? ' · ' + w.tempF + '°F, ' + I.WORDS[w.kind] : ''); if (sideK.textContent !== t4) sideK.textContent = t4; }
     if (fade > 0){ ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.globalAlpha = Math.min(1, fade * 1.4); ctx.fillStyle = COL.paper; ctx.fillRect(0, 0, cw, ch); ctx.globalAlpha = 1; fade = Math.max(0, fade - .06); }

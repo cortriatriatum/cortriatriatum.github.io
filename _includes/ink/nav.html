@@ -1,16 +1,27 @@
 <a class="skip" href="#main">Skip to content</a>
 <nav class="nav" aria-label="Site">
-  <a class="me" href="{{ '/' | relative_url }}" data-dir{% if navpage == "home" %} aria-current="page"{% endif %}>Rick Mathews</a>
-  <a class="navsec" href="{{ '/essays/' | relative_url }}"{% if navpage == "essays" or navpage == "essay" %} aria-current="page"{% endif %}>Notes</a>
-  <a class="navsec" href="{{ '/' | relative_url }}#research">Research</a>
-  <a class="navsec" href="{{ '/' | relative_url }}#contact" data-open="contact">Contact</a>
-  {% unless navpage == "explore" or navpage == "photos" %}<a class="navsec" href="{{ '/explore/' | relative_url }}" data-pick="walk">The walk</a>{% endunless %}
+  <a class="me" href="{{ '/' | relative_url }}" data-dir data-pick="simple"{% if navpage == "home" %} aria-current="page"{% endif %}>Rick Mathews</a>
+  {%- comment %} The line: the whole site as one subway line. The CV (the one page) is in the middle: up by tram to
+    the lab, down the stairs into the subway. The detours hang off the end. The stop you are at is marked. {% endcomment %}
+  <div class="lines" id="siteLine">
+  <ol class="line" aria-label="The line: where you are on the site">
+    <li data-stop="lab"><a href="{{ '/explore/' | relative_url }}#lab" data-zone="lab" data-pick="walk"><b class="bul">L</b><span>Lab</span></a></li>
+    <li data-stop="tram"><a href="{{ '/explore/' | relative_url }}#tramup" data-zone="tram" data-pick="walk"><b class="bul">A</b><span>Tram <i aria-hidden="true">↑</i></span></a></li>
+    <li data-stop="page" class="home"><a href="{{ '/' | relative_url }}" data-pick="simple"><b class="bul">CV</b><span>CV</span></a></li>
+    <li data-stop="room"><a href="{{ '/explore/' | relative_url }}#room" data-zone="room" data-pick="walk"><b class="bul">S</b><span>Subway <i aria-hidden="true">↓</i></span></a></li>
+    <li data-stop="platform"><a href="{{ '/explore/' | relative_url }}#platform" data-zone="platform" data-pick="walk"><b class="bul">P</b><span>Platform</span></a></li>
+    <li data-stop="train"><a href="{{ '/explore/' | relative_url }}#train" data-zone="train" data-pick="walk"><b class="bul">T</b><span>Train</span></a></li>
+    <li data-stop="hill"><a href="{{ '/explore/' | relative_url }}#hill" data-zone="hill" data-pick="walk"><b class="bul">H</b><span>Marquam Hill</span></a></li>
+  </ol>
+  <ol class="line off" aria-label="Detours">
+    <li data-stop="gallery"><a href="{{ '/photos/' | relative_url }}"><b class="bul">G</b><span>Gallery</span></a></li>
+    <li data-stop="library"><a href="{{ '/library/' | relative_url }}"><b class="bul">B</b><span>Library</span></a></li>
+    <li data-stop="food"><a href="{{ '/food/' | relative_url }}"><b class="bul">F</b><span>Food recs</span></a></li>
+  </ol>
+  </div>
   <span class="tools">
-    <button type="button" class="pill lm-btn" id="lineMapBtn" aria-controls="lineMap" aria-expanded="false" title="Where you are on the line"><i class="lm-dot" aria-hidden="true"></i>Map</button>
-    {% if navpage == "explore" or navpage == "photos" %}<a class="pill out" href="{{ '/' | relative_url }}" data-pick="simple" title="Leave the walk: everything on one page">← One page</a>{% endif %}
     <button type="button" class="pill search-open" data-search aria-haspopup="dialog" title="Search this site (press / or Ctrl K)">Search <kbd>/</kbd></button>
     <button type="button" class="pill" id="plainToggle" aria-pressed="true" title="Show or hide the drawings">Drawings: On</button>
     <button type="button" class="pill" id="themeToggle" aria-pressed="false" aria-label="Switch color theme">Dark</button>
   </span>
 </nav>
-{% include ink/linemap.html %}

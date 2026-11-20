@@ -48,7 +48,7 @@
     { id: 'train', n: 850, d: 1650, at: 150, label: 'Train', next: 'Off at Marquam Hill' },
     { id: 'hill', n: 450, d: 2500, at: 140, label: 'Marquam Hill', next: 'Elevator up to OHSU' },
     { id: 'lab', n: walkLen(LAB_HOTS), hots: LAB_HOTS, label: 'OHSU lab', next: 'Aerial Tram down' },
-    { id: 'tram', n: 700, d: 3600, at: 300, label: 'Aerial Tram', next: 'Down to the one page' }
+    { id: 'tram', n: 700, d: 3600, at: 300, label: 'Aerial Tram', next: 'Down to the CV' }
   ];
   var LEN = 0, SEAMS = [];
   ZONES.forEach(function(z){ z.a = LEN; z.b = LEN += z.n;
@@ -60,8 +60,14 @@
      Marquam Hill 2500–2950, tram 3600–4300 */
   function dx(x){ var z = zoneAt(x); return z.hots ? x : z.d + (x - z.a); }
   var HASH = {}; ZONES.forEach(function(z){ HASH[z.id] = z.stop; });
-  HASH.notes = HASH.train; HASH.research = LAB_HOTS[0].at; HASH.subway = HASH.room;
-  var u = HASH.street, ut = u;
+  HASH.notes = HASH.train; HASH.research = LAB_HOTS[0].at;
+  /* the tram from the bottom, for riding it up: you came up off the top of the one page */
+  HASH.tramup = Z.tram.a + 640;
+  /* the foot of the stairs, for arriving from the one page: he is still coming down them */
+  HASH.subway = Z.room.a + 64;
+  /* the street is the one page itself: the walk runs from the foot of its stairs (the room) to the tram landing */
+  var START = Z.room.a;
+  var u = HASH.room, ut = u;
   function wrap(x){ return ((x % LEN) + LEN) % LEN; }
   function zoneAt(x){ x = wrap(x); for (var i = 0; i < ZONES.length; i++) if (x >= ZONES[i].a && x < ZONES[i].b) return ZONES[i]; return ZONES[0]; }
   /* The loop runs through the one page: past the end of the tram ride you come out at the top of the page, and
@@ -104,13 +110,13 @@
   function zoneIndex(x){ return ZONES.indexOf(zoneAt(x)); }
   function stopsOf(z){ return z.hots ? z.hots.map(function(h){ return h.at; }) : [z.stop]; }
   function goNext(){ var i = zoneIndex(ut), x = wrap(ut), z = ZONES[i], st = stopsOf(z).filter(function(a){ return a > x + 20; });
-    if (!st.length && i === ZONES.length - 1) return exitTo(true); goForward(st.length ? st[0] : ZONES[i + 1].stop); }
+    if (!st.length && i === ZONES.length - 1) return exitTo(true); if (i === 0) return goForward(HASH.room); goForward(st.length ? st[0] : ZONES[i + 1].stop); }
   function goPrev(){ var i = zoneIndex(ut), x = wrap(ut), z = ZONES[i], st = stopsOf(z).filter(function(a){ return a < x - 20; });
-    if (!st.length && i === 0) return exitTo(false); var p = ZONES[i - 1], ps = stopsOf(p); goBack(st.length ? st[st.length - 1] : ps[ps.length - 1]); }
+    if (!st.length && i <= 1) return exitTo(false); var p = ZONES[i - 1], ps = stopsOf(p); goBack(st.length ? st[st.length - 1] : ps[ps.length - 1]); }
   /* where the Next button goes from here, in words */
   function nextWords(x){ var z = zoneAt(x), h = z.hots && z.hots.filter(function(a){ return a.at > x + 20; })[0]; return h ? h.label : z.next; }
   function prevWords(x){ var i = ZONES.indexOf(zoneAt(x)), z = ZONES[i], h = z.hots && z.hots.filter(function(a){ return a.at < x - 20; }).pop(); if (h) return h.label;
-    if (i === 0) return 'The one page'; var p = ZONES[i - 1]; return p.hots ? p.hots[p.hots.length - 1].label : p.label; }
+    if (i <= 1) return 'Up the stairs to the CV'; var p = ZONES[i - 1]; return p.hots ? p.hots[p.hots.length - 1].label : p.label; }
 
   /* ---------- the stop list, and Next / Previous ---------- */
   if (loopNav) ZONES.forEach(function(z){ var li = document.createElement('li'), b = document.createElement('button'); b.type = 'button'; b.dataset.z = z.id; b.innerHTML = '<span class="dot"></span><span class="lb"></span>'; b.querySelector('.lb').textContent = z.label; b.setAttribute('aria-label', z.label); b.addEventListener('click', function(){ goTo(z.stop); }); li.appendChild(b); loopNav.appendChild(li); });
@@ -214,7 +220,7 @@
     ctx.save(); ctx.translate(0, ROOM_Y); ctx.scale(K, K);
     interiorShell();
     /* stairs down from the street on the left; the door to the platform on the right */
-    S([[-40, 200], [40, 200], [40, 260], [90, 260], [90, 320], [140, 320], [140, 380], [190, 380], [190, 610]], 2.2); R(-30, 150, 150, 26, 1.8, P); TX('↑ STREET', 45, 169, 13, 'center', MONO);
+    S([[-40, 200], [40, 200], [40, 260], [90, 260], [90, 320], [140, 320], [140, 380], [190, 380], [190, 610]], 2.2); R(-30, 150, 150, 26, 1.8, P); TX('↑ UP TO THE CV', 45, 169, 12, 'center', MONO);
     door(1060, 'PLATFORM →', out);
     /* a window onto the platform: trains go by */
     WASH(470, 140, 160, 70, COL.night, .18, 31); R(330, 70, 260, 150, 2.4, null); Ln(460, 70, 460, 220, 1.6);
@@ -454,7 +460,7 @@
     tag('food', 'Into the food cart pod →', 891, SY + 366, 'street', function(){ streetAct = 'food'; setTimeout(function(){ location.href = FOOD; }, still() ? 0 : 450); });
     tags[tags.length - 1].el.classList.add('wide-only');
     tag('roomout', 'To the platform →', 1120 * K, ROOM_Y + 140 * K, 'room', function(){ goForward(HASH.platform); });
-    tag('roomup', '↑ Back up to the street', 45 * K + 40, ROOM_Y + 140 * K, 'room', function(){ goBack(HASH.street); });
+    tag('roomup', '↑ Up the stairs to the CV', 45 * K + 40, ROOM_Y + 140 * K, 'room', function(){ exitTo(false); });
     tag('board', 'Board the train', 300, PB + 300, 'platform', function(){ goForward(HASH.train); });
     tag('elevator', 'Elevator up to OHSU ↑', 800, DS + 160, 'hill', function(){ goForward(HASH.lab); });
     tag('labout', 'Aerial Tram down →', 1120 * K, LAB_Y + 140 * K, 'lab', function(){ goForward(HASH.tram); });
@@ -543,9 +549,9 @@
     var dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
     I.tick(now);
     /* past either end of the loop: out to the one page */
-    if (ut > LEN + 60){ ut = LEN + 60; exitTo(true); } else if (ut < -60){ ut = -60; exitTo(false); }
+    if (ut > LEN + 60){ ut = LEN + 60; exitTo(true); } else if (ut < START - 60){ ut = START - 60; exitTo(false); }
     u = still() ? ut : lerp(u, ut, .14); if (Math.abs(u - ut) < .3) u = ut;
-    var x = wrap(cl(u, 0, LEN - .01)), c = size(x), zone = zoneAt(x), zid = zone.id, X = dx(x);
+    var x = wrap(cl(u, START - 59, LEN - .01)), c = size(x), zone = zoneAt(x), zid = zone.id, X = dx(x);
     var wasHere = here; here = zone.hots ? walker(zid, x).at || null : null;
     if (here !== wasHere){ [ROOM_HOTS, LAB_HOTS].forEach(function(l){ l.forEach(function(hs){ if (hs.row2){ hs.row2.classList.toggle('here', hs === here); if (hs === here) hs.row2.setAttribute('aria-current', 'step'); else hs.row2.removeAttribute('aria-current'); } }); }); }
     var nw = nextWords(ut), pw = prevWords(ut); if (nextLabel && nextLabel.textContent !== nw) nextLabel.textContent = nw; if (prevLabel && prevLabel.textContent !== pw) prevLabel.textContent = pw;

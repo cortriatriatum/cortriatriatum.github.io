@@ -204,31 +204,36 @@
 /* Simple or Animated: remember the visitor's pick. Simple is the default. */
 document.addEventListener('click', function(e){ var a = e.target.closest && e.target.closest('[data-pick]'); if (!a) return; try { localStorage.setItem('mode', a.dataset.pick); } catch (err) {} });
 
-/* The line map: opens from the Map button; marks where you are; in the walk, its stops move you without a reload. */
+/* The line in the top bar: marks the stop you are at; in the walk its stops move you without a reload. On a phone
+   the strip scrolls so your stop is in view. */
 (function(){
-  var btn = document.getElementById('lineMapBtn'), map = document.getElementById('lineMap'); if (!btn || !map) return;
-  var close = document.getElementById('lineMapClose');
+  var line = document.getElementById('siteLine'); if (!line) return;
   function here(){
     var p = location.pathname;
-    if (/\/explore\/?$/.test(p)) return (window.InkWorld && window.InkWorld.zone) ? window.InkWorld.zone() : ((location.hash || '#street').slice(1) || 'street');
+    if (/\/explore\/?$/.test(p)){ var z = window.InkWorld && window.InkWorld.zone ? window.InkWorld.zone() : (location.hash || '#room').slice(1); return z === 'street' ? 'page' : (z === 'tramup' ? 'tram' : z); }
     if (/\/photos\//.test(p)) return 'gallery';
     if (/\/food\//.test(p)) return 'food';
     if (/\/library\//.test(p) || /\/essays\//.test(p)) return 'library';
     return 'page';
   }
-  function mark(){ var h = here(); map.querySelectorAll('li[data-stop]').forEach(function(li){ var on = li.dataset.stop === h; li.classList.toggle('here', on); var a = li.querySelector('a'); if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); }); }
-  function setOpen(on){ var nav = document.querySelector('.nav'); if (on && nav){ var tp = Math.max(8, nav.getBoundingClientRect().bottom + 6); map.style.top = tp + 'px'; map.style.maxHeight = (innerHeight - tp - 12) + 'px'; } map.hidden = !on; btn.setAttribute('aria-expanded', String(on)); if (on){ mark(); var cur = map.querySelector('li.here>a') || map.querySelector('a'); setTimeout(function(){ cur.focus(); }, 30); } }
-  btn.addEventListener('click', function(e){ e.stopPropagation(); setOpen(map.hidden); });
-  if (close) close.addEventListener('click', function(){ setOpen(false); btn.focus(); });
-  addEventListener('keydown', function(e){ if (e.key === 'Escape' && !map.hidden){ setOpen(false); btn.focus(); } });
-  document.addEventListener('click', function(e){ if (e.isTrusted && !map.hidden && !map.contains(e.target) && e.target !== btn && !btn.contains(e.target)) setOpen(false); });
-  map.querySelectorAll('a[data-zone]').forEach(function(a){ a.addEventListener('click', function(e){
-    var w = window.InkWorld; if (!w || !w.stops || w.stops[a.dataset.zone] == null) return;
-    e.preventDefault(); w.goTo(w.stops[a.dataset.zone]); setOpen(false); }); });
+  var last = null;
+  function mark(){ var h = here(); if (h === last) return; last = h;
+    line.querySelectorAll('li[data-stop]').forEach(function(li){ var on = li.dataset.stop === h, a = li.querySelector('a'); li.classList.toggle('here', on); if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); });
+    var cur = line.querySelector('li.here'); if (cur && line.scrollWidth > line.clientWidth + 4){ var r = cur.getBoundingClientRect(), rr = line.getBoundingClientRect(); line.scrollLeft += (r.left + r.width / 2) - (rr.left + rr.width / 2); } }
+  mark(); if (/\/explore\/?$/.test(location.pathname)) setInterval(mark, 400);
+  line.querySelectorAll('a[data-zone]').forEach(function(a){ a.addEventListener('click', function(e){
+    var w = window.InkWorld; if (!w || !w.stops) return; var key = a.getAttribute('href').split('#')[1]; if (w.stops[key] == null) return;
+    e.preventDefault(); w.goTo(w.stops[key]); }); });
 })();
-/* the line map's copies of the Drawings and Dark switches (phones) press the real ones and show their state */
+/* the footer's copies of the Drawings and Dark switches (phones) press the real ones and show their state */
 (function(){
-  document.querySelectorAll('.lm-set [data-proxy]').forEach(function(b){ var real = document.getElementById(b.dataset.proxy); if (!real){ b.remove(); return; }
+  document.querySelectorAll('.foot-set [data-proxy]').forEach(function(b){ var real = document.getElementById(b.dataset.proxy); if (!real){ b.remove(); return; }
     function sync(){ b.textContent = real.textContent; b.setAttribute('aria-pressed', real.getAttribute('aria-pressed') || 'false'); }
-    b.addEventListener('click', function(e){ e.stopPropagation(); real.click(); setTimeout(sync, 0); }); sync(); document.addEventListener('plainchange', sync); });
+    b.addEventListener('click', function(){ real.click(); setTimeout(sync, 0); }); sync(); document.addEventListener('plainchange', sync); });
+})();
+/* the top bar's height, for anything that sits under it (the walk's panels, the board's height) */
+(function(){
+  var n = document.querySelector('.nav'); if (!n) return;
+  function set(){ document.documentElement.style.setProperty('--navh', Math.ceil(n.offsetTop + n.offsetHeight) + 'px'); }
+  set(); addEventListener('resize', set); if (document.fonts && document.fonts.ready) document.fonts.ready.then(set);
 })();

@@ -8,14 +8,14 @@ order: the street at South Waterfront, the subway stairs, the mezzanine (Notes),
 streetcar along the Willamette back to South Waterfront (Work and service), the Aerial Tram up to OHSU (Education),
 the sky bridge (Awards), the room, out its door, and the tram back down to the street (Dev). Scrolling backward runs
 it in reverse. Scroll, swipe or arrow keys move through it; the loop indicator on the right jumps to any stop;
-`/explore/#room`, `/explore/#train` and so on link to a stop. The home page `/` is a static board of station signs in three columns that fits the window; each sign scrolls inside
-itself (on phones the signs stack). Each has a still drawing that plays on hover or tap. The page is one stop on a loop:
-scrolling on past its bottom walks into the station and the walk at `/explore/`; past the end of the tram ride you
-come out at the top of the page again, and backward past the start of the street, at its bottom. Pulling up past the
-page's top brings the Aerial Tram down. Either edge turns the drawings on. Off the loop are the detours: the gallery
-(`/photos/`) and the library (`/library/`) from the room, and the food walk (`/food/`) from the street. The Map
-button in the top bar opens the whole line with "you are here", on every page; on walk pages "← One page" is always
-there too. On phones the Drawings and Dark switches live in the map. Photos are black and white only; each has an "Ask for it in
+`/explore/#room`, `/explore/#train` and so on link to a stop. The top bar of every page is "Rick Mathews" (home) and the line: the whole site as one subway line, Lab · Tram ↑ ·
+CV · Subway ↓ · Platform · Train · Marquam Hill, with the detours (Gallery, Library, Food recs) on a dashed line; the
+stop you are at wobbles. On phones the line is a strip you can swipe, and the Drawings and Dark switches are in the
+footer. The home page `/` is the CV: a static board of station signs that fits the window, each sign scrolling inside
+itself (stacked on phones). It is the street level of the loop: scroll down past it and the figure walks down the
+station stairs into the subway (the walk at `/explore/`, from the room on); pull up past its top and he rides the
+Aerial Tram up toward the lab. The tram's landing and the room's stairs lead back to it, so it loops. Either edge
+turns the drawings on. Photos are black and white only; each has an "Ask for it in
 color" link to the contact form. Food recs carry my own notes (cuisine, price, a line) from `_data/food.yml`. Photos and food recs are only in the animated walk
 (neither is indexed): the photo wall in the room opens the gallery (`/photos/`, prints in date order with wall labels;
 clicking one zooms into it), and the food cart on the street leads to the food walk (`/food/`, `assets/pod.js`): one street per city drawn from

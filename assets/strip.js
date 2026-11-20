@@ -95,7 +95,7 @@
     for (var wx = Math.floor(lo / 1400) * 1400 + 180; wx < hi; wx += 1400) skyIn(wx, 54, 150, 60, (wx / 1400) | 0);
     /* entrance and exit */
     if (lo < 400){ R(60, 200, 150, FLOOR - 200, 2.4, P); Ln(135, 210, 135, FLOOR, 1.6); R(70, 170, 130, 24, 1.8, P); TX('← THE ROOM', 135, 187, 12, 'center', MONO); }
-    if (hi > END - 300){ R(END - 220, 200, 150, FLOOR - 200, 2.4, P); R(END - 230, 170, 170, 24, 1.8, P); TX('BACK TO THE WALK →', END - 145, 187, 11, 'center', MONO); }
+    if (hi > END - 300){ R(END - 220, 200, 150, FLOOR - 200, 2.4, P); R(END - 230, 170, 170, 24, 1.8, P); TX('BACK TO THE CV →', END - 145, 187, 11, 'center', MONO); }
     /* year signs, painted on the wall */
     signs.forEach(function(s){ if (s.x < lo - 300 || s.x > hi + 300) return; WASH(s.x + 120, 220, 90, 46, COL.sun, .28, 50); TX(s.t, s.x + 120, 236, 64, 'center'); Ln(s.x + 50, 262, s.x + 190, 262, 2); });
     /* benches */
@@ -146,7 +146,7 @@
     /* bookcases between the displays, a window onto the real sky now and then */
     for (var bc = Math.floor((lo - 300) / 760) * 760 + 190; bc < hi + 300; bc += 760){ if (bc < 400 || bc > END - 260) continue; bookcase(bc - 130, 260, (bc / 760) | 0); }
     if (lo < 400){ R(40, 200, 150, FLOOR - 200, 2.4, P); Ln(115, 210, 115, FLOOR, 1.6); R(40, 170, 150, 24, 1.8, P); TX('← THE ROOM', 115, 187, 12, 'center', MONO); }
-    if (hi > END - 300){ R(END - 220, 200, 150, FLOOR - 200, 2.4, P); R(END - 230, 170, 170, 24, 1.8, P); TX('BACK TO THE WALK →', END - 145, 187, 11, 'center', MONO); }
+    if (hi > END - 300){ R(END - 220, 200, 150, FLOOR - 200, 2.4, P); R(END - 230, 170, 170, 24, 1.8, P); TX('BACK TO THE CV →', END - 145, 187, 11, 'center', MONO); }
     stops.forEach(function(s, i){
       if (s.x + 200 < lo || s.x - 200 > hi) return;
       var here = wk.i === i, hov = hoverI === i, x0 = s.x - s.w / 2, y0 = s.cy - s.h / 2, b = s.b;

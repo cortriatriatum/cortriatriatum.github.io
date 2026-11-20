@@ -39,11 +39,13 @@ const I = sandbox.Ink, W = 1200, Hh = 630, cv = createCanvas(W, Hh), ctx = cv.ge
   /* name, role, address */
   ctx.fillStyle = COL.ink; ctx.textAlign = 'left';
   ctx.font = '78px BG800'; ctx.fillText('Rick Mathews, PhD', 400, 198);
-  ctx.font = '30px Literata'; ctx.fillText('Physician-Scientist in Training', 404, 252); ctx.fillText('MD/PhD · Oregon Health & Science University', 404, 292);
+  ctx.font = '29px Literata'; ctx.fillText('Physician-Scientist in Training', 404, 248);
+  ctx.font = '23px Literata'; ctx.fillText('MD/PhD · Medical Scientist Training Program · OHSU', 404, 286);
+  ctx.fillStyle = COL.soft; ctx.font = '19px Literata'; ctx.fillText('BE · William E. Macaulay Honors College at The City College of New York', 404, 318); ctx.fillStyle = COL.ink;
   /* the four notes as inked route bullets */
-  [['R', '#FCCC0A', '#121212'], ['A', '#0039A6', '#fff'], ['M', '#FF6319', '#fff'], ['S', '#808183', '#fff']].forEach((b, i) => { const x = 422 + i * 44, y = 352;
+  [['R', '#FCCC0A', '#121212'], ['A', '#0039A6', '#fff'], ['M', '#FF6319', '#fff'], ['S', '#808183', '#fff']].forEach((b, i) => { const x = 422 + i * 44, y = 366;
     ctx.fillStyle = b[1]; ctx.beginPath(); ctx.arc(x, y, 17, 0, 6.3); ctx.fill(); O(x, y, 17, 2.2, null); ctx.fillStyle = b[2]; ctx.font = '19px BG800'; ctx.textAlign = 'center'; ctx.fillText(b[0], x, y + 7); });
-  ctx.fillStyle = COL.soft; ctx.textAlign = 'left'; ctx.font = '23px "JetBrains Mono"'; ctx.fillText('cortriatriatum.github.io', 608, 360);
+  ctx.fillStyle = COL.soft; ctx.textAlign = 'left'; ctx.font = '23px "JetBrains Mono"'; ctx.fillText('cortriatriatum.github.io', 608, 374);
   /* the figure, waving hello */
   ctx.save(); ctx.translate(700, GL); ctx.scale(1.55, 1.55); I.pen(1 / 1.55); I.FIG({ x: 0, y: 0, mode: 'wave', face: -1, smile: true, look: { x: -90, y: -70 } }); I.pen(1); ctx.restore();
   fs.writeFileSync(out, await cv.encode('jpeg', 88));
