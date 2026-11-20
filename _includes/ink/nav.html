@@ -4,7 +4,7 @@
   {%- comment %} The line: the whole site as one subway line. The CV (the one page) is in the middle: up by tram to
     the lab, down the stairs into the subway. The detours hang off the end. The stop you are at is marked. {% endcomment %}
   <div class="lines" id="siteLine">
-  <ol class="line" aria-label="The line: where you are on the site">
+  <ol class="sline" aria-label="The line: where you are on the site">
     <li data-stop="lab"><a href="{{ '/explore/' | relative_url }}#lab" data-zone="lab" data-pick="walk"><b class="bul">L</b><span>Lab</span></a></li>
     <li data-stop="tram"><a href="{{ '/explore/' | relative_url }}#tramup" data-zone="tram" data-pick="walk"><b class="bul">A</b><span>Tram <i aria-hidden="true">↑</i></span></a></li>
     <li data-stop="page" class="home"><a href="{{ '/' | relative_url }}" data-pick="simple"><b class="bul">CV</b><span>CV</span></a></li>
@@ -13,7 +13,7 @@
     <li data-stop="train"><a href="{{ '/explore/' | relative_url }}#train" data-zone="train" data-pick="walk"><b class="bul">T</b><span>Train</span></a></li>
     <li data-stop="hill"><a href="{{ '/explore/' | relative_url }}#hill" data-zone="hill" data-pick="walk"><b class="bul">H</b><span>Marquam Hill</span></a></li>
   </ol>
-  <ol class="line off" aria-label="Detours">
+  <ol class="sline off" aria-label="Detours">
     <li data-stop="gallery"><a href="{{ '/photos/' | relative_url }}"><b class="bul">G</b><span>Art gallery</span></a></li>
     <li data-stop="library"><a href="{{ '/library/' | relative_url }}"><b class="bul">B</b><span>Library</span></a></li>
     <li data-stop="food"><a href="{{ '/food/' | relative_url }}"><b class="bul">F</b><span>Food recs</span></a></li>

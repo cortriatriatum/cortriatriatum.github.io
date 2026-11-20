@@ -21,104 +21,79 @@ layout: null
   </script>
   <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/essays/feed.xml' | relative_url }}">
   <style>
-    /* Essays as one subway line: a station per essay, a route bullet per essay, transfers between them. */
-    .map{max-width:1180px;margin:0 auto;padding-block:8px 70px}
-    .map .sign{margin-bottom:26px}
-    .map-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:28px;align-items:end;margin-bottom:26px}
-    .map-intro{font-size:18px;line-height:1.55;max-width:46rem;margin:0}
-    .line{position:relative;list-style:none;margin:0;padding:0 0 0 110px}
-    .xfers{position:absolute;left:0;top:0;width:100px;height:100%;pointer-events:none;overflow:visible}
-    .xfers path{fill:none;stroke-width:3.5;stroke-linecap:round;opacity:.85}
-    .xfers circle{stroke:var(--ink);stroke-width:2}
-    .stop:not(:last-child)::after{content:"";position:absolute;left:-47px;top:20px;bottom:-20px;width:7px;border-radius:4px;background:var(--ink);transform-origin:top;animation:draw .45s cubic-bezier(.2,.7,.2,1) both}
-    .stop:nth-child(2)::after{animation-delay:.3s}.stop:nth-child(3)::after{animation-delay:.6s}.stop:nth-child(n+4)::after{animation-delay:.9s}
-    @keyframes draw{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-    @media (prefers-reduced-motion: reduce){.stop::after{animation:none!important}}
-    .stop{position:relative;padding:4px 0 34px}
-    .stop:last-child{padding-bottom:4px}
-    .stop::before{content:"";position:absolute;left:-54px;top:9px;width:21px;height:21px;border-radius:50%;background:var(--paper);border:4px solid var(--ink);box-sizing:border-box;z-index:1}
-    .stop-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .rb{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;font:800 16px/1 var(--grot);flex:none}
-    .stop-date{font:500 12px/1.4 var(--mono);color:var(--soft)}
-    .stop-title{display:block;font:800 clamp(22px,2.4vw,28px)/1.15 var(--grot);letter-spacing:-.02em;color:var(--ink);text-decoration:none;margin:8px 0 4px;max-width:48rem}
-    .stop-title:hover,.stop-title:focus-visible{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
-    .stop-sub{font-size:16.5px;color:var(--soft);max-width:46rem}
-    .stop-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin-top:10px;font:500 12px/1.4 var(--mono);color:var(--soft)}
-    .stop-meta a{color:inherit}
-    .xfer{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
-    .xfer .rb{width:24px;height:24px;font-size:12px}
+    /* Notes as a board of station cards, like the CV: one card per essay, its line's bullet on top. */
+    .notes-page{max-width:1180px;margin:0 auto;padding-block:8px 70px}
+    .notes-page>.sign{margin-bottom:22px}
+    .intro{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:12px 36px;align-items:center;margin:0 0 30px}
+    .intro p{font-size:18px;line-height:1.55;margin:0;max-width:44rem}
+    .intro .vig{max-width:260px;margin:0}
+    .intro .links{margin-top:14px}
+    .notes{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+    .note{border:2px solid var(--ink);border-radius:12px;padding:0;display:flex;flex-direction:column;min-width:0;background:var(--paper);scroll-margin-top:120px}
+    .note-top{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1.5px solid var(--rule)}
+    .rb{display:inline-grid;place-items:center;border-radius:50%;font:800 16px/1 var(--grot);flex:none}
+    .note-top .rb{width:40px;height:40px;font-size:19px;flex:none}
+    .note-top .when{font:500 12px/1.45 var(--mono);color:var(--soft);min-width:0}
+    .note-top .wip{margin-left:auto;flex:none}
+    .note-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+    .note-title{font:800 clamp(21px,2vw,26px)/1.15 var(--grot);letter-spacing:-.02em;color:var(--ink);text-decoration:none;text-wrap:balance}
+    .note-title:hover,.note-title:focus-visible{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+    .note-sub{font-size:16px;line-height:1.5;color:var(--soft);margin:0}
+    .note-meta{display:flex;flex-wrap:wrap;gap:6px 14px;font:500 12px/1.4 var(--mono);color:var(--soft)}
+    .note-xfer{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font:500 12px/1.4 var(--mono);color:var(--soft)}
+    .note-xfer a{display:inline-flex;align-items:center;gap:6px;color:var(--ink);text-decoration:none;font:600 13px/1.25 var(--grot)}
+    .note-xfer a:hover span.t{text-decoration:underline}
+    .note-xfer .rb{width:22px;height:22px;font-size:11px}
+    .note-act{margin-top:auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-top:6px}
+    .note-act .links{margin:0}
+    .note:target{box-shadow:0 0 0 4px color-mix(in srgb,var(--sun) 70%,transparent)}
     .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-    .stop:target .stop-title{background:color-mix(in srgb,var(--sun) 45%,transparent)}
-    @media (max-width: 760px){
-      .map-top{grid-template-columns:minmax(0,1fr)}
-      .line{padding-left:76px}.xfers{width:70px}.stop::before{left:-40px;width:18px;height:18px}
-      .stop:not(:last-child)::after{left:-34px;width:6px;top:17px;bottom:-17px}
-    }
+    @media (max-width: 860px){ .notes{grid-template-columns:minmax(0,1fr)} .intro{grid-template-columns:minmax(0,1fr)} .intro .vig{max-width:220px} }
   </style>
 </head>
 <body>
 {% assign navpage = "essays" %}{% include ink/nav.html %}
-<main class="map" id="main">
+<main class="notes-page" id="main">
   <header class="sign"><span class="bul" aria-hidden="true">N</span><h1 style="margin:0;font-weight:800;font-size:clamp(24px,3vw,36px);line-height:1.05;letter-spacing:-.02em;color:var(--paper)">Notes, Scribbles &amp; Ideas in Progress</h1></header>
-  <div class="map-top">
-    <p class="map-intro">Essays on how science and medicine discover questions, evaluate evidence, and share results. Each one is a work in progress: I revise it as I learn, and each shows its original draft, every edit, and the exact words of its sources.</p>
+  <div class="intro">
+    <div>
+      <p>Essays on how science and medicine discover questions, evaluate evidence, and share results. Each one is a work in progress: I revise it as I learn, and each shows its original draft, every edit, and the exact words of its sources.</p>
+      <div class="links"><a class="key" href="{{ '/library/' | relative_url }}">Walk into the library</a><a href="#subscribe" data-open="subscribe">Subscribe</a><a href="{{ '/essays/feed.xml' | relative_url }}">RSS</a></div>
+    </div>
     <canvas class="vig" data-vig="toss" role="img" aria-label="Drawing: the figure crumples a draft and tosses it into a bin labeled drafts"></canvas>
   </div>
-  <ol class="line">
+  <ol class="notes">
   {%- for e in listed %}
     {%- assign words = e.content | number_of_words %}
     {%- assign minutes = words | divided_by: 230 | plus: 1 %}
     {%- assign slug = e.url | split: "/" | last %}
-    <li class="stop" id="{{ slug }}" data-cite-id="essay:{{ slug }}" data-color="{{ e.route_color }}" data-transfers="{{ e.transfers | join: ' ' }}">
-      <div class="stop-head">
+    <li class="note" id="{{ slug }}" data-cite-id="essay:{{ slug }}">
+      <div class="note-top">
         {%- if e.route %}<span class="rb" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span>{% endif %}
-        <span class="stop-date"><time datetime="{{ e.date | date_to_xml_schema }}">{{ e.date | date: "%B %-d, %Y" }}</time>{% if e.updated %} · revised <time datetime="{{ e.updated | date_to_xml_schema }}">{{ e.updated | date: "%B %-d, %Y" }}</time>{% endif %}</span>
+        <span class="when"><time datetime="{{ e.date | date_to_xml_schema }}">{{ e.date | date: "%B %-d, %Y" }}</time>{% if e.updated %}<br>revised <time datetime="{{ e.updated | date_to_xml_schema }}">{{ e.updated | date: "%B %-d, %Y" }}</time>{% endif %}</span>
         {%- if e.status and e.status != "" %}<span class="wip">{{ e.status | downcase }}</span>{% endif %}
       </div>
-      <a class="stop-title" href="{{ e.url | relative_url }}">{{ e.title }}</a>
-      {%- if e.description %}<div class="stop-sub">{{ e.description }}</div>{% endif %}
-      <div class="stop-meta">
-        <span>{{ minutes }} min read</span>
-        {%- if e.references %}<span>{{ e.references | size }} sources</span>{% endif %}
-        {%- if e.pdf %}<a href="{{ e.pdf | relative_url }}" target="_blank" rel="noopener">PDF</a>{% endif %}
-        {%- for t in e.transfers %}{% for other in site.essays %}{% if other.url contains t %}
-          <a class="xfer" href="{{ other.url | relative_url }}" title="Transfer to {{ other.title | escape }}">Transfer <span class="rb" style="background:{{ other.route_color }};color:{{ other.route_text }}" aria-hidden="true">{{ other.route }}</span><span class="sr-only">to {{ other.title }}</span></a>
-        {%- endif %}{% endfor %}{% endfor %}
+      <div class="note-body">
+        <a class="note-title" href="{{ e.url | relative_url }}">{{ e.title }}</a>
+        {%- if e.description %}<p class="note-sub">{{ e.description }}</p>{% endif %}
+        <div class="note-meta"><span>{{ minutes }} min read</span>{% if e.references %}<span>{{ e.references | size }} sources</span>{% endif %}<span>every edit shown</span></div>
+        {%- if e.transfers and e.transfers.size > 0 %}
+        <div class="note-xfer"><span>Transfers to</span>{%- for t in e.transfers %}{% for other in site.essays %}{% if other.url contains t %}<a href="{{ other.url | relative_url }}"><span class="rb" style="background:{{ other.route_color }};color:{{ other.route_text }}" aria-hidden="true">{{ other.route }}</span><span class="t">{{ other.title }}</span></a>{% endif %}{% endfor %}{% endfor %}</div>
+        {%- endif %}
+        <div class="note-act"><div class="links"><a class="key" href="{{ e.url | relative_url }}">Read</a>{% if e.pdf %}<a href="{{ e.pdf | relative_url }}" target="_blank" rel="noopener">PDF</a>{% endif %}</div><div class="cs-slot"></div></div>
       </div>
-      <div class="cs-slot"></div>
     </li>
   {%- endfor %}
   </ol>
-  <div class="links" style="margin-top:34px"><a href="{{ '/' | relative_url }}">Home</a><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/feed.xml' | relative_url }}">RSS</a></div>
 </main>
 {% include ink/foot.html %}
 {% include citable.html %}
 <script>
 {% include cite-share.js %}
 </script>
-<script>
-/* Transfers, drawn: a curved line in the route color joins each pair of related essays. */
-(function(){
-  var line = document.querySelector('.line'); if (!line) return;
-  var NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'xfers'); svg.setAttribute('aria-hidden', 'true'); line.prepend(svg);
-  function draw(){
-    while (svg.firstChild) svg.removeChild(svg.firstChild);
-    var box = line.getBoundingClientRect(), stops = [].slice.call(line.querySelectorAll('.stop')), seen = {};
-    var dotX = parseFloat(getComputedStyle(stops[0], '::before').left) + 110 + 10, lane = 0;
-    stops.forEach(function(a){
-      (a.dataset.transfers || '').split(' ').filter(Boolean).forEach(function(slug){
-        var b = document.getElementById(slug); if (!b) return; var key = [a.id, slug].sort().join('|'); if (seen[key]) return; seen[key] = 1;
-        var ya = a.getBoundingClientRect().top - box.top + 19, yb = b.getBoundingClientRect().top - box.top + 19, x = Math.max(8, dotX - 26 - (lane % 4) * 16); lane++;
-        var p = document.createElementNS(NS, 'path'); p.setAttribute('d', 'M' + dotX + ' ' + ya + ' C' + x + ' ' + ya + ' ' + x + ' ' + yb + ' ' + dotX + ' ' + yb);
-        p.setAttribute('stroke', b.dataset.color || 'currentColor'); svg.appendChild(p);
-      });
-    });
-  }
-  addEventListener('resize', draw); (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(draw); draw();
-})();
-</script>
-<script src="{{ '/assets/ink.js' | relative_url }}?v=20261127" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}?v=20261127" defer></script>
-<script src="{{ '/assets/vig.js' | relative_url }}?v=20261127" defer></script>
+
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261129" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261129" defer></script>
+<script src="{{ '/assets/vig.js' | relative_url }}?v=20261129" defer></script>
 </body>
 </html>

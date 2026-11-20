@@ -310,8 +310,9 @@
   }
 
   /* ================= 1 · the street at South Waterfront ================= */
-  var DIR = ['Research', 'Notes', 'Education', 'Work & Service', 'Awards', 'Dev', 'Contact'];
-  var DIR_IDS = ['research', 'notes', 'education', 'work', 'awards', 'dev', 'contact'];
+  /* the street's directory board: the site's main doors and its detours, every line a link */
+  var DIR = ['The CV', 'Research', 'Notes', 'Library', 'Art gallery', 'Food recs', 'Contact'];
+  var DIR_HREF = ['', '#research', 'essays/', 'library/', 'photos/', 'food/', '#contact'];
   var streetTarget = null, streetAct = null, dirLines = [];
   var BX = 410, BY = 230, BW = 220, BH = 190, LH = 20;            // the directory board, big enough to read
   function drawStreet(){
@@ -445,7 +446,7 @@
   }
 
   /* ---------- tags (verbs, on the things you can use) ---------- */
-  var tags = [], cards = [];
+  var tags = [], cards = [], landed = false;
   function tag(k, label, wx, wy, zone, onClick){
     var el = document.createElement('button'); el.className = 'tag-in'; el.type = 'button'; el.textContent = label;
     hot.appendChild(el); tags.push({ el: el, k: k, x: wx, y: wy, zone: zone });
@@ -465,7 +466,7 @@
     tag('elevator', 'Elevator up to OHSU ↑', 800, DS + 160, 'hill', function(){ goForward(HASH.lab); });
     tag('labout', 'Aerial Tram down →', 1120 * K, LAB_Y + 140 * K, 'lab', function(){ goForward(HASH.tram); });
     tag('labback', '↓ Elevator back down', 55 * K + 50, LAB_Y + 140 * K, 'lab', function(){ goBack(HASH.hill); });
-    DIR.forEach(function(n, j){ var a = document.createElement('a'); a.className = 'dir-line'; a.href = DIRECTORY + '#' + DIR_IDS[j]; a.setAttribute('aria-label', 'Directory: ' + n); hot.appendChild(a); dirLines.push(a);
+    DIR.forEach(function(n, j){ var a = document.createElement('a'); a.className = 'dir-line'; a.href = DIRECTORY + DIR_HREF[j]; a.setAttribute('aria-label', 'Directory: ' + n); hot.appendChild(a); dirLines.push(a);
       a.addEventListener('pointerenter', function(){ streetTarget = 'directory'; }); a.addEventListener('pointerleave', function(){ streetTarget = null; }); });
     [ROOM_HOTS, LAB_HOTS].forEach(function(list){ list.forEach(function(hs){
       var b = document.createElement('button'); b.type = 'button'; b.className = 'obj'; b.setAttribute('aria-label', 'Open ' + hs.label);
@@ -502,9 +503,9 @@
   /* walk to an object and open what is in it */
   function openHot(hs){ active = hs; goTo(hs.at); openPanel(hs.id, hs.row); }
   function placeTags(zid){
-    tags.forEach(function(t){ var p = toScreen(t.x, t.y), on = t.zone === zid && p[1] > 50 && p[1] < ch + 10;
+    tags.forEach(function(t){ var p = toScreen(t.x, t.y), on = (t.zone === zid || (t.zone === 'street' && landed)) && p[1] > 50 && p[1] < ch + 10;
       var half = (t.el.offsetWidth || 120) / 2; t.el.style.left = Math.max(half + 6, Math.min(cw - half - 6, p[0])) + 'px'; t.el.style.top = p[1] + 'px'; t.el.style.visibility = on ? 'visible' : 'hidden'; });
-    dirLines.forEach(function(a, j){ var p = toScreen(BX + 4, SY + BY + 32 + j * LH), q = toScreen(BX + BW - 4, SY + BY + 30 + (j + 1) * LH); a.style.left = p[0] + 'px'; a.style.top = p[1] + 'px'; a.style.width = (q[0] - p[0]) + 'px'; a.style.height = (q[1] - p[1]) + 'px'; a.style.visibility = zid === 'street' ? 'visible' : 'hidden'; });
+    dirLines.forEach(function(a, j){ var p = toScreen(BX + 4, SY + BY + 32 + j * LH), q = toScreen(BX + BW - 4, SY + BY + 30 + (j + 1) * LH); a.style.left = p[0] + 'px'; a.style.top = p[1] + 'px'; a.style.width = (q[0] - p[0]) + 'px'; a.style.height = (q[1] - p[1]) + 'px'; a.style.visibility = zid === 'street' || landed ? 'visible' : 'hidden'; });
     [['room', ROOM_HOTS], ['lab', LAB_HOTS]].forEach(function(pair){ var y0 = interiorY(pair[0]); pair[1].forEach(function(hs){
       var p = toScreen((hs.r[0] + hs.r[2] / 2) * K, y0 + hs.r[1] * K); hs.btn.style.left = p[0] + 'px'; hs.btn.style.top = p[1] + 'px'; hs.btn.style.visibility = zid === pair[0] ? 'visible' : 'hidden';
       if (hs.hit){ var a1 = toScreen(hs.r[0] * K, y0 + hs.r[1] * K), a2 = toScreen((hs.r[0] + hs.r[2]) * K, y0 + (hs.r[1] + hs.r[3]) * K);
@@ -629,6 +630,7 @@
     }
     var wipe = 0; SEAMS.forEach(function(sm){ wipe = Math.max(wipe, 1 - Math.abs(x - sm) / 60); });
     if (wipe > 0){ ctx.fillStyle = COL.paper; ctx.globalAlpha = ease(cl(wipe, 0, 1)); ctx.fillRect(0, 0, cw, ch); ctx.globalAlpha = 1; }
+    landed = zid === 'tram' && X >= 4180;   /* the tram has landed on the street: its board, stairs and cart work */
     placeTags(zid);
     zonePanels.forEach(function(p){ var on = p.dataset.zonePanel.split(' ').indexOf(zid) > -1; p.classList.toggle('on', on); p.setAttribute('aria-hidden', String(!on)); p.inert = !on; });
     if (zone !== curZone){

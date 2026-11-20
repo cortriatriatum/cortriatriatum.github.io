@@ -66,8 +66,8 @@ layout: null
 </dialog>
 <script type="application/json" id="photoData">[{% for se in site.data.gallery.series %}{% assign si = forloop.index %}{% for id in se.photos %}{% assign p = site.data.photos.photos | where: "id", id | first %}{"base":"{{ '/img/photos/' | append: p.id | relative_url }}","place":"{{ p.place }}","date":"{{ p.date }}","w":{{ p.w }},"h":{{ p.h }},"series":{{ se.title | jsonify }},"si":{{ si }},"sn":{{ se.photos.size }},"k":{{ forloop.index }}}{% unless forloop.last %},{% endunless %}{% endfor %}{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
 {% include ink/foot.html %}
-<script src="{{ '/assets/ink.js' | relative_url }}?v=20261127" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}?v=20261127" defer></script>
-<script src="{{ '/assets/strip.js' | relative_url }}?v=20261127" defer></script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261129" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261129" defer></script>
+<script src="{{ '/assets/strip.js' | relative_url }}?v=20261129" defer></script>
 </body>
 </html>

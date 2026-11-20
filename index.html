@@ -105,7 +105,19 @@ layout: null
   .walk-in .hint{font:400 20px/1.2 var(--hand);color:var(--soft);margin:0;opacity:calc(1 - var(--p,0) * 1.6)}
   /* and above the top of the page: pull past it and the Aerial Tram comes down to meet you */
   .peek{position:fixed;left:0;right:0;top:0;height:0;overflow:hidden;z-index:60;background:var(--paper);border-bottom:2px solid var(--ink);pointer-events:none;visibility:hidden}
-  .peek canvas{position:absolute;left:50%;top:0;transform:translateX(-50%);height:100%;width:auto;aspect-ratio:2/1;max-width:100vw}
+  .peek canvas{position:absolute;left:50%;top:0;transform:translateX(-50%);height:calc(100% - 66px);width:auto;aspect-ratio:2/1;max-width:100vw}
+  /* the directory at each edge: the main way on, and the detours (the same board up by tram and down by subway) */
+  .dirx{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;padding:8px;background:var(--ink);color:var(--paper);border-radius:12px;max-width:min(900px,100%);box-sizing:border-box}
+  .dirx-k{font:500 11px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;opacity:.7;padding:0 8px}
+  .dirx a{display:inline-flex;align-items:center;gap:8px;padding:7px 11px 7px 7px;border-radius:999px;text-decoration:none;color:var(--paper);font:700 14px/1 var(--grot)}
+  .dirx a .bul{width:26px;height:26px;font-size:11px;background:transparent;color:var(--paper);border-color:var(--paper);border-style:dashed}
+  .dirx a.main{color:var(--sun)}.dirx a.main .bul{background:var(--paper);color:var(--ink);border-style:solid}
+  .dirx a small{font:500 10.5px/1 var(--mono);opacity:.7;margin-left:2px}
+  .dirx a i{font-style:normal}
+  .dirx a:hover,.dirx a:focus-visible{background:color-mix(in srgb,var(--paper) 16%,transparent)}
+  .dirx a:focus-visible{outline:2px solid var(--sun);outline-offset:1px}
+  .peek .dirx{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);pointer-events:auto;width:max-content;max-width:calc(100vw - 24px)}
+  @media (max-width: 600px){ .dirx a small{display:none} .dirx a{padding:6px 9px 6px 6px;font-size:13px} .dirx-k{flex-basis:100%;text-align:center;padding:2px 0 4px} }
   .fadeout{position:fixed;inset:0;background:var(--paper);opacity:0;pointer-events:none;transition:opacity .45s ease;z-index:100}
   .fadeout.on{opacity:1}
 
@@ -196,21 +208,36 @@ layout: null
 {% include ink/foot.html %}
 <section class="walk-in" id="walk" aria-label="Keep scrolling to walk into a drawing of Portland">
   <div class="stage">
+    <nav class="dirx" aria-label="Directory">
+      <span class="dirx-k">Directory</span>
+      <a class="main" href="{{ '/explore/' | relative_url }}#subway" data-pick="walk"><b class="bul">S</b>Subway <i aria-hidden="true">↓</i><small>or keep scrolling</small></a>
+      <a href="{{ '/library/' | relative_url }}"><b class="bul">B</b>Library</a>
+      <a href="{{ '/photos/' | relative_url }}"><b class="bul">G</b>Art gallery</a>
+      <a href="{{ '/food/' | relative_url }}"><b class="bul">F</b>Food recs</a>
+    </nav>
     <div class="runway"><canvas id="walkCv" role="img" aria-label="Drawing: the figure walks down SW Moody Avenue, past a food cart, and down the station stairs into the subway"></canvas>
       <a class="cart-tag" href="{{ '/food/' | relative_url }}">Food recs <span aria-hidden="true">→</span></a></div>
     <p class="hint" id="walkHint" aria-hidden="true">keep scrolling…</p>
     <a class="sr" href="{{ '/explore/' | relative_url }}" data-pick="walk">Walk into the drawing</a>
   </div>
 </section>
-<div class="peek" id="peek" aria-hidden="true"><canvas id="peekCv"></canvas></div>
+<div class="peek" id="peek"><canvas id="peekCv" aria-hidden="true"></canvas>
+  <nav class="dirx" aria-label="Directory by tram">
+      <span class="dirx-k">Directory</span>
+      <a class="main" href="{{ '/explore/' | relative_url }}#tramup" data-pick="walk"><b class="bul">L</b>Lab by tram <i aria-hidden="true">↑</i><small>or keep pulling</small></a>
+      <a href="{{ '/library/' | relative_url }}"><b class="bul">B</b>Library</a>
+      <a href="{{ '/photos/' | relative_url }}"><b class="bul">G</b>Art gallery</a>
+      <a href="{{ '/food/' | relative_url }}"><b class="bul">F</b>Food recs</a>
+    </nav>
+</div>
 <div class="fadeout" id="fadeout" aria-hidden="true"></div>
 {% include citable.html %}
 <script>
 {% include cite-share.js %}
 </script>
-<script src="{{ '/assets/ink.js' | relative_url }}?v=20261127" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}?v=20261127" defer></script>
-<script src="{{ '/assets/vig.js' | relative_url }}?v=20261127" defer></script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261129" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261129" defer></script>
+<script src="{{ '/assets/vig.js' | relative_url }}?v=20261129" defer></script>
 <script>
 /* phones: fold the signs (all but Bio); a tap or Enter opens one; a link to a section (or a search hit) opens it */
 (function(){
@@ -277,7 +304,7 @@ layout: null
   /* the tram at the top: he is in the cabin, and it climbs the cable up toward OHSU as you pull */
   function tram(k){
     var I = window.Ink; if (!I || !pcv) return;
-    var ph = Math.round(k * Math.min(innerHeight * .6, 420)); peek.style.visibility = k > .01 ? 'visible' : 'hidden'; peek.style.height = ph + 'px'; document.documentElement.style.paddingTop = ph ? ph + 'px' : '';
+    var ph = Math.round(k * Math.min(innerHeight * .62, 460)); peek.style.visibility = k > .01 ? 'visible' : 'hidden'; peek.style.height = ph + 'px'; document.documentElement.style.paddingTop = ph ? ph + 'px' : '';
     if (k <= .01 || !I.fit(pcv, pcv.getContext('2d'), 600, 300)) return;
     var ctx = pcv.getContext('2d'); I.use(ctx); I.tick(performance.now());
     var S = I.S, R = I.R, TX = I.TX, Ln = I.Ln, O = I.O, COL = I.COL, mono = '"JetBrains Mono",monospace';
@@ -300,7 +327,8 @@ layout: null
   var pull = 0, pullT = 0;
   var WASH;
   function atTop(){ return scrollY <= 0; }
-  function pushUp(d){ if (off() || gone || !atTop()) return; drawingsOn(); pullT = Math.min(1.25, pullT + d); }
+  var lastPull = 0, onPeek = false; if (peek){ peek.addEventListener('pointerenter', function(){ onPeek = true; }); peek.addEventListener('pointerleave', function(){ onPeek = false; }); peek.addEventListener('focusin', function(){ onPeek = true; }); peek.addEventListener('focusout', function(){ onPeek = false; }); }
+  function pushUp(d){ if (off() || gone || !atTop()) return; drawingsOn(); lastPull = performance.now(); pullT = Math.min(1.25, pullT + d); }
   addEventListener('wheel', function(e){ if (e.deltaY < 0){ if (!innerUp(e.target)) pushUp(-e.deltaY / 600); } else if (pullT > 0){ pullT = Math.max(0, pullT - e.deltaY / 400); } }, { passive: true });
   var ty = null; addEventListener('touchstart', function(e){ ty = atTop() && !innerUp(e.target) ? e.touches[0].clientY : null; }, { passive: true });
   addEventListener('touchmove', function(e){ if (ty === null) return; var d = e.touches[0].clientY - ty; ty = e.touches[0].clientY; if (d > 0) pushUp(d / 300); else pullT = Math.max(0, pullT + d / 260); }, { passive: true });
@@ -311,7 +339,7 @@ layout: null
     /* the bottom: once you have scrolled into the ending, reaching its end takes you in */
     if (!off() && !gone){ if (p < .9) armed = true; if (p >= .999 && armed){ if (++held > 18) go('#subway'); } else held = 0; }
     /* the top: the pull eases back when you stop; past the end it takes you in, riding the tram */
-    if (pullT > 0 && !gone) pullT = Math.max(0, pullT - .012);
+    if (pullT > 0 && !gone && !onPeek && performance.now() - lastPull > 1800) pullT = Math.max(0, pullT - .012);
     pull += (pullT - pull) * .25; tram(Math.min(1, pull));
     if (pull >= 1 && !gone) go('#tramup');
     requestAnimationFrame(tick);

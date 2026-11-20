@@ -255,23 +255,23 @@ html .rb:nth-of-type(2n),html .rail li:nth-child(2n) .bul{border-radius:48% 52% 
 .food-list .fn{display:block;flex-basis:100%;font:italic 400 14px/1.4 var(--serif);color:var(--soft);margin-top:2px}
 /* ---------- the line: the whole site as one subway line, in the top bar of every page ---------- */
 .lines{display:flex;align-items:flex-start;gap:22px;margin:0 auto;min-width:0}
-.line{list-style:none;margin:0;padding:0;display:flex;align-items:flex-start;position:relative}
-.line::before{content:"";position:absolute;left:28px;right:28px;top:14px;height:5px;border-radius:3px;background:var(--ink)}
-.line.off::before{height:0;border-top:3px dashed var(--ink);background:none;top:15px}
-.line li{position:relative;flex:none}
-.line a{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:58px;padding:0 4px 2px;text-decoration:none;color:var(--soft);border-radius:8px}
-.line a .bul{width:30px;height:30px;font-size:12.5px;border-width:2.5px;background:var(--paper);color:var(--ink);letter-spacing:-.02em;transition:transform .15s ease}
-.line li[data-stop="page"] a .bul{width:34px;height:34px;margin-top:-2px;background:var(--ink);color:var(--paper)}
-.line.off a .bul{border-style:dashed}
-.line span{font:600 12px/1.1 var(--grot);white-space:nowrap}
-.line span i{font-style:normal}
-.line a:hover{color:var(--ink)}.line a:hover .bul{transform:scale(1.08)}
-.line a:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
-.line li.here a{color:var(--ink)}
-.line li.here a span{font-weight:800}
-.line li.here a .bul{background:var(--pop);color:#fff;border-color:var(--ink);border-style:solid;animation:line-boil 1s steps(1) infinite;transform:scale(1.12)}
+.sline{list-style:none;margin:0;padding:0;display:flex;align-items:flex-start;position:relative}
+.sline::before{content:"";position:absolute;left:28px;right:28px;top:14px;height:5px;border-radius:3px;background:var(--ink)}
+.sline.off::before{height:0;border-top:3px dashed var(--ink);background:none;top:15px}
+.sline li{position:relative;flex:none}
+.sline a{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:58px;padding:0 4px 2px;text-decoration:none;color:var(--soft);border-radius:8px}
+.sline a .bul{width:30px;height:30px;font-size:12.5px;border-width:2.5px;background:var(--paper);color:var(--ink);letter-spacing:-.02em;transition:transform .15s ease}
+.sline li[data-stop="page"] a .bul{width:34px;height:34px;margin-top:-2px;background:var(--ink);color:var(--paper)}
+.sline.off a .bul{border-style:dashed}
+.sline span{font:600 12px/1.1 var(--grot);white-space:nowrap}
+.sline span i{font-style:normal}
+.sline a:hover{color:var(--ink)}.sline a:hover .bul{transform:scale(1.08)}
+.sline a:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
+.sline li.here a{color:var(--ink)}
+.sline li.here a span{font-weight:800}
+.sline li.here a .bul{background:var(--pop);color:#fff;border-color:var(--ink);border-style:solid;animation:line-boil 1s steps(1) infinite;transform:scale(1.12)}
 @keyframes line-boil{0%{border-radius:53% 47% 51% 49% / 47% 53% 48% 52%}33%{border-radius:47% 53% 48% 52% / 52% 47% 53% 48%}66%{border-radius:50% 50% 46% 54% / 49% 51% 50% 50%}}
-@media (prefers-reduced-motion: reduce){ .line li.here a .bul{animation:none} }
+@media (prefers-reduced-motion: reduce){ .sline li.here a .bul{animation:none} }
 /* narrower: the line takes its own row under the name and the switches */
 @media (max-width: 1240px){ .lines{order:3;flex-basis:100%;justify-content:center;margin-top:2px} }
 /* phones: name and Search on top; the line is a strip you can swipe, your stop kept in view; the Drawings and
@@ -282,7 +282,7 @@ html .rb:nth-of-type(2n),html .rail li:nth-child(2n) .bul{border-radius:48% 52% 
   .nav .tools .search-open kbd{display:none}
   .lines{justify-content:flex-start;overflow-x:auto;scrollbar-width:none;gap:16px;margin-inline:calc(-1 * max(18px,env(safe-area-inset-left,0px)));padding:2px max(18px,env(safe-area-inset-left,0px)) 4px}
   .lines::-webkit-scrollbar{display:none}
-  .line a{min-width:52px}
+  .sline a{min-width:52px}
 }
 @media print{ .lines{display:none} }
 .foot-set{display:none;gap:8px;margin-top:12px}
