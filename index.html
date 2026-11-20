@@ -235,9 +235,9 @@ layout: null
 <script>
 {% include cite-share.js %}
 </script>
-<script src="{{ '/assets/ink.js' | relative_url }}?v=20261129" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}?v=20261129" defer></script>
-<script src="{{ '/assets/vig.js' | relative_url }}?v=20261129" defer></script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261130" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261130" defer></script>
+<script src="{{ '/assets/vig.js' | relative_url }}?v=20261130" defer></script>
 <script>
 /* phones: fold the signs (all but Bio); a tap or Enter opens one; a link to a section (or a search hit) opens it */
 (function(){
@@ -329,22 +329,36 @@ layout: null
   function atTop(){ return scrollY <= 0; }
   var lastPull = 0, onPeek = false; if (peek){ peek.addEventListener('pointerenter', function(){ onPeek = true; }); peek.addEventListener('pointerleave', function(){ onPeek = false; }); peek.addEventListener('focusin', function(){ onPeek = true; }); peek.addEventListener('focusout', function(){ onPeek = false; }); }
   function pushUp(d){ if (off() || gone || !atTop()) return; drawingsOn(); lastPull = performance.now(); pullT = Math.min(1.25, pullT + d); }
+  /* a fresh visit starts at the top of the CV, not wherever the browser last was */
+  try { if (!location.hash) history.scrollRestoration = 'manual'; } catch (e) {}
   addEventListener('wheel', function(e){ if (e.deltaY < 0){ if (!innerUp(e.target)) pushUp(-e.deltaY / 600); } else if (pullT > 0){ pullT = Math.max(0, pullT - e.deltaY / 400); } }, { passive: true });
   var ty = null; addEventListener('touchstart', function(e){ ty = atTop() && !innerUp(e.target) ? e.touches[0].clientY : null; }, { passive: true });
   addEventListener('touchmove', function(e){ if (ty === null) return; var d = e.touches[0].clientY - ty; ty = e.touches[0].clientY; if (d > 0) pushUp(d / 300); else pullT = Math.max(0, pullT + d / 260); }, { passive: true });
   addEventListener('touchend', function(){ ty = null; }, { passive: true });
   addEventListener('keydown', function(e){ if ((e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'Home') && !/input|textarea/i.test(e.target.tagName || '')) pushUp(.22); });
-  function tick(){
-    var p = prog(); sec.style.setProperty('--p', p); if (p > .02 && !off()) drawingsOn(); street(p);
-    /* the bottom: once you have scrolled into the ending, reaching its end takes you in */
-    if (!off() && !gone){ if (p < .9) armed = true; if (p >= .999 && armed){ if (++held > 18) go('#subway'); } else held = 0; }
-    /* the top: the pull eases back when you stop; past the end it takes you in, riding the tram */
-    if (pullT > 0 && !gone && !onPeek && performance.now() - lastPull > 1800) pullT = Math.max(0, pullT - .012);
-    pull += (pullT - pull) * .25; tram(Math.min(1, pull));
-    if (pull >= 1 && !gone) go('#tramup');
+  /* The drawings play at their own pace, however fast you scroll: the walk and the stairs take about a second and
+     a half, the tram ride about a second. Only when one has played to the end does the page move on, so a quick
+     flick still shows him going down the stairs or up on the tram. */
+  var pd = 0, last = 0;
+  /* the ending is ready to take you in from the start of every visit. It holds back only when you have just come
+     back out of the walk (the Back button, or walking back up the stairs to #walk); scrolling up re-arms it. */
+  armed = location.hash !== '#walk';
+  addEventListener('scroll', function(){ if (prog() < .9) armed = true; }, { passive: true });
+  function tick(now){
+    var dt = Math.min(250, (now - last) || 16) / 16.7; last = now;   /* by real time, so slow frames do not slow the walk */
+    var p = prog(); sec.style.setProperty('--p', p); if (p > .02 && !off()) drawingsOn();
+    pd += Math.max(-.05 * dt, Math.min(.012 * dt, p - pd)); if (reduce) pd = p;
+    street(pd);
+    /* the bottom: once you have scrolled into the ending and the walk down the stairs has played, it takes you in */
+    if (!off() && !gone){ if (p < .9) armed = true; if (p >= .999 && pd >= .999 && armed){ if (++held > 12) go('#subway'); } else held = 0; }
+    /* the top: the pull eases back when you stop; when the ride has played to the top, it takes you in */
+    if (pullT > 0 && !gone && !onPeek && now - lastPull > 1800) pullT = Math.max(0, pullT - .012 * dt);
+    pull += Math.max(-.06 * dt, Math.min(.016 * dt, pullT - pull)); tram(Math.min(1, pull));
+    if (pull >= 1 && !gone){ if (++topHeld > 14) go('#tramup'); } else topHeld = 0;
     requestAnimationFrame(tick);
   }
-  addEventListener('pageshow', function(e){ if (e.persisted){ gone = false; held = 0; armed = false; pull = pullT = 0; fade.classList.remove('on'); } });
+  var topHeld = 0;
+  addEventListener('pageshow', function(e){ if (e.persisted){ gone = false; held = 0; topHeld = 0; armed = false; pull = pullT = 0; pd = prog(); fade.classList.remove('on'); } });
   requestAnimationFrame(tick);
 })();
 </script>
