@@ -132,6 +132,36 @@
       var f = { x: 70, y: 176, mode: shine ? 'point' : 'stand', face: 1, look: shine ? { x: 244, y: 26 } : (lk || { x: 200, y: 50 }), smile: shine || !!lk, surprise: shine && u < 1.7 };
       FIG(f); S([[0, 176], [300, 176]], 2);
     },
+    /* Awards: an awards night. On stage with a trophy; in front, the backs of photographers' heads, cameras up
+       and flashing, someone clapping, and a hand up with a question. */
+    ceremony: function(T, lk, hov){
+      var c = I.ctx, u = T % 6, P = COL.paper;
+      WASH(160, 70, 100, 52, COL.sun, .3, 15);
+      /* the curtain and the stage */
+      S([[40, 10], [40, 118]], 2); S([[280, 10], [280, 118]], 2); for (var cr = 46; cr < 280; cr += 16) S([[cr, 10], [cr + 4, 40], [cr, 70]], 1, .3);
+      R(100, 12, 120, 18, 1.6, P); TX('AWARDS NIGHT', 160, 25, 10, 'center', MONO);
+      S([[30, 118], [290, 118]], 2.4); Ln(30, 124, 290, 124, 1.2, .6);
+      R(216, 86, 30, 32, 1.8, P); Ln(228, 86, 222, 70, 1.4); O(221, 68, 3, 1.2, COL.ink);   /* the podium and its mic */
+      /* the figure on stage, trophy up */
+      c.save(); c.translate(160, 118); c.scale(.72, .72); I.pen(1 / .72);
+      var f = { x: 0, y: 0, mode: 'wave', face: 1, smile: true, look: lk ? { x: (lk.x - 160) / .72, y: (lk.y - 118) / .72 } : { x: 0, y: 200 } };
+      f.hold = function(wx, wy){ S([[wx - 9, wy - 22], [wx - 7, wy - 8], [wx + 7, wy - 8], [wx + 9, wy - 22], [wx - 9, wy - 22]], 1.8); WASH(wx, wy - 16, 7, 6, COL.sun, .7, 16); Ln(wx, wy - 8, wx, wy - 2, 1.8); Ln(wx - 6, wy, wx + 6, wy, 2); };
+      FIG(f); I.pen(1); c.restore();
+      /* the audience, from behind: cameras up over their heads, someone clapping, a hand up */
+      c.save(); c.beginPath(); c.rect(0, 0, 300, 200); c.clip();
+      var crowd = [{ x: 30, hair: 'curly', cam: true }, { x: 86, hair: 'cap', clap: true }, { x: 146, hair: 'long', cam: true }, { x: 206, hair: 'bun', ask: true }, { x: 266, hair: 'cap', cam: true }];
+      crowd.forEach(function(p, i){
+        c.save(); c.translate(p.x, 266); c.scale(.85, .85); I.pen(1 / .85);
+        var g = { x: 0, y: 0, mode: p.cam || p.ask ? 'wave' : 'stand', face: i % 2 ? -1 : 1, back: true, hair: p.hair, clap: !!p.clap };
+        if (p.cam) g.hold = function(wx, wy){ R(wx - 11, wy - 15, 22, 15, 1.8, P); O(wx, wy - 8, 4, 1.4, null); var fl = ((T * .9 + i * .37) % 2.1) < .12 && !I.reduce.matches; if (fl || I.reduce.matches && i === 0){ for (var r = 0; r < 8; r++){ var a = r / 8 * 6.283; Ln(wx + 7 + Math.cos(a) * 6, wy - 19 + Math.sin(a) * 6, wx + 7 + Math.cos(a) * 14, wy - 19 + Math.sin(a) * 14, 1.6); } } };
+        if (p.ask) g.hold = function(wx, wy){ Ln(wx, wy, wx + 3, wy - 22, 2.2); O(wx + 3, wy - 26, 5, 1.8, P); };
+        FIG(g); I.pen(1); c.restore();
+      });
+      c.restore();
+      /* the sounds of it */
+      if (I.reduce.matches || T === 2 || Math.sin(T * 9) > .2){ TX('clap', 64, 150, 12); TX('clap', 104, 141, 10); }
+      if (u > 2.5 || I.reduce.matches || T === 2){ var bx = 214, by = 128; S([[bx, by], [bx + 68, by], [bx + 68, by + 20], [bx + 12, by + 20], [bx + 4, by + 28], [bx + 4, by + 20], [bx, by + 20], [bx, by]], 1.6); c.fillStyle = P; c.fillRect(bx + 2, by + 2, 64, 16); TX('a question?', bx + 34, by + 14, 10.5); }
+    },
     /* Dev: typing at a laptop; the code on the screen grows, then a green check */
     laptop: function(T, lk, hov){
       var u = T % 6;

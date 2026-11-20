@@ -203,3 +203,32 @@
 
 /* Simple or Animated: remember the visitor's pick. Simple is the default. */
 document.addEventListener('click', function(e){ var a = e.target.closest && e.target.closest('[data-pick]'); if (!a) return; try { localStorage.setItem('mode', a.dataset.pick); } catch (err) {} });
+
+/* The line map: opens from the Map button; marks where you are; in the walk, its stops move you without a reload. */
+(function(){
+  var btn = document.getElementById('lineMapBtn'), map = document.getElementById('lineMap'); if (!btn || !map) return;
+  var close = document.getElementById('lineMapClose');
+  function here(){
+    var p = location.pathname;
+    if (/\/explore\/?$/.test(p)) return (window.InkWorld && window.InkWorld.zone) ? window.InkWorld.zone() : ((location.hash || '#street').slice(1) || 'street');
+    if (/\/photos\//.test(p)) return 'gallery';
+    if (/\/food\//.test(p)) return 'food';
+    if (/\/library\//.test(p) || /\/essays\//.test(p)) return 'library';
+    return 'page';
+  }
+  function mark(){ var h = here(); map.querySelectorAll('li[data-stop]').forEach(function(li){ var on = li.dataset.stop === h; li.classList.toggle('here', on); var a = li.querySelector('a'); if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); }); }
+  function setOpen(on){ var nav = document.querySelector('.nav'); if (on && nav){ var tp = Math.max(8, nav.getBoundingClientRect().bottom + 6); map.style.top = tp + 'px'; map.style.maxHeight = (innerHeight - tp - 12) + 'px'; } map.hidden = !on; btn.setAttribute('aria-expanded', String(on)); if (on){ mark(); var cur = map.querySelector('li.here>a') || map.querySelector('a'); setTimeout(function(){ cur.focus(); }, 30); } }
+  btn.addEventListener('click', function(e){ e.stopPropagation(); setOpen(map.hidden); });
+  if (close) close.addEventListener('click', function(){ setOpen(false); btn.focus(); });
+  addEventListener('keydown', function(e){ if (e.key === 'Escape' && !map.hidden){ setOpen(false); btn.focus(); } });
+  document.addEventListener('click', function(e){ if (e.isTrusted && !map.hidden && !map.contains(e.target) && e.target !== btn && !btn.contains(e.target)) setOpen(false); });
+  map.querySelectorAll('a[data-zone]').forEach(function(a){ a.addEventListener('click', function(e){
+    var w = window.InkWorld; if (!w || !w.stops || w.stops[a.dataset.zone] == null) return;
+    e.preventDefault(); w.goTo(w.stops[a.dataset.zone]); setOpen(false); }); });
+})();
+/* the line map's copies of the Drawings and Dark switches (phones) press the real ones and show their state */
+(function(){
+  document.querySelectorAll('.lm-set [data-proxy]').forEach(function(b){ var real = document.getElementById(b.dataset.proxy); if (!real){ b.remove(); return; }
+    function sync(){ b.textContent = real.textContent; b.setAttribute('aria-pressed', real.getAttribute('aria-pressed') || 'false'); }
+    b.addEventListener('click', function(e){ e.stopPropagation(); real.click(); setTimeout(sync, 0); }); sync(); document.addEventListener('plainchange', sync); });
+})();

@@ -48,7 +48,7 @@
     { id: 'train', n: 850, d: 1650, at: 150, label: 'Train', next: 'Off at Marquam Hill' },
     { id: 'hill', n: 450, d: 2500, at: 140, label: 'Marquam Hill', next: 'Elevator up to OHSU' },
     { id: 'lab', n: walkLen(LAB_HOTS), hots: LAB_HOTS, label: 'OHSU lab', next: 'Aerial Tram down' },
-    { id: 'tram', n: 700, d: 3600, at: 300, label: 'Aerial Tram', next: 'Back to the street' }
+    { id: 'tram', n: 700, d: 3600, at: 300, label: 'Aerial Tram', next: 'Down to the one page' }
   ];
   var LEN = 0, SEAMS = [];
   ZONES.forEach(function(z){ z.a = LEN; z.b = LEN += z.n;
@@ -64,9 +64,17 @@
   var u = HASH.street, ut = u;
   function wrap(x){ return ((x % LEN) + LEN) % LEN; }
   function zoneAt(x){ x = wrap(x); for (var i = 0; i < ZONES.length; i++) if (x >= ZONES[i].a && x < ZONES[i].b) return ZONES[i]; return ZONES[0]; }
-  function goTo(stop, instant){ var cur = wrap(ut), d = stop - cur; if (d > LEN / 2) d -= LEN; if (d < -LEN / 2) d += LEN; ut += d; if (instant || still()) u = ut; }
-  function goForward(stop){ var cur = wrap(ut), d = stop - cur; if (d <= 0) d += LEN; ut += d; if (still()) u = ut; }
-  function goBack(stop){ var cur = wrap(ut), d = stop - cur; if (d >= 0) d -= LEN; ut += d; if (still()) u = ut; }
+  /* The loop runs through the one page: past the end of the tram ride you come out at the top of the page, and
+     back past the start of the street you come out at its bottom (whose own edges lead back in). Within the walk,
+     a jump that would cross that seam (the street's tram, say) is a ride: it cuts straight there. */
+  function goTo(stop, instant){ ut = stop; if (instant || still()) u = ut; }
+  function goForward(stop){ if (stop <= ut){ u = ut = stop; } else { ut = stop; if (still()) u = ut; } }
+  function goBack(stop){ if (stop >= ut){ u = ut = stop; } else { ut = stop; if (still()) u = ut; } }
+  var leaving = false;
+  function exitTo(top){ if (leaving) return; leaving = true; try { localStorage.setItem('mode', 'simple'); } catch (e) {}
+    var f = document.createElement('div'); f.style.cssText = 'position:fixed;inset:0;background:var(--paper);opacity:0;transition:opacity .45s ease;z-index:200'; document.body.appendChild(f);
+    requestAnimationFrame(function(){ f.style.opacity = '1'; }); setTimeout(function(){ location.href = DIRECTORY + (top ? '' : '#walk'); }, 450); }
+  addEventListener('pageshow', function(e){ if (e.persisted){ leaving = false; [].forEach.call(document.querySelectorAll('body>div[style*="z-index:200"]'), function(d){ d.remove(); }); u = ut = cl(ut, 0, LEN - 1); } });
   var h0 = (location.hash || '').slice(1); if (HASH[h0] != null) u = ut = HASH[h0];
   function seg(x, a, b){ return cl((x - a) / (b - a), 0, 1); }
 
@@ -95,13 +103,14 @@
   });
   function zoneIndex(x){ return ZONES.indexOf(zoneAt(x)); }
   function stopsOf(z){ return z.hots ? z.hots.map(function(h){ return h.at; }) : [z.stop]; }
-  function goNext(){ var i = zoneIndex(ut), x = wrap(ut), z = ZONES[i], st = stopsOf(z).filter(function(a){ return a > x + 20; }); goForward(st.length ? st[0] : ZONES[(i + 1) % ZONES.length].stop); }
-  function goPrev(){ var i = zoneIndex(ut), x = wrap(ut), z = ZONES[i], st = stopsOf(z).filter(function(a){ return a < x - 20; }), p = ZONES[(i - 1 + ZONES.length) % ZONES.length], ps = stopsOf(p);
-    goBack(st.length ? st[st.length - 1] : ps[ps.length - 1]); }
+  function goNext(){ var i = zoneIndex(ut), x = wrap(ut), z = ZONES[i], st = stopsOf(z).filter(function(a){ return a > x + 20; });
+    if (!st.length && i === ZONES.length - 1) return exitTo(true); goForward(st.length ? st[0] : ZONES[i + 1].stop); }
+  function goPrev(){ var i = zoneIndex(ut), x = wrap(ut), z = ZONES[i], st = stopsOf(z).filter(function(a){ return a < x - 20; });
+    if (!st.length && i === 0) return exitTo(false); var p = ZONES[i - 1], ps = stopsOf(p); goBack(st.length ? st[st.length - 1] : ps[ps.length - 1]); }
   /* where the Next button goes from here, in words */
   function nextWords(x){ var z = zoneAt(x), h = z.hots && z.hots.filter(function(a){ return a.at > x + 20; })[0]; return h ? h.label : z.next; }
   function prevWords(x){ var i = ZONES.indexOf(zoneAt(x)), z = ZONES[i], h = z.hots && z.hots.filter(function(a){ return a.at < x - 20; }).pop(); if (h) return h.label;
-    var p = ZONES[(i - 1 + ZONES.length) % ZONES.length]; return p.hots ? p.hots[p.hots.length - 1].label : p.label; }
+    if (i === 0) return 'The one page'; var p = ZONES[i - 1]; return p.hots ? p.hots[p.hots.length - 1].label : p.label; }
 
   /* ---------- the stop list, and Next / Previous ---------- */
   if (loopNav) ZONES.forEach(function(z){ var li = document.createElement('li'), b = document.createElement('button'); b.type = 'button'; b.dataset.z = z.id; b.innerHTML = '<span class="dot"></span><span class="lb"></span>'; b.querySelector('.lb').textContent = z.label; b.setAttribute('aria-label', z.label); b.addEventListener('click', function(){ goTo(z.stop); }); li.appendChild(b); loopNav.appendChild(li); });
@@ -184,7 +193,7 @@
     var P2 = 610, h = hover || wk.at, look = null;
     if (h) look = { x: h.r[0] + h.r[2] / 2, y: h.lookY || h.r[1] + h.r[3] / 2 };
     var f = { x: wk.x, y: P2, face: wk.face, mode: wk.mode, ph: wk.ph, look: look, smile: !!wk.at, surprise: !!hover && hover !== wk.at, alpha: wk.alpha };
-    if (f.mode === 'write'){ f.mode = 'stand'; f.look = { x: 335, y: 420 }; }
+    if (f.mode === 'write'){ f.mode = 'point'; f.look = { x: 320, y: 420 }; }
     if (f.mode === 'peer'){ f.mode = 'stand'; f.lean = 6; f.look = { x: 510, y: 300 }; }
     if (f.alpha === 0) return;
     /* interiors are drawn closer: the same figure, scaled up about its feet */
@@ -219,7 +228,11 @@
     /* the desk: notebook and laptop */
     WASH(420, 440, 220, 40, COL.sun, .22, 32);
     R(240, 436, 340, 14, 2.4, P); Ln(260, 450, 260, 610, 2.2); Ln(560, 450, 560, 610, 2.2);
-    S([[280, 436], [290, 412], [380, 412], [386, 436]], 2.2); Ln(333, 414, 333, 436, 1.4, .6); for (var i = 0; i < 4; i++) Ln(290 + i * 9, 420 + i * 3, 320 + i * 6, 420 + i * 3, 1, .5);
+    S([[280, 436], [290, 412], [380, 412], [386, 436]], 2.2); Ln(333, 414, 333, 436, 1.4, .6);
+    /* the notebook: while he is at it, the page fills line by line under a moving pencil */
+    var writing = wk.at && wk.at.id === 'notes' && !still(), wl = writing ? (T * 1.6) % 6 : 6;
+    for (var i = 0; i < 5; i++){ var ln = cl(wl - i, 0, 1); if (ln > 0) Ln(292 + i * 2, 418 + i * 3.4, 292 + i * 2 + 34 * ln, 418 + i * 3.4, 1, .55); Ln(340, 418 + i * 3.4, 372, 418 + i * 3.4, 1, .3); }
+    if (writing){ var pl = Math.min(4, Math.floor(wl)), px = 292 + pl * 2 + 34 * cl(wl - pl, 0, 1), py = 418 + pl * 3.4; S([[px, py], [px + 14, py - 16]], 2.2); Ln(px + 14, py - 16, px + 17, py - 19, 2, .6); }
     R(446, 428, 70, 8, 2, P); ctx.fillStyle = P; ctx.fillRect(454, 386, 54, 42); S([[452, 428], [456, 384], [510, 384], [510, 428]], 2.2);
     for (var k = 0; k < 3; k++){ var ww = still() ? 20 : 10 + ((T * 30 + k * 13) % 30); Ln(462, 396 + k * 9, 462 + ww, 396 + k * 9, 1.2, .7); }
     S([[250, 436], [252, 350], [290, 320]], 2); S([[280, 308], [306, 330], [320, 312], [292, 296], [280, 308]], 2); WASH(302, 360, 40, 50, COL.sun, .25, 33);
@@ -381,6 +394,9 @@
       [170, 410].forEach(function(d){ var g = doorOpen ? 18 : 0; R(tx + d - g, ty + 16, 30, 130, 2, COL.paper); R(tx + d + 30 + g, ty + 16, 30, 130, 2, COL.paper); });
       TX('MARQUAM HILL', tx + tw - 90, ty + 58, 13, 'center', MONO); }
     S([[WL, 470], [WR, 470]], 3); for (var k = Math.floor(WL / 24) * 24; k < WR; k += 24) Ln(k, 473, k + 12, 473, 2, .8); H(WL, 476, WR - WL, 120, 14, .16);
+    /* others waiting: one on a phone, one checking the sign */
+    FIG({ x: 690, y: 470, mode: 'stand', face: -1, hair: 'long', phone: true, down: true });
+    FIG({ x: 790, y: 470, mode: 'stand', face: -1, hair: 'curly', look: { x: 450, y: 220 } });
     ctx.restore();
   }
   function wrapText(str, x, y, w, lh){ var words = str.split(' '), line = '', yy = y, n = 0; for (var i = 0; i < words.length; i++){ var test = line ? line + ' ' + words[i] : words[i]; if (ctx.measureText(test).width > w && line){ ctx.fillText(line, x, yy); line = words[i]; yy += lh; if (++n > 2) return; } else line = test; } ctx.fillText(line, x, yy); }
@@ -402,6 +418,10 @@
     /* the line map over the doors: two stops */
     var ry = top + 262; S([[200, ry], [600, ry]], 3, 1, COL.pop); O(200, ry, 7, 2, t < .5 ? COL.ink : COL.paper); O(600, ry, 7, 2, t >= .5 ? COL.ink : COL.paper); TX('South Waterfront', 200, ry + 24, 13); TX('Marquam Hill', 600, ry + 24, 13);
     ctx.restore();
+    /* other passengers: someone reading, someone on their phone, someone dozing by the door */
+    FIG({ x: 90 + sway * 2, y: fl - 34, mode: 'read', seat: 22, face: 1, hair: 'bun' });
+    FIG({ x: 700 + sway * 2, y: fl - 34, mode: 'sit', seat: 22, face: -1, hair: 'cap', phone: true, down: true });
+    FIG({ x: 310 + sway * 2, y: fl - 34, mode: 'sit', seat: 22, face: 1, hair: 'curly', down: true });
     if (riding) FIG({ x: 400 + sway * 2, y: fl - 34, mode: 'sit', seat: 22, look: { x: 400, y: top + 40 }, smile: true, face: 1 });
   }
   function drawHill(x){
@@ -522,8 +542,10 @@
     if (I.plain()){ location.replace(DIRECTORY); return; }
     var dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
     I.tick(now);
+    /* past either end of the loop: out to the one page */
+    if (ut > LEN + 60){ ut = LEN + 60; exitTo(true); } else if (ut < -60){ ut = -60; exitTo(false); }
     u = still() ? ut : lerp(u, ut, .14); if (Math.abs(u - ut) < .3) u = ut;
-    var x = wrap(u), c = size(x), zone = zoneAt(x), zid = zone.id, X = dx(x);
+    var x = wrap(cl(u, 0, LEN - .01)), c = size(x), zone = zoneAt(x), zid = zone.id, X = dx(x);
     var wasHere = here; here = zone.hots ? walker(zid, x).at || null : null;
     if (here !== wasHere){ [ROOM_HOTS, LAB_HOTS].forEach(function(l){ l.forEach(function(hs){ if (hs.row2){ hs.row2.classList.toggle('here', hs === here); if (hs === here) hs.row2.setAttribute('aria-current', 'step'); else hs.row2.removeAttribute('aria-current'); } }); }); }
     var nw = nextWords(ut), pw = prevWords(ut); if (nextLabel && nextLabel.textContent !== nw) nextLabel.textContent = nw; if (prevLabel && prevLabel.textContent !== pw) prevLabel.textContent = pw;
@@ -555,6 +577,8 @@
     requestAnimationFrame(frame);
   }
   document.addEventListener('plainchange', function(){ if (I.plain()) location.replace(DIRECTORY); });
-  if (I.plain()) location.replace(DIRECTORY); else requestAnimationFrame(frame);
-  window.InkWorld = { goTo: goTo, openPanel: openPanel, stops: HASH, next: goNext, prev: goPrev, hotStops: ROOM_HOTS.concat(LAB_HOTS).map(function(h){ return [h.label, h.at]; }) };
+  /* coming into the walk turns the drawings on; switching them off here leaves for the one page */
+  if (I.plain()){ document.documentElement.classList.remove('plain'); try { localStorage.setItem('plain', '0'); } catch (e) {} var pt = document.getElementById('plainToggle'); if (pt){ pt.textContent = 'Drawings: On'; pt.setAttribute('aria-pressed', 'true'); } }
+  requestAnimationFrame(frame);
+  window.InkWorld = { zone: function(){ return zoneAt(u).id; }, goTo: goTo, openPanel: openPanel, stops: HASH, next: goNext, prev: goPrev, hotStops: ROOM_HOTS.concat(LAB_HOTS).map(function(h){ return [h.label, h.at]; }) };
 })();

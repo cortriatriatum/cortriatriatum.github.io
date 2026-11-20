@@ -2,7 +2,8 @@
    Every line is drawn live with a slight wobble that redraws 8 times a second ("line boil"), like
    hand-drawn animation. Colors come from the page's CSS tokens, so both themes work.
    The character (FIG) has a big head and eyes for appeal, eyes that follow a look target, squash and
-   stretch, and a scarf that follows through. Ink.weather() fetches Portland's current weather once per
+   stretch, and a scarf that follows through. Other people (f.hair: 'bun', 'cap', 'curly', 'long') get their own hair
+   and dot eyes; f.back draws the back of a head; f.clap claps; f.phone holds a phone. Ink.weather() fetches Portland's current weather once per
    15 minutes (Open-Meteo, no key) and caches it. Nothing here runs in Plain mode or draws motion when the
    visitor asks for reduced motion. */
 (function(){
@@ -124,6 +125,20 @@
       if (s && m === 'read'){ R(wx - 2, wy - 12, 16, 12, 1.6, COL.paper); Ln(wx + 6, wy - 12, wx + 6, wy, 1.2); }
     }
     O(hcx, hcy, 16, 2.4, P);
+    if (f.hair){ /* other people: no beanie, their own hair, and plain dot eyes, so the main figure stays himself */
+      var hh = f.hair;
+      if (hh === 'bun'){ S([[hcx - 16, hcy - 2], [hcx - 10, hcy - 14], [hcx + 4, hcy - 17], [hcx + 15, hcy - 6]], 2.2); O(hcx - 6 * fc, hcy - 19, 6, 2, COL.ink); }
+      else if (hh === 'cap'){ S([[hcx - 15, hcy - 5], [hcx - 10, hcy - 15], [hcx + 8, hcy - 16], [hcx + 15, hcy - 6], [hcx - 15, hcy - 5]], 2.2); Ln(hcx + 13 * fc, hcy - 6, hcx + 26 * fc, hcy - 4, 2.4); }
+      else if (hh === 'curly'){ for (var cu = -12; cu <= 12; cu += 6) O(hcx + cu, hcy - 14 + Math.abs(cu) * .25, 4.5, 1.6, null); }
+      else if (hh === 'long'){ S([[hcx - 16, hcy + 10], [hcx - 16, hcy - 6], [hcx - 8, hcy - 16], [hcx + 8, hcy - 16], [hcx + 16, hcy - 6], [hcx + 16, hcy + 10]], 2.2); }
+      var de = hcx + fc * 3;
+      if (!f.back){ C.fillStyle = COL.ink; C.beginPath(); C.arc(de - 3, hcy + 2, 1.6, 0, 6.3); C.arc(de + 4, hcy + 2, 1.6, 0, 6.3); C.fill();
+        if (m === 'read' || f.down) Ln(de - 2, hcy + 9, de + 3, hcy + 9, 1.3); else S([[de - 3, hcy + 8], [de, hcy + 10], [de + 3, hcy + 8]], 1.3); }
+      else H(hcx - 12, hcy - 12, 24, 22, 5, .35);   /* the back of a head */
+      if (f.clap && !still){ var cp = Math.abs(Math.sin(T * 9)); Ln(nx + 6 * fc, sy + 4, nx + (12 + cp * 6) * fc, sy - 6, 2); Ln(nx + 6 * fc, sy + 4, nx + (20 - cp * 4) * fc, sy - 8, 2); }
+      if (f.phone){ R(nx + 12 * fc - 4, sy + 6, 8, 12, 1.4, COL.paper); }
+      C.restore(); return;
+    }
     S([[hcx - 16, hcy - 4], [hcx - 12, hcy - 15], [hcx, hcy - 20], [hcx + 12, hcy - 15], [hcx + 16, hcy - 4]], 2.4); Ln(hcx - 16, hcy - 4, hcx + 16, hcy - 4, 2);
     O(hcx - 3 * fc, hcy - 23, 3.6, 1.8, P);
     var dx = fc * 1.2, dy = .4, lk = f.look;

@@ -66,8 +66,8 @@ layout: null
 </dialog>
 <script type="application/json" id="photoData">[{% for p in site.data.photos.photos %}{"base":"{{ '/img/photos/' | append: p.id | relative_url }}","place":"{{ p.place }}","date":"{{ p.date }}","o":{{ p.o }},"w":{{ p.w }},"h":{{ p.h }},"bwonly":{{ p.bwonly }}}{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
 {% include ink/foot.html %}
-<script src="{{ '/assets/ink.js' | relative_url }}?v=20261121" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}?v=20261121" defer></script>
-<script src="{{ '/assets/strip.js' | relative_url }}?v=20261121" defer></script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261122" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261122" defer></script>
+<script src="{{ '/assets/strip.js' | relative_url }}?v=20261122" defer></script>
 </body>
 </html>

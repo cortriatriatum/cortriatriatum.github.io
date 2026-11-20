@@ -6,9 +6,11 @@
   <a class="navsec" href="{{ '/' | relative_url }}#contact" data-open="contact">Contact</a>
   {% unless navpage == "explore" or navpage == "photos" %}<a class="navsec" href="{{ '/explore/' | relative_url }}" data-pick="walk">The walk</a>{% endunless %}
   <span class="tools">
+    <button type="button" class="pill lm-btn" id="lineMapBtn" aria-controls="lineMap" aria-expanded="false" title="Where you are on the line"><i class="lm-dot" aria-hidden="true"></i>Map</button>
     {% if navpage == "explore" or navpage == "photos" %}<a class="pill out" href="{{ '/' | relative_url }}" data-pick="simple" title="Leave the walk: everything on one page">← One page</a>{% endif %}
     <button type="button" class="pill search-open" data-search aria-haspopup="dialog" title="Search this site (press / or Ctrl K)">Search <kbd>/</kbd></button>
     <button type="button" class="pill" id="plainToggle" aria-pressed="true" title="Show or hide the drawings">Drawings: On</button>
     <button type="button" class="pill" id="themeToggle" aria-pressed="false" aria-label="Switch color theme">Dark</button>
   </span>
 </nav>
+{% include ink/linemap.html %}

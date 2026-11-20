@@ -1,0 +1,19 @@
+{%- comment %} The line map: the whole loop as one subway line, with the detours off it, and where you are.
+  Opened by the Map button in the top bar; closed by default so it never covers anything. {% endcomment -%}
+<div class="linemap" id="lineMap" hidden aria-labelledby="lineMapH">
+  <div class="lm-head"><h2 id="lineMapH">The line</h2><button type="button" class="pill" id="lineMapClose">Close</button></div>
+  <p class="lm-k">One loop: the page, then a day in Portland, back to the page. The side stops are detours.</p>
+  <ol class="lm-line">
+    <li data-stop="page"><a href="{{ '/' | relative_url }}" data-pick="simple"><b class="bul">O</b><span>One page<small>everything at a glance</small></span></a></li>
+    <li data-stop="street"><a href="{{ '/explore/' | relative_url }}#street" data-zone="street"><b class="bul">S</b><span>The street<small>South Waterfront</small></span></a>
+      <ul class="lm-off"><li data-stop="food"><a href="{{ '/food/' | relative_url }}">Food walk<small>food recs, city by city</small></a></li></ul></li>
+    <li data-stop="room"><a href="{{ '/explore/' | relative_url }}#room" data-zone="room"><b class="bul">R</b><span>The room<small>under the station</small></span></a>
+      <ul class="lm-off"><li data-stop="gallery"><a href="{{ '/photos/' | relative_url }}">Gallery<small>photos</small></a></li><li data-stop="library"><a href="{{ '/library/' | relative_url }}">Library<small>notes and essays</small></a></li></ul></li>
+    <li data-stop="platform"><a href="{{ '/explore/' | relative_url }}#platform" data-zone="platform"><b class="bul">P</b><span>The platform</span></a></li>
+    <li data-stop="train"><a href="{{ '/explore/' | relative_url }}#train" data-zone="train"><b class="bul">T</b><span>The train<small>to Marquam Hill</small></span></a></li>
+    <li data-stop="hill"><a href="{{ '/explore/' | relative_url }}#hill" data-zone="hill"><b class="bul">H</b><span>Marquam Hill</span></a></li>
+    <li data-stop="lab"><a href="{{ '/explore/' | relative_url }}#lab" data-zone="lab"><b class="bul">L</b><span>The lab<small>OHSU</small></span></a></li>
+    <li data-stop="tram"><a href="{{ '/explore/' | relative_url }}#tram" data-zone="tram"><b class="bul">A</b><span>Aerial Tram<small>and back to the page</small></span></a></li>
+  </ol>
+  <div class="lm-set" aria-label="Settings"><button type="button" class="pill" data-proxy="plainToggle">Drawings</button><button type="button" class="pill" data-proxy="themeToggle">Dark</button></div>
+</div>
