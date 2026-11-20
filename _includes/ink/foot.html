@@ -1,0 +1,26 @@
+<footer class="foot">
+  <span>Rick Mathews, PhD · Portland, Oregon · <a href="https://orcid.org/0000-0003-2723-5646">ORCID 0000-0003-2723-5646</a></span>
+  <span><a href="{{ '/essays/' | relative_url }}">All notes</a> · <a href="https://cortriatriatum.github.io/essays/feed.xml">RSS</a></span>
+</footer>
+<dialog class="search" id="searchDlg" aria-labelledby="searchLabel">
+  <label class="search-row" id="searchLabel"><span class="sr">Search this site</span>
+    <input id="searchQ" type="search" placeholder="Search notes, papers, awards, courses, places" autocomplete="off" spellcheck="false" aria-controls="searchResults">
+    <button type="button" class="pill" id="searchClose">Close</button></label>
+  <ul id="searchResults" role="listbox" aria-label="Results"></ul>
+  <p class="search-hint">↑ ↓ to move · Enter to open · Esc to close</p>
+</dialog>
+<script>
+/* Theme and Plain switches, shared by every page. */
+(function(){
+  var root = document.documentElement, th = document.getElementById('themeToggle'), pl = document.getElementById('plainToggle');
+  function sysDark(){ try { return matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) { return false; } }
+  function cur(){ return root.getAttribute('data-theme') || (sysDark() ? 'dark' : 'light'); }
+  function syncTheme(){ var d = cur() === 'dark'; th.textContent = d ? 'Light' : 'Dark'; th.setAttribute('aria-pressed', String(d)); th.setAttribute('aria-label', d ? 'Switch to light theme' : 'Switch to dark theme'); }
+  th.addEventListener('click', function(){ var n = cur() === 'dark' ? 'light' : 'dark'; root.setAttribute('data-theme', n); try { localStorage.setItem('theme', n); } catch (e) {} syncTheme(); });
+  try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){ if (!root.getAttribute('data-theme')) syncTheme(); }); } catch (e) {}
+  syncTheme();
+  function syncPlain(){ var p = root.classList.contains('plain'); pl.setAttribute('aria-pressed', String(p)); pl.textContent = p ? 'Drawings' : 'Plain'; pl.title = p ? 'Turn the drawings back on' : 'Turn the drawings off'; }
+  pl.addEventListener('click', function(){ var p = !root.classList.contains('plain'); root.classList.toggle('plain', p); try { localStorage.setItem('plain', p ? '1' : '0'); } catch (e) {} syncPlain(); document.dispatchEvent(new CustomEvent('plainchange')); });
+  syncPlain();
+})();
+</script>

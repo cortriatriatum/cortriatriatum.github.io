@@ -1,0 +1,25 @@
+<!-- Contact: posts to a Formspree endpoint that forwards privately. No email address appears anywhere in this page. -->
+<dialog aria-labelledby="contactTitle" class="contact" id="contactDlg">
+  <div class="head"><h2 id="contactTitle">Contact Rick</h2><button aria-label="Close" class="close" id="contactClose" type="button">Close</button></div>
+  <form id="contactForm" method="POST" novalidate>
+    <label>Name<input autocomplete="name" maxlength="120" name="name" required></label>
+    <label>Your email<input autocomplete="email" maxlength="200" name="email" required type="email"></label>
+    <label>Message<textarea maxlength="5000" name="message" required></textarea></label>
+    <div aria-hidden="true" class="hp"><label>Leave this empty<input autocomplete="off" name="_gotcha" tabindex="-1"></label></div>
+    <input name="_subject" type="hidden" value="cortriatriatum.github.io: new message">
+    <div class="row"><button class="send" type="submit">Send</button><span class="status" id="contactStatus" role="status"></span></div>
+    <div class="fine">Delivered privately. I'll reply from my own address.</div>
+  </form>
+</dialog>
+<dialog aria-labelledby="subTitle" class="contact" id="subDlg">
+  <div class="head"><h2 id="subTitle">Subscribe to new notes</h2><button aria-label="Close" class="close" id="subClose" type="button">Close</button></div>
+  <form id="subForm" method="POST" novalidate>
+    <label>Your email<input autocomplete="email" maxlength="200" name="email" required type="email"></label>
+    <div aria-hidden="true" class="hp"><label>Leave this empty<input autocomplete="off" name="_gotcha" tabindex="-1"></label></div>
+    <input name="_subject" type="hidden" value="cortriatriatum.github.io: essay subscription">
+    <input name="message" type="hidden" value="Please email me new essays.">
+    <div class="row"><button class="send" type="submit">Subscribe</button><span class="status" id="subStatus" role="status"></span></div>
+    <div class="fine">I'll email you when a new essay is published, a few times a year at most. Reply to any of those emails to unsubscribe.</div>
+    <div class="sub-alt">Prefer a feed reader? <a href="https://cortriatriatum.github.io/essays/feed.xml">RSS feed</a></div>
+  </form>
+</dialog>

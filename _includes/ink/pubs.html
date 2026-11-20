@@ -1,0 +1,9 @@
+{%- comment %} Publications: _data/publications.yml. Topic buttons are added by script; every row gets Cite and Share. {% endcomment -%}
+<div class="chips" data-pub-filter role="group" aria-label="Filter publications by topic"></div>
+<ul class="rows" data-pub-list>
+{%- assign _labels = "article:Article,preprint:Preprint,chapter:Book chapter,abstract:Abstract" | split: "," %}
+{%- for p in site.data.publications %}{% assign _kind = p.kind %}{% for _l in _labels %}{% assign _kv = _l | split: ":" %}{% if _kv[0] == p.kind %}{% assign _kind = _kv[1] %}{% endif %}{% endfor %}
+  <li data-cite-id="pub:{{ p.doi | default: p.url | escape }}"><div class="data-title"><span class="t"><a href="{{ p.url | escape }}">{{ p.title | escape }}</a></span><span class="s">{{ _kind }} · {{ p.venue | escape }}{% if p.first_author %}<span class="tag">First author</span>{% endif %}</span></div><span class="d">{{ p.year }}</span></li>
+{%- endfor %}
+</ul>
+<p class="note">Complete list: <a href="https://scholar.google.com/citations?user=uRJdT64AAAAJ">Google Scholar</a> · <a href="https://orcid.org/0000-0003-2723-5646">ORCID</a> · <a href="https://www.ncbi.nlm.nih.gov/myncbi/rick.mathews.1/bibliography/public/">PubMed</a></p>

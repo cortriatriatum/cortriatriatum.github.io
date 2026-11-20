@@ -1,0 +1,89 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include ink/head.html %}
+<title>The Desk · Rick Mathews, PhD</title>
+<meta name="description" content="Rick Mathews's work as a drawn room: click the notebook, the microscope, the diplomas or the suitcase and the figure walks over while the details open.">
+<link href="https://cortriatriatum.github.io/room/" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="The Desk · Rick Mathews, PhD" property="og:title"/>
+<meta content="A drawn room to explore: notes, research, training, the route from New Delhi, work and awards." property="og:description"/>
+<meta content="https://cortriatriatum.github.io/room/" property="og:url"/>
+<meta content="https://cortriatriatum.github.io/img/share.jpg" property="og:image"/>
+<style>
+  .wrap{max-width:1320px;margin:0 auto;padding-block:4px 60px}
+  .lead{display:flex;align-items:baseline;gap:6px 18px;flex-wrap:wrap;margin:6px 0 12px}
+  .lead h1{font:800 clamp(26px,3.2vw,38px)/1 var(--grot);letter-spacing:-.03em;margin:0}
+  .lead p{margin:0;color:var(--soft);font:400 20px/1.3 var(--hand)}
+  .room{position:relative;width:100%;aspect-ratio:1200/680;max-height:calc(100vh - 190px);min-height:300px;margin:0 auto;border-radius:8px;overflow:hidden;outline:1.5px solid var(--ink)}
+  .room canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .hot{position:absolute;border-radius:10px;cursor:pointer;background:transparent;border:0;padding:0}
+  .hot:focus-visible{outline:2.5px dashed var(--pop);outline-offset:2px}
+  .list{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .list button{all:unset;cursor:pointer;font:400 18px/1 var(--hand);padding:8px 13px;border:1.5px solid var(--ink);border-radius:16px 12px 18px 11px}
+  .list button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .list button:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
+  .panel{position:fixed;top:0;right:0;bottom:0;width:min(500px,94vw);z-index:50;background:var(--paper);border-left:1.5px solid var(--ink);
+    transform:translateX(104%);transition:transform .32s cubic-bezier(.2,.8,.2,1);overflow-y:auto;visibility:hidden;
+    padding:calc(24px + env(safe-area-inset-top,0px)) calc(24px + env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) 26px;box-shadow:-20px 0 60px rgba(0,0,0,.08)}
+  .panel.open{transform:none;visibility:visible}
+  .panel h2{font:800 34px/1.02 var(--grot);letter-spacing:-.03em;margin:8px 0 14px}
+  .panel .close{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:calc(18px + env(safe-area-inset-right,0px))}
+  .panel section[hidden]{display:none}
+  .panel h3.sub{font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin:26px 0 8px}
+  .panel .ideas>li{grid-template-columns:40px minmax(0,1fr)}
+  .panel .ideas>li::before{font-size:38px}
+  .panel .ideas .data-title>a{font-size:21px}
+  /* Plain: no room, every panel shown in order as one page */
+  html.plain .room,html.plain .lead p,html.plain .list,html.plain .panel .close{display:none}
+  html.plain .panel{position:static;transform:none;visibility:visible;width:auto;max-width:760px;margin:0 auto;border:0;box-shadow:none;padding:0;overflow:visible}
+  html.plain .panel section{display:block!important;border-top:1.5px solid var(--ink);padding-top:16px;margin-top:28px}
+  @media (max-width: 860px){
+    .room{aspect-ratio:1200/900}
+    .panel{top:auto;left:0;width:100%;max-height:80vh;border-left:0;border-top:1.5px solid var(--ink);transform:translateY(104%);border-radius:16px 16px 0 0;
+      padding:22px max(18px,env(safe-area-inset-right,0px)) calc(30px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+  }
+  @media (prefers-reduced-motion: reduce){ .panel{transition:none} }
+</style>
+</head>
+<body>
+{% assign navpage = "room" %}{% include ink/nav.html %}
+<main id="main" class="wrap">
+  <div class="lead"><h1>Rick Mathews</h1><p>Click anything in the room.</p></div>
+  <div class="room" id="room">
+    <canvas id="roomCv" role="img" aria-label="A drawn room with a window onto Portland's live weather, diplomas, an awards shelf, a desk with a notebook, laptop and microscope, a suitcase, a coat rack and a door"></canvas>
+  </div>
+  <div class="list" id="list" role="group" aria-label="Open a part of the room"></div>
+
+  <aside class="panel" id="panel" aria-label="Details">
+    <button type="button" class="pill close" id="close">Close</button>
+    <section data-c="notes"><span class="k">The notebook</span><h2>Notes, Scribbles &amp; Ideas in Progress</h2>{% include ink/notes.html %}
+      <div class="links"><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/' | relative_url }}">All notes</a></div></section>
+    <section data-c="research" hidden><span class="k">The microscope</span><h2>Research</h2><h3 class="sub">Current research focus</h3>{% include ink/focus.html %}
+      <h3 class="sub">Manuscripts and publications</h3>{% include ink/pubs.html %}
+      <h3 class="sub">Research funding</h3>{% include ink/funding.html %}</section>
+    <section data-c="training" hidden><span class="k">The diplomas</span><h2>Education</h2>{% include ink/education.html %}
+      <h3 class="sub">Coursework</h3>{% include ink/coursework.html %}</section>
+    <section data-c="awards" hidden><span class="k">The shelf</span><h2>Awards</h2>{% include ink/awards.html %}</section>
+    <section data-c="route" hidden><span class="k">The suitcase</span><h2>New Delhi to Portland</h2>{% include ink/route.html %}
+      <div class="links"><a href="{{ '/ride/' | relative_url }}">Take the ride</a></div></section>
+    <section data-c="work" hidden><span class="k">The coat rack</span><h2>Work Experience &amp; Community Service</h2>{% include ink/work.html %}</section>
+    <section data-c="dev" hidden><span class="k">The laptop</span><h2>Dev</h2>{% include ink/dev.html %}</section>
+    <section data-c="contact" hidden><span class="k">The door</span><h2>Contact</h2>
+      {% include ink/links.html %}</section>
+  </aside>
+</main>
+{% include ink/foot.html %}
+{% include ink/dialogs.html %}
+{% include citable.html %}
+<script>
+{% include cite-share.js %}
+</script>
+<script src="{{ '/assets/ink.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/room.js' | relative_url }}" defer></script>
+</body>
+</html>

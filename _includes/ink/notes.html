@@ -1,0 +1,9 @@
+{%- comment %} Notes (the N line): every essay, newest first. Every essay is a work in progress. {% endcomment -%}
+<ol class="ideas">
+{%- assign recent = site.essays | sort: "date" | reverse -%}
+{%- for e in recent %}{% assign _slug = e.url | split: "/" | last %}
+  <li data-cite-id="essay:{{ _slug }}"><div class="data-title"><a href="{{ e.url | relative_url }}">{{ e.title }}</a>
+    {%- if e.description %}<p class="desc">{{ e.description }}</p>{% endif %}
+    <span class="m"><span>{{ e.date | date: "%b %Y" }}{% if e.updated %}, revised {{ e.updated | date: "%b %Y" }}{% endif %}</span>{% if e.status and e.status != "" %}<span class="wip">{{ e.status | downcase }}</span>{% endif %}{% if e.pdf %}<a href="{{ e.pdf | relative_url }}" rel="noopener" target="_blank">PDF</a>{% endif %}</span></div></li>
+{%- endfor %}
+</ol>

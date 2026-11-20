@@ -5,6 +5,8 @@ layout: null
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>{{ '/' | absolute_url }}</loc></url>
   <url><loc>{{ '/essays/' | absolute_url }}</loc></url>
+  <url><loc>{{ '/ride/' | absolute_url }}</loc></url>
+  <url><loc>{{ '/room/' | absolute_url }}</loc></url>
   {%- assign essays = site.essays | sort: "date" | reverse %}
   {%- for e in essays %}
   <url><loc>{{ e.url | absolute_url }}</loc><lastmod>{{ e.updated | default: e.date | date: "%Y-%m-%d" }}</lastmod></url>

@@ -28,7 +28,7 @@ Each essay has a web page at `/essays/<name>/` and a PDF. Both come from one Mar
    the same essay as a .tex file for `latexmk -xelatex`.
 6. Share card: set `image: /img/og/<name>.png` in the front matter and run `python3 tools/og_cards.py`
    (rerun it if the title changes). It draws the 1200 x 630 picture that link previews show.
-7. Delete the `published: false` line when it is ready. The home Notes card ("Notes, Scribbles & Ideas in Progress", the N line; latest four), the essays
+7. Delete the `published: false` line when it is ready. The home page's Notes section (the N line; every essay, newest first, also behind the notebook in `/room/`), the essays
    map, the RSS feed, the sitemap, and llms.txt all update on their own. Commit and push; GitHub Pages
    rebuilds in about a minute, and the "Check site" action (`.github/workflows/check.yml`) builds it again
    and flags broken internal links, missing titles, bad structured data, or images without alt text.
@@ -39,8 +39,8 @@ Each essay has a web page at `/essays/<name>/` and a PDF. Both come from one Mar
 
 ## Publications
 
-The Research card on the home page lists `_data/publications.yml`, grouped by `kind` (article, preprint,
-chapter, abstract) with counts filled in. To add a paper, add an entry in its place (newest first within its
+The Research section on the home page (and the microscope in `/room/`) lists `_data/publications.yml`, newest first
+within each `kind`, with topic buttons and counts added by `assets/site.js`. To add a paper, add an entry in its place (newest first within its
 kind). `title`, `url`, `venue` are what the page shows; `cite` is the citation exactly as readers copy it;
 `authors`, `cite_title`, `journal` (or `book` and `publisher`), `volume`, `issue`, `pages`, `doi` and `pmid`
 are the same facts as fields, from which BibTeX and RIS are generated. Every row gets Cite and Share; Share
