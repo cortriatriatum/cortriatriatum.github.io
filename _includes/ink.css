@@ -241,3 +241,7 @@ dialog.search::backdrop{background:rgba(20,20,18,.35)}
 .food-list a{text-decoration:none;font-weight:600}
 .food-list a:hover{text-decoration:underline}
 .food-list span{color:var(--soft);font-size:13px}
+.ft{display:inline-block;font:600 10.5px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:3px 6px;border-radius:99px;vertical-align:1px;margin-left:4px;border:1px solid currentColor}
+.ft.vegan{color:var(--leaf-ink,#2F7A45)}
+.ft.shut{color:var(--soft)}
+.food-list li.closed a{color:var(--soft);text-decoration:line-through;text-decoration-thickness:1px}

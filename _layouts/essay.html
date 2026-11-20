@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 {% include ink/head.html %}
-  <title>{{ page.title }} | {{ site.title }}</title>
+  <title>{{ page.title }} · {{ site.title }}</title>
   <meta name="description" content="{{ page.description | default: site.description | escape }}">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
@@ -245,7 +245,7 @@
     <button type="button" class="act" data-share="essay:{{ _slug }}">Share</button>
     <button type="button" class="act" onclick="window.print()">Print</button>
     {%- if page.pdf %}<a class="act" href="{{ page.pdf | relative_url }}">PDF</a>{% endif %}
-    <a class="act" href="{{ '/essays/' | relative_url }}">All essays</a>
+    <a class="act" href="{{ '/essays/' | relative_url }}">All notes</a>
     <a class="act" href="#subscribe" data-open="subscribe">Subscribe</a>
   </div>
 </nav>

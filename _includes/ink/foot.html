@@ -1,7 +1,7 @@
 <footer class="foot">
   <nav class="sitemap" aria-label="Site map">
     <div><b><a href="{{ '/' | relative_url }}">Home</a></b><a href="{{ '/' | relative_url }}#room">The room</a><a href="{{ '/' | relative_url }}#train">The train</a><a href="{{ '/' | relative_url }}#lab">The OHSU lab</a><a href="{{ '/' | relative_url }}#tram">The Aerial Tram</a></div>
-    <div><b><a href="{{ '/directory/' | relative_url }}">Directory</a></b><a href="{{ '/directory/' | relative_url }}#research">Research</a><a href="{{ '/directory/' | relative_url }}#education">Education</a><a href="{{ '/directory/' | relative_url }}#work">Work &amp; Service</a><a href="{{ '/directory/' | relative_url }}#awards">Awards</a><a href="{{ '/directory/' | relative_url }}#dev">Dev</a><a href="{{ '/directory/' | relative_url }}#food">Food</a></div>
+    <div><b><a href="{{ '/directory/' | relative_url }}">Directory</a></b><a href="{{ '/directory/' | relative_url }}#research">Research</a><a href="{{ '/directory/' | relative_url }}#education">Education</a><a href="{{ '/directory/' | relative_url }}#work">Work &amp; Service</a><a href="{{ '/directory/' | relative_url }}#awards">Awards</a><a href="{{ '/directory/' | relative_url }}#dev">Dev</a><a href="{{ '/directory/' | relative_url }}#food">Food recs</a></div>
     <div><b><a href="{{ '/essays/' | relative_url }}">Notes</a></b>{% assign _fe = site.essays | sort: "date" | reverse %}{% for e in _fe %}<a href="{{ e.url | relative_url }}">{% if e.route %}<span class="fb" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span> {% endif %}{{ e.title }}</a>{% endfor %}</div>
     <div><b><a href="{{ '/' | relative_url }}#contact" data-open="contact">Contact</a></b><a href="#subscribe" data-open="subscribe">Subscribe</a><a href="https://cortriatriatum.github.io/essays/feed.xml">RSS</a><a href="https://orcid.org/0000-0003-2723-5646">ORCID</a><a href="https://cortriatriatum.github.io/docs/MathewsRick_CV.pdf">CV</a></div>
   </nav>
@@ -35,7 +35,7 @@
 
 <dialog class="search" id="searchDlg" aria-labelledby="searchLabel">
   <label class="search-row" id="searchLabel"><span class="sr">Search this site</span>
-    <input id="searchQ" type="search" placeholder="Search notes, papers, awards, courses, places" autocomplete="off" spellcheck="false" aria-controls="searchResults">
+    <input id="searchQ" type="search" placeholder="Search notes, papers, awards, courses, food recs" autocomplete="off" spellcheck="false" aria-controls="searchResults">
     <button type="button" class="pill" id="searchClose">Close</button></label>
   <ul id="searchResults" role="listbox" aria-label="Results"></ul>
   <p class="search-hint">↑ ↓ to move · Enter to open · Esc to close</p>

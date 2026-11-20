@@ -92,7 +92,7 @@
       rowsOf(sec).forEach(function(el, i){
         var id = el.id || (sec.id + '-' + (i + 1)), title, detail, href = HOME + '#' + id, kind = label;
         if (el.matches('details.course li')){ title = txt(el); detail = txt(el.closest('details').querySelector('summary')).replace(/[+–]$/, ''); kind = 'Coursework'; }
-        else if (el.matches('.food-list>li')){ var fa = el.querySelector('a'); title = txt(fa); detail = el.closest('.food-list').getAttribute('aria-label') + (el.querySelector('span') ? ' · ' + txt(el.querySelector('span')) : ''); kind = 'Food'; }
+        else if (el.matches('.food-list>li')){ var fa = el.querySelector('a'); title = txt(fa); detail = el.closest('.food-list').getAttribute('aria-label') + (el.querySelector('span') ? ' · ' + txt(el.querySelector('span')) : ''); kind = 'Food recs'; }
         else {
           var a = el.querySelector('.data-title > a, .t, b'); title = txt(a) || txt(el);
           detail = txt(el.querySelector('.s, .desc, p, .note, .when')); var d = txt(el.querySelector(':scope > .d')); if (d) detail = (detail ? detail + ' · ' : '') + d;

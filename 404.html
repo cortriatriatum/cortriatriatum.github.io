@@ -6,7 +6,7 @@ permalink: /404.html
 <html lang="en">
 <head>
 {% include ink/head.html %}
-  <title>Not in service | {{ site.title }}</title>
+  <title>Not in service · {{ site.title }}</title>
   <meta name="robots" content="noindex">
   <style>
     .lost{max-width:900px;margin:0 auto;padding-block:8px 70px}
@@ -34,7 +34,7 @@ permalink: /404.html
     <li><div class="data-title"><span class="t"><a href="{{ e.url | relative_url }}">{{ e.title }}</a></span></div><span class="d">{{ e.date | date: "%Y" }}</span></li>
   {%- endfor %}
   </ul>
-  <div class="links"><a class="key" href="{{ '/' | relative_url }}">Home</a><a href="{{ '/essays/' | relative_url }}">All essays</a><button type="button" data-search>Search</button></div>
+  <div class="links"><a class="key" href="{{ '/' | relative_url }}">Home</a><a href="{{ '/essays/' | relative_url }}">All notes</a><button type="button" data-search>Search</button></div>
 </main>
 {% include ink/foot.html %}
 <script src="{{ '/assets/ink.js' | relative_url }}" defer></script>

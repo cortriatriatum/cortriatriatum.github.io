@@ -5,12 +5,12 @@ layout: null
 <html lang="en">
 <head>
 {% include ink/head.html %}
-  <title>Essays | {{ site.title }}</title>
+  <title>Notes · {{ site.title }}</title>
   <meta name="description" content="Essays by Rick Mathews, PhD, on how science and medicine discover questions, evaluate evidence, and share results.">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Essays | {{ site.title }}">
+  <meta property="og:title" content="Notes · {{ site.title }}">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
   <meta property="og:image" content="{{ '/img/share.jpg' | absolute_url }}">
   {%- assign listed = site.essays | sort: "date" | reverse %}

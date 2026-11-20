@@ -8,8 +8,9 @@
      6 The OHSU lab: Research at the microscope, Education on the wall.
      7 The Aerial Tram down Marquam Hill, which lands on the street where you started.
    Backward runs it in reverse. Where you go through a door, stairs or an elevator, the page washes to paper
-   and back. Every object you can use has a label; the room and the lab label all of theirs. The Next and
-   Previous buttons and the stop list on the right do the same as scrolling. Plain mode goes to /directory/. */
+   and back. In the room and the lab you walk past each object in turn: the one you are at lights up, its label
+   pops up, and the panel on the left shows what is in it. Next and Previous step object by object there, and
+   stop by stop elsewhere; the stop list on the right jumps. Plain mode goes to /directory/. */
 (function(){
   'use strict';
   var I = window.Ink; if (!I) return;
@@ -21,19 +22,44 @@
   var DIRECTORY = (hot && hot.dataset.directory) || '/directory/';
 
   /* ---------- the loop ---------- */
-  var LEN = 4300;
-  var ZONES = [
-    { id: 'street', a: 0, b: 500, stop: 230, label: 'Street', next: 'Down to the station' },
-    { id: 'room', a: 500, b: 1150, stop: 760, label: 'The room', next: 'To the platform' },
-    { id: 'platform', a: 1150, b: 1650, stop: 1330, label: 'Platform', next: 'Board the train' },
-    { id: 'train', a: 1650, b: 2500, stop: 1800, label: 'Train', next: 'Off at Marquam Hill' },
-    { id: 'hill', a: 2500, b: 2950, stop: 2640, label: 'Marquam Hill', next: 'Elevator up to OHSU' },
-    { id: 'lab', a: 2950, b: 3600, stop: 3200, label: 'OHSU lab', next: 'Aerial Tram down' },
-    { id: 'tram', a: 3600, b: 4300, stop: 3900, label: 'Aerial Tram', next: 'Back to the street' }
+  /* The room and the lab are walked through object by object: a short way in, a dwell at each object
+     (WALK units walking to it, DWELL units standing at it), then out the far door. Each object's own
+     scroll position is filled in below as hs.at. The other stops are drawn against fixed ranges (d). */
+  var WALK = 60, DWELL = 110, IN = 100, OUT = 150;
+  var ROOM_HOTS = [
+    { id: 'notes', label: 'Notebook · Notes', r: [270, 392, 130, 46], stand: 330, act: 'write', lookY: 420 },
+    { id: 'dev', label: 'Laptop · Dev', r: [440, 376, 80, 62], stand: 470, act: 'point', lookY: 400 },
+    { id: 'awards', label: 'Shelf · Awards', r: [560, 150, 210, 110], stand: 600, act: 'point', lookY: 200 },
+    { id: 'contact', label: 'Mailbox · Contact', r: [760, 420, 90, 90], stand: 690, act: 'point', lookY: 460 },
+    { id: 'work', label: 'Coat rack · Work & Service', r: [850, 200, 130, 410], stand: 1005, face: -1, act: 'point', lookY: 300 }
   ];
-  var SEAMS = [500, 1150, 2500, 2950];       // stairs, a door, off the train, the elevator
+  var LAB_HOTS = [
+    { id: 'research', label: 'Microscope · Research', r: [430, 280, 160, 160], stand: 430, act: 'peer' },
+    { id: 'training', row: 2, label: 'BE · City College of New York', r: [610, 110, 70, 90], stand: 620, act: 'point', lookY: 150 },
+    { id: 'training', row: 1, label: 'PhD · OHSU', r: [700, 96, 80, 104], stand: 720, act: 'point', lookY: 140 },
+    { id: 'training', row: 0, label: 'MD · in progress', r: [800, 110, 70, 90], stand: 820, act: 'point', lookY: 150 }
+  ];
+  function walkLen(list){ return IN + list.length * (WALK + DWELL) + OUT; }
+  var ZONES = [
+    { id: 'street', n: 500, d: 0, at: 230, label: 'Street', next: 'Down to the station' },
+    { id: 'room', n: walkLen(ROOM_HOTS), hots: ROOM_HOTS, label: 'The room', next: 'To the platform' },
+    { id: 'platform', n: 500, d: 1150, at: 180, label: 'Platform', next: 'Board the train' },
+    { id: 'train', n: 850, d: 1650, at: 150, label: 'Train', next: 'Off at Marquam Hill' },
+    { id: 'hill', n: 450, d: 2500, at: 140, label: 'Marquam Hill', next: 'Elevator up to OHSU' },
+    { id: 'lab', n: walkLen(LAB_HOTS), hots: LAB_HOTS, label: 'OHSU lab', next: 'Aerial Tram down' },
+    { id: 'tram', n: 700, d: 3600, at: 300, label: 'Aerial Tram', next: 'Back to the street' }
+  ];
+  var LEN = 0, SEAMS = [];
+  ZONES.forEach(function(z){ z.a = LEN; z.b = LEN += z.n;
+    if (z.hots){ z.hots.forEach(function(hs, i){ hs.at = z.a + IN + i * (WALK + DWELL) + WALK + DWELL / 2; hs.zone = z.id; }); z.stop = z.hots[0].at; }
+    else z.stop = z.a + z.at; });
+  SEAMS = [ZONES[1].a, ZONES[2].a, ZONES[4].a, ZONES[5].a];   // stairs, a door, off the train, the elevator
+  var Z = {}; ZONES.forEach(function(z){ Z[z.id] = z; });
+  /* the drawing position for the fixed-range stops: street 0–500, platform 1150–1650, train 1650–2500,
+     Marquam Hill 2500–2950, tram 3600–4300 */
+  function dx(x){ var z = zoneAt(x); return z.hots ? x : z.d + (x - z.a); }
   var HASH = {}; ZONES.forEach(function(z){ HASH[z.id] = z.stop; });
-  HASH.notes = 1800; HASH.research = 3200; HASH.subway = 760;
+  HASH.notes = HASH.train; HASH.research = LAB_HOTS[0].at; HASH.subway = HASH.room;
   var u = HASH.street, ut = u;
   function wrap(x){ return ((x % LEN) + LEN) % LEN; }
   function zoneAt(x){ x = wrap(x); for (var i = 0; i < ZONES.length; i++) if (x >= ZONES[i].a && x < ZONES[i].b) return ZONES[i]; return ZONES[0]; }
@@ -67,11 +93,17 @@
     e.preventDefault();
   });
   function zoneIndex(x){ return ZONES.indexOf(zoneAt(x)); }
-  function goNext(){ var i = zoneIndex(ut), x = wrap(ut), z = ZONES[i]; var n = x < z.stop - 20 ? z : ZONES[(i + 1) % ZONES.length]; goForward(n.stop); }
-  function goPrev(){ var i = zoneIndex(ut), x = wrap(ut), z = ZONES[i]; var p = x > z.stop + 20 ? z : ZONES[(i - 1 + ZONES.length) % ZONES.length]; goBack(p.stop); }
+  function stopsOf(z){ return z.hots ? z.hots.map(function(h){ return h.at; }) : [z.stop]; }
+  function goNext(){ var i = zoneIndex(ut), x = wrap(ut), z = ZONES[i], st = stopsOf(z).filter(function(a){ return a > x + 20; }); goForward(st.length ? st[0] : ZONES[(i + 1) % ZONES.length].stop); }
+  function goPrev(){ var i = zoneIndex(ut), x = wrap(ut), z = ZONES[i], st = stopsOf(z).filter(function(a){ return a < x - 20; }), p = ZONES[(i - 1 + ZONES.length) % ZONES.length], ps = stopsOf(p);
+    goBack(st.length ? st[st.length - 1] : ps[ps.length - 1]); }
+  /* where the Next button goes from here, in words */
+  function nextWords(x){ var z = zoneAt(x), h = z.hots && z.hots.filter(function(a){ return a.at > x + 20; })[0]; return h ? h.label : z.next; }
+  function prevWords(x){ var i = ZONES.indexOf(zoneAt(x)), z = ZONES[i], h = z.hots && z.hots.filter(function(a){ return a.at < x - 20; }).pop(); if (h) return h.label;
+    var p = ZONES[(i - 1 + ZONES.length) % ZONES.length]; return p.hots ? p.hots[p.hots.length - 1].label : p.label; }
 
   /* ---------- the stop list, and Next / Previous ---------- */
-  if (loopNav) ZONES.forEach(function(z){ var li = document.createElement('li'), b = document.createElement('button'); b.type = 'button'; b.dataset.z = z.id; b.innerHTML = '<span class="dot"></span><span class="lb"></span>'; b.querySelector('.lb').textContent = z.label; b.addEventListener('click', function(){ goTo(z.stop); }); li.appendChild(b); loopNav.appendChild(li); });
+  if (loopNav) ZONES.forEach(function(z){ var li = document.createElement('li'), b = document.createElement('button'); b.type = 'button'; b.dataset.z = z.id; b.innerHTML = '<span class="dot"></span><span class="lb"></span>'; b.querySelector('.lb').textContent = z.label; b.setAttribute('aria-label', z.label); b.addEventListener('click', function(){ goTo(z.stop); }); li.appendChild(b); loopNav.appendChild(li); });
   var nextBtn = document.getElementById('goNext'), prevBtn = document.getElementById('goPrev');
   if (nextBtn) nextBtn.addEventListener('click', goNext);
   if (prevBtn) prevBtn.addEventListener('click', goPrev);
@@ -93,10 +125,10 @@
   var dpr = 1, cw = 0, ch = 0, s = 1, camX = 0, camTop = 0, vh = 600, vw = 1000, WL = -400, WR = 1400, reserveK = 1;
 
   function camFor(x){
-    var nw = cw <= 900, F = function(w, n){ return nw ? n : w; }, z = zoneAt(x).id, f = null, top, fx = 500, t, c;
+    var nw = cw <= 900, F = function(w, n){ return nw ? n : w; }, z = zoneAt(x).id, f = null, top, fx = 500, t, c; x = dx(x);
     var streetTop = G - vh * F(.82, .5), roomTop = ROOM_Y + 300 - vh * F(.5, .36), labTop = LAB_Y + 260 - vh * F(.5, .36);
     if (z === 'street'){ top = streetTop; fx = 520; if (x > 380){ t = seg(x, 380, 495); f = { x: lerp(350, 746, ease(t)), y: G, mode: 'walk', ph: t * 12, face: 1 }; } }
-    else if (z === 'room'){ top = roomTop; }
+    else if (z === 'room'){ top = roomTop; fx = walker('room', x).x * K; }
     else if (z === 'platform'){ t = seg(x, 1150, 1650); top = PLAT - vh * F(.66, .44); fx = 420;
       var w = seg(t, .04, .3); f = { x: lerp(60, 420, ease(w)), y: PLAT, mode: w > 0 && w < 1 ? 'walk' : 'stand', ph: w * 14, face: 1 };
       if (t > .3 && t < .7){ f.look = { x: 900, y: PLAT - 80 }; f.surprise = t > .45; }
@@ -104,7 +136,7 @@
     else if (z === 'train'){ top = (RT + RF) / 2 - vh * F(.5, .36); fx = 400; }
     else if (z === 'hill'){ t = seg(x, 2500, 2950); top = DSG - vh * F(.7, .46); fx = 500;
       var w2 = seg(t, .08, .7); f = { x: lerp(240, 800, ease(w2)), y: DSG, mode: w2 > 0 && w2 < 1 ? 'walk' : 'stand', ph: w2 * 22, face: 1, look: { x: 800, y: DSG - 150 } }; if (t > .8) f.alpha = 0; }
-    else if (z === 'lab'){ top = labTop; }
+    else if (z === 'lab'){ top = labTop; fx = walker('lab', x).x * K; }
     else { t = seg(x, 3620, 4120); c = cabin(ease(t)); top = lerp(c.y - vh * F(.5, .34), streetTop, ease(seg(x, 4120, 4300))); fx = lerp(c.x, 520, seg(x, 4120, 4300)); f = { tram: c }; }
     return { top: top, fig: f, fx: fx };
   }
@@ -130,46 +162,45 @@
   function sky(y0, y1){ var ph = I.phase(); WASH(500, (y0 + y1) / 2, 1500, (y1 - y0) / 2 + 200, ph === 'night' ? COL.night : COL.sky, ph === 'night' ? .3 : .2, 1); if (ph === 'golden' || ph === 'dusk' || ph === 'dawn') WASH(500, y1 - 80, 1300, 140, COL.rose, .22, 2); }
 
   /* ---------- interiors share a hero and labeled hotspots ---------- */
-  var hover = null, active = null;
-  var hero = { x: 150, face: 1, mode: 'stand', ph: 0, target: null, act: null, sq: 0, antic: 0 };
-  var ROOM_HOTS = [
-    { id: 'notes', label: 'Notebook · Notes', r: [270, 392, 130, 46], stand: 330, act: 'write' },
-    { id: 'dev', label: 'Laptop · Dev', r: [440, 376, 80, 62], stand: 470, act: 'point', lookY: 400 },
-    { id: 'awards', label: 'Shelf · Awards', r: [600, 150, 210, 110], stand: 700, act: 'point', lookY: 200 },
-    { id: 'contact', label: 'Mailbox · Contact', r: [690, 420, 110, 110], stand: 660, act: 'point', lookY: 470 },
-    { id: 'work', label: 'Coat rack · Work & Service', r: [870, 200, 120, 410], stand: 850, act: 'point', lookY: 300 }
-  ];
-  var LAB_HOTS = [
-    { id: 'research', label: 'Microscope · Research', r: [430, 280, 160, 160], stand: 420, act: 'peer' },
-    { id: 'training', label: 'Diplomas · Education', r: [600, 90, 280, 160], stand: 720, act: 'point', lookY: 160 }
-  ];
-  function interiorY(z){ return z === 'room' ? ROOM_Y : LAB_Y; }
-  function stepHero(dt){
-    if (hero.antic > 0){ hero.antic -= dt; hero.sq = Math.sin((1 - hero.antic / .18) * Math.PI) * .08; hero.mode = 'crouch'; return; }
-    hero.sq *= .8;
-    if (hero.target != null && Math.abs(hero.target - hero.x) > 2){ var d = Math.sign(hero.target - hero.x); hero.face = d; hero.x += d * Math.min(Math.abs(hero.target - hero.x), (still() ? 1e4 : 300) * dt); hero.ph += dt * 11; hero.mode = 'walk'; if (Math.abs(hero.target - hero.x) <= 2){ hero.x = hero.target; hero.sq = -.06; } }
-    else { hero.mode = hero.act || 'stand'; if (hero.act) hero.face = 1; }
+  var hover = null, active = null, here = null;
+  /* where the walker is in an interior, from the scroll position alone */
+  function walker(zid, x){
+    var z = Z[zid], L = z.hots, p = x - z.a, x0 = zid === 'room' ? 150 : 200, i, a, w;
+    if (p < IN) return { x: lerp(zid === 'room' ? 40 : 50, x0, seg(p, 0, IN)), mode: p < IN - 2 ? 'walk' : 'stand', ph: p * .14, face: 1, out: 0 };
+    p -= IN;
+    for (i = 0; i < L.length; i++){
+      a = i ? L[i - 1].stand : x0;
+      if (p < WALK){ w = ease(p / WALK); return { x: lerp(a, L[i].stand, w), mode: 'walk', ph: (lerp(a, L[i].stand, w)) * .05, face: L[i].stand >= a ? 1 : -1, near: L[i], out: 0 }; }
+      p -= WALK;
+      if (p < DWELL) return { x: L[i].stand, mode: L[i].act, face: L[i].face || 1, at: L[i], near: L[i], out: 0 };
+      p -= DWELL;
+    }
+    w = seg(p, 0, OUT); a = L[L.length - 1].stand;
+    return { x: lerp(a, 1120, ease(w)), mode: 'walk', ph: lerp(a, 1120, ease(w)) * .05, face: 1, out: seg(w, .25, .7), alpha: 1 - seg(w, .85, 1) };
   }
-  function interiorFigure(){
-    var look = null, h = hover || active, P2 = 610;
+  function interiorY(z){ return z === 'room' ? ROOM_Y : LAB_Y; }
+  function interiorFigure(wk){
+    var P2 = 610, h = hover || wk.at, look = null;
     if (h) look = { x: h.r[0] + h.r[2] / 2, y: h.lookY || h.r[1] + h.r[3] / 2 };
-    var f = { x: hero.x, y: P2, face: hero.face, mode: hero.mode, ph: hero.ph, sq: hero.sq, look: look, smile: !!active && hero.mode !== 'walk', surprise: !!hover && hero.mode === 'stand' };
+    var f = { x: wk.x, y: P2, face: wk.face, mode: wk.mode, ph: wk.ph, look: look, smile: !!wk.at, surprise: !!hover && hover !== wk.at, alpha: wk.alpha };
     if (f.mode === 'write'){ f.mode = 'stand'; f.look = { x: 335, y: 420 }; }
     if (f.mode === 'peer'){ f.mode = 'stand'; f.lean = 6; f.look = { x: 510, y: 300 }; }
-    var Z = 2.25; ctx.save(); ctx.translate(f.x, P2); ctx.scale(Z, Z); ctx.translate(-f.x, -P2);
-    if (f.look) f.look = { x: f.x + (f.look.x - f.x) / Z, y: P2 + (f.look.y - P2) / Z };
-    FIG(f); ctx.restore();
+    if (f.alpha === 0) return;
+    /* interiors are drawn closer: the same figure, scaled up about its feet */
+    var ZM = 2.25; ctx.save(); ctx.translate(f.x, P2); ctx.scale(ZM, ZM); ctx.translate(-f.x, -P2);
+    if (f.look) f.look = { x: f.x + (f.look.x - f.x) / ZM, y: P2 + (f.look.y - P2) / ZM };
+    var pen = I.pen || function(){}; pen(1.25 / ZM); FIG(f); pen(1); ctx.restore();
   }
   function interiorShell(){
     WASH(600, 330, 660, 330, COL.tint, .9, 30);
     S([[-200, 610], [1400, 610]], 2.6); H(-200, 614, 1600, 60, 12, .18); S([[-200, 40], [1400, 40]], 2.2);
-    var h = hover || active; if (h) WASH(h.r[0] + h.r[2] / 2, h.r[1] + h.r[3] / 2, h.r[2] * .62, h.r[3] * .56, COL.pop, .16, 40);
+    [here, hover].forEach(function(h, j){ if (h && (j === 0 || h !== here)) WASH(h.r[0] + h.r[2] / 2, h.r[1] + h.r[3] / 2, h.r[2] * .62 + 8, h.r[3] * .56 + 8, COL.pop, j ? .14 : .24, 40 + j); });
   }
   function door(x, label, open){ var P = COL.paper; R(x, 180, 120, 430, 2.4, P); if (open){ ctx.fillStyle = COL.ink; ctx.globalAlpha = .7; ctx.fillRect(x, 180, open * 60, 430); ctx.globalAlpha = 1; } O(x + 22, 400, 6, 1.8, COL.sun); R(x + 4, 146, 112, 26, 1.8, P); TX(label, x + 60, 165, 12, 'center', MONO); }
 
   /* ================= 2 · the room, inside the station ================= */
   function drawRoom(x){
-    var T = I.T, P = COL.paper, out = seg(x, 1030, 1140), into = 1 - seg(x, 510, 590);
+    var T = I.T, P = COL.paper, wk = walker('room', x), out = wk.out;
     ctx.save(); ctx.translate(0, ROOM_Y); ctx.scale(K, K);
     interiorShell();
     /* stairs down from the street on the left; the door to the platform on the right */
@@ -187,24 +218,26 @@
     for (var k = 0; k < 3; k++){ var ww = still() ? 20 : 10 + ((T * 30 + k * 13) % 30); Ln(462, 396 + k * 9, 462 + ww, 396 + k * 9, 1.2, .7); }
     S([[250, 436], [252, 350], [290, 320]], 2); S([[280, 308], [306, 330], [320, 312], [292, 296], [280, 308]], 2); WASH(302, 360, 40, 50, COL.sun, .25, 33);
     /* the shelf of awards */
+    ctx.save(); ctx.translate(-40, 0);
     R(600, 236, 210, 10, 2, P); Ln(620, 246, 628, 262, 1.6); Ln(790, 246, 782, 262, 1.6);
     S([[628, 236], [624, 206], [650, 206], [646, 236]], 2); O(637, 200, 10, 1.8, COL.sun); S([[670, 236], [670, 196], [700, 196], [700, 236]], 1.8); S([[722, 236], [730, 186], [750, 186], [758, 236]], 1.8); O(740, 176, 7, 1.6, COL.sun); R(770, 206, 30, 30, 1.6, COL.rose);
+    ctx.restore();
     /* the mailbox */
+    ctx.save(); ctx.translate(60, 0);
     Ln(745, 610, 745, 500, 2.4); R(700, 430, 90, 70, 2.2, P); S([[700, 446], [745, 424], [790, 446]], 2); R(728, 460, 34, 6, 1.4); TX('MAIL', 745, 492, 12, 'center', MONO);
+    ctx.restore();
     /* the coat rack with badges */
     S([[935, 610], [935, 220]], 2.6); S([[905, 610], [935, 580], [965, 610]], 2.2); S([[935, 236], [905, 224]], 2); S([[935, 236], [965, 224]], 2);
     S([[935, 250], [900, 262], [892, 340], [915, 420], [955, 420], [978, 340], [970, 262], [935, 250]], 2.2); WASH(935, 330, 40, 80, COL.leaf, .25, 34);
     [[950, 300, 'OHSU'], [912, 330, 'EPIC'], [948, 366, 'CCNY']].forEach(function(b){ S([[b[0] + 10, b[1] - 26], [b[0] + 10, b[1]]], 1.2, .7); R(b[0], b[1], 22, 28, 1.6, P); TX(b[2], b[0] + 11, b[1] + 18, 7, 'center', MONO); });
-    /* the figure: comes down the stairs, walks out the far door */
-    if (into > 0 && !active){ hero.x = lerp(40, 150, 1 - into); hero.mode = 'walk'; hero.ph = x * .1; hero.face = 1; hero.target = null; }
-    if (out > 0){ hero.target = null; hero.x = lerp(Math.min(hero.x, 900), 1120, ease(out)); hero.mode = 'walk'; hero.ph = x * .1; hero.face = 1; }
-    interiorFigure();
+    /* the figure: comes down the stairs, walks past each thing, out the far door */
+    interiorFigure(wk);
     ctx.restore();
   }
 
   /* ================= 6 · the OHSU lab ================= */
   function drawLab(x){
-    var P = COL.paper, into = 1 - seg(x, 2960, 3040), out = seg(x, 3480, 3590);
+    var P = COL.paper, wk = walker('lab', x), out = wk.out;
     ctx.save(); ctx.translate(0, LAB_Y); ctx.scale(K, K);
     interiorShell();
     /* the elevator you arrive by, and the way out to the tram */
@@ -225,9 +258,7 @@
     R(610, 110, 70, 90, 2.2, P); R(618, 118, 54, 74, 1.2); O(645, 180, 6, 1.2, COL.rose); TX('BE', 645, 150, 15);
     R(700, 96, 80, 104, 2.2, P); R(708, 104, 64, 88, 1.2); O(740, 180, 6, 1.2, COL.rose); TX('PhD', 740, 142, 15);
     R(800, 110, 70, 90, 2.2, P); ctx.save(); ctx.setLineDash([5, 5]); ctx.strokeStyle = COL.ink; ctx.lineWidth = 1.4; ctx.strokeRect(808, 118, 54, 74); ctx.restore(); TX('MD', 835, 150, 15); TX('in progress', 835, 172, 11);
-    if (into > 0 && !active){ hero.x = lerp(50, 200, 1 - into); hero.mode = 'walk'; hero.ph = x * .1; hero.face = 1; hero.target = null; }
-    if (out > 0){ hero.target = null; hero.x = lerp(Math.min(hero.x, 900), 1120, ease(out)); hero.mode = 'walk'; hero.ph = x * .1; hero.face = 1; }
-    interiorFigure();
+    interiorFigure(wk);
     ctx.restore();
   }
 
@@ -254,7 +285,7 @@
   }
 
   /* ================= 1 · the street at South Waterfront ================= */
-  var DIR = ['Research', 'Notes', 'Education', 'Work & Service', 'Awards', 'Dev', 'Food', 'Contact'];
+  var DIR = ['Research', 'Notes', 'Education', 'Work & Service', 'Awards', 'Dev', 'Food recs', 'Contact'];
   var DIR_IDS = ['research', 'notes', 'education', 'work', 'awards', 'dev', 'food', 'contact'];
   var streetTarget = null, streetAct = null, dirLines = [];
   var BX = 410, BY = 230, BW = 220, BH = 190, LH = 18;            // the directory board, big enough to read
@@ -305,7 +336,7 @@
     ctx.fillStyle = COL.ink; ctx.globalAlpha = .08; ctx.fillRect(706, 418, 80, GL - 418); ctx.globalAlpha = 1;
     for (i = 0; i < 4; i++){ var sy2 = 426 + i * 11; Ln(710 + i * 3, sy2, 782 - i * 3, sy2, 1.6, .9 - i * .15); }
     /* the food cart */
-    R(836, 404, 110, 58, 2.2, COL.paper); S([[828, 404], [891, 376], [954, 404]], 2); TX('COFFEE · FOOD', 891, 438, 13, 'center', MONO); O(854, 468, 9, 2, COL.paper); O(930, 468, 9, 2, COL.paper);
+    R(836, 404, 110, 58, 2.2, COL.paper); S([[828, 404], [891, 376], [954, 404]], 2); TX('FOOD RECS', 891, 438, 13, 'center', MONO); O(854, 468, 9, 2, COL.paper); O(930, 468, 9, 2, COL.paper);
     if (!still()){ var stm = (T * .5) % 1; S([[906, 372 - stm * 20], [912, 362 - stm * 20], [906, 352 - stm * 20]], 1.2, 1 - stm); }
     if (kind === 'snow'){ WASH(500, GL + 4, 1400, 10, COL.paper, .9, 13); O(360, GL - 18, 18, 2, COL.paper); O(360, GL - 46, 13, 2, COL.paper); O(360, GL - 66, 9, 1.8, COL.paper); }
     if (wet){ for (var pd = 0; pd < 3; pd++){ var px2 = 360 + pd * 170, rp = still() ? .5 : (T * .8 + pd * .3) % 1; ctx.strokeStyle = COL.ink; ctx.globalAlpha = (1 - rp) * .6; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.ellipse(px2, GL + 8, 8 + rp * 26, 2 + rp * 4, 0, 0, 6.3); ctx.stroke(); ctx.globalAlpha = 1; } }
@@ -390,7 +421,7 @@
   }
   if (hot){
     tag('tram', 'Aerial Tram up to OHSU ↑', 115, SY + 372, 'street', function(){ streetAct = 'tram'; goBack(HASH.lab); setTimeout(function(){ streetAct = null; }, 900); });
-    tag('station', 'Down to the station ↓', 746, SY + 350, 'street', function(){ streetAct = 'station'; goForward(HASH.room); setTimeout(function(){ streetAct = null; }, 900); });
+    tag('station', 'Down to the station ↓', 746, SY + 304, 'street', function(){ streetAct = 'station'; goForward(HASH.room); setTimeout(function(){ streetAct = null; }, 900); });
     tag('food', 'Coffee & food recs', 891, SY + 366, 'street', function(){ streetAct = 'food'; openPanel('food'); setTimeout(function(){ streetAct = null; }, 1200); });
     tags[tags.length - 1].el.classList.add('wide-only');
     tag('roomout', 'To the platform →', 1120 * K, ROOM_Y + 140 * K, 'room', function(){ goForward(HASH.platform); });
@@ -402,27 +433,75 @@
     DIR.forEach(function(n, j){ var a = document.createElement('a'); a.className = 'dir-line'; a.href = DIRECTORY + '#' + DIR_IDS[j]; a.setAttribute('aria-label', 'Directory: ' + n); hot.appendChild(a); dirLines.push(a);
       a.addEventListener('pointerenter', function(){ streetTarget = 'directory'; }); a.addEventListener('pointerleave', function(){ streetTarget = null; }); });
     [ROOM_HOTS, LAB_HOTS].forEach(function(list){ list.forEach(function(hs){
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'obj'; b.textContent = hs.label; hs.btn = b; hot.appendChild(b);
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'obj'; b.setAttribute('aria-label', 'Open ' + hs.label);
+      b.innerHTML = '<span class="mk" aria-hidden="true"></span><span class="l"></span><span class="go" aria-hidden="true">Open</span>'; b.querySelector('.l').textContent = hs.label; hs.btn = b; hot.appendChild(b);
       b.addEventListener('mouseenter', function(){ hover = hs; }); b.addEventListener('mouseleave', function(){ if (hover === hs) hover = null; });
       b.addEventListener('focus', function(){ hover = hs; }); b.addEventListener('blur', function(){ if (hover === hs) hover = null; });
-      b.addEventListener('click', function(){ active = hs; hero.target = hs.stand; hero.act = hs.act; hero.antic = still() ? 0 : .18; openPanel(hs.id); });
+      b.addEventListener('click', function(){ openHot(hs); });
     }); });
     cards = [].map.call(document.querySelectorAll('#noteCards a'), function(a){ var el = a.cloneNode(false); el.className = 'card-hot'; el.setAttribute('aria-label', 'Note: ' + a.dataset.title); hot.appendChild(el); return { el: el, title: a.dataset.title, route: a.dataset.route, color: a.dataset.color }; });
   }
+  /* keep labels clear of the top bar, the bottom bar, the left panel and each other */
+  var navEl = document.querySelector('.nav'), barEl = document.querySelector('.journey');
+  function box(el){ return el.getBoundingClientRect(); }
+  function meet(a, b){ return !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top); }
+  function unclash(zid){
+    var navB = navEl ? box(navEl).bottom : 60, barT = barEl ? box(barEl).top : ch, zp = document.querySelector('.zp.on'), zr = zp && innerWidth > 900 ? box(zp) : null;
+    var live = tags.filter(function(t){ return t.el.style.visibility === 'visible'; }).map(function(t){ return t.el; });
+    live.forEach(function(el){ var r = box(el); if (r.top < navB + 6) el.style.top = (parseFloat(el.style.top) + navB + 6 - r.top) + 'px'; });
+    function clearPanel(el){ var r = box(el); if (zr && meet(r, zr)) el.style.left = (parseFloat(el.style.left) + zr.right + 10 - r.left) + 'px'; }
+    live.forEach(clearPanel);
+    var objs = (zid === 'room' ? ROOM_HOTS : zid === 'lab' ? LAB_HOTS : []).map(function(h){ return h.btn; });
+    objs.forEach(function(b){ var r = box(b); if (r.left < 0 || r.right > cw || r.bottom > barT || (zr && meet(r, zr) && !b.classList.contains('now'))) b.style.visibility = 'hidden'; });
+    var now = objs.filter(function(b){ return b.classList.contains('now'); })[0];
+    if (now){ clearPanel(now); var nr = box(now);
+      live.forEach(function(el){ var r = box(el); if (meet(nr, r)){ now.style.top = (parseFloat(now.style.top) + r.bottom - nr.top + nr.height + 6) + 'px'; nr = box(now); } });
+      if (nr.left < 6) now.style.left = (parseFloat(now.style.left) + 6 - nr.left) + 'px'; else if (nr.right > cw - 6) now.style.left = (parseFloat(now.style.left) - (nr.right - cw + 6)) + 'px';
+      nr = box(now); objs.forEach(function(b){ if (b !== now && meet(box(b), nr)) b.style.visibility = 'hidden'; }); }
+    objs.forEach(function(b){ if (b.style.visibility === 'hidden') return; var r = box(b); live.forEach(function(el){ if (b !== now && meet(r, box(el))) b.style.visibility = 'hidden'; }); });
+  }
+  /* walk to an object and open what is in it */
+  function openHot(hs){ active = hs; goTo(hs.at); openPanel(hs.id, hs.row); }
   function placeTags(zid){
     tags.forEach(function(t){ var p = toScreen(t.x, t.y), on = t.zone === zid && p[1] > 50 && p[1] < ch + 10;
       var half = (t.el.offsetWidth || 120) / 2; t.el.style.left = Math.max(half + 6, Math.min(cw - half - 6, p[0])) + 'px'; t.el.style.top = p[1] + 'px'; t.el.style.visibility = on ? 'visible' : 'hidden'; });
     dirLines.forEach(function(a, j){ var p = toScreen(BX + 4, SY + BY + 32 + j * LH), q = toScreen(BX + BW - 4, SY + BY + 30 + (j + 1) * LH); a.style.left = p[0] + 'px'; a.style.top = p[1] + 'px'; a.style.width = (q[0] - p[0]) + 'px'; a.style.height = (q[1] - p[1]) + 'px'; a.style.visibility = zid === 'street' ? 'visible' : 'hidden'; });
     [['room', ROOM_HOTS], ['lab', LAB_HOTS]].forEach(function(pair){ var y0 = interiorY(pair[0]); pair[1].forEach(function(hs){
-      var p = toScreen((hs.r[0] + hs.r[2] / 2) * K, y0 + hs.r[1] * K); hs.btn.style.left = p[0] + 'px'; hs.btn.style.top = p[1] + 'px'; hs.btn.style.visibility = zid === pair[0] ? 'visible' : 'hidden'; }); });
+      var p = toScreen((hs.r[0] + hs.r[2] / 2) * K, y0 + hs.r[1] * K); hs.btn.style.left = p[0] + 'px'; hs.btn.style.top = p[1] + 'px'; hs.btn.style.visibility = zid === pair[0] ? 'visible' : 'hidden';
+      hs.btn.classList.toggle('now', hs === here); }); });
+    unclash(zid);
     cards.forEach(function(cd, i){ var a = toScreen(56 + i * 178, RT + 16), b = toScreen(222 + i * 178, RT + 78); cd.el.style.left = a[0] + 'px'; cd.el.style.top = a[1] + 'px'; cd.el.style.width = (b[0] - a[0]) + 'px'; cd.el.style.height = (b[1] - a[1]) + 'px'; cd.el.style.visibility = zid === 'train' ? 'visible' : 'hidden'; });
   }
 
   /* ---------- panels ---------- */
   var zonePanels = [].slice.call(document.querySelectorAll('[data-zone-panel]'));
   var panelClose = document.getElementById('panelClose');
-  function openPanel(id){ if (!panel) return; panel.querySelectorAll('section[data-c]').forEach(function(sec){ sec.hidden = sec.dataset.c !== id; }); panel.classList.add('open'); panel.scrollTop = 0; var h = panel.querySelector('section:not([hidden]) h2'); if (h){ h.setAttribute('tabindex', '-1'); setTimeout(function(){ h.focus({ preventScroll: true }); }, 60); } }
-  function closePanel(){ if (!panel) return; panel.classList.remove('open'); active = null; hero.act = null; }
+  function openPanel(id, row){ if (!panel) return; var sec0 = null;
+    panel.querySelectorAll('section[data-c]').forEach(function(sec){ sec.hidden = sec.dataset.c !== id; if (!sec.hidden) sec0 = sec; }); panel.classList.add('open'); panel.scrollTop = 0;
+    panel.querySelectorAll('.lit').forEach(function(el){ el.classList.remove('lit'); });
+    var h = sec0 && sec0.querySelector('h2'); if (h){ h.setAttribute('tabindex', '-1'); setTimeout(function(){ h.focus({ preventScroll: true }); }, 60); }
+    var li = row != null && sec0 && sec0.querySelectorAll('.rows')[0]; li = li && li.children[row];
+    if (li){ li.classList.add('lit'); setTimeout(function(){ li.scrollIntoView({ block: 'center', behavior: still() ? 'auto' : 'smooth' }); }, 340); } }
+  function closePanel(){ if (!panel) return; panel.classList.remove('open'); active = null; }
+  /* the left-hand panel in the room and the lab: every object in walking order, the one you are at lit,
+     with the first few things in it */
+  function fillPass(){
+    document.querySelectorAll('[data-pass]').forEach(function(ol){ var z = Z[ol.dataset.pass]; if (!z) return;
+      z.hots.forEach(function(hs, i){
+        var li = document.createElement('li'), b = document.createElement('button'), sec = panel && panel.querySelector('section[data-c="' + hs.id + '"]'), bits = [];
+        b.type = 'button'; b.innerHTML = '<span class="n"></span><span class="l"></span><span class="go">Open</span>'; b.querySelector('.n').textContent = i + 1; b.querySelector('.l').textContent = hs.label;
+        b.addEventListener('click', function(){ openHot(hs); }); li.appendChild(b);
+        if (sec){
+          if (hs.row != null){ var r = sec.querySelectorAll('.rows')[0].children[hs.row]; if (r) bits = [r.querySelector('.t'), r.querySelector('.s')]; }
+          else bits = [].slice.call(sec.querySelectorAll('.rows .t, .ideas .data-title>a, .build b, .links a.key'), 0, 3);
+          var pv = document.createElement('div'); pv.className = 'pv';
+          bits.forEach(function(el){ if (!el) return; var d = document.createElement('span'); d.textContent = el.textContent.replace(/\s+/g, ' ').trim(); pv.appendChild(d); });
+          if (pv.childNodes.length) li.appendChild(pv);
+        }
+        hs.row2 = li; ol.appendChild(li);
+      }); });
+  }
+  fillPass();
   if (panelClose) panelClose.addEventListener('click', closePanel);
   addEventListener('keydown', function(e){ if (e.key === 'Escape' && panel && panel.classList.contains('open') && !document.querySelector('dialog[open]')) closePanel(); });
   document.querySelectorAll('[data-open-panel]').forEach(function(b){ b.addEventListener('click', function(e){ e.preventDefault(); openPanel(b.dataset.openPanel); }); });
@@ -433,15 +512,18 @@
   function frame(now){
     if (I.plain()){ location.replace(DIRECTORY); return; }
     var dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
-    I.tick(now); stepHero(dt);
+    I.tick(now);
     u = still() ? ut : lerp(u, ut, .14); if (Math.abs(u - ut) < .3) u = ut;
-    var x = wrap(u), c = size(x), zone = zoneAt(x), zid = zone.id;
+    var x = wrap(u), c = size(x), zone = zoneAt(x), zid = zone.id, X = dx(x);
+    var wasHere = here; here = zone.hots ? walker(zid, x).at || null : null;
+    if (here !== wasHere){ [ROOM_HOTS, LAB_HOTS].forEach(function(l){ l.forEach(function(hs){ if (hs.row2){ hs.row2.classList.toggle('here', hs === here); if (hs === here) hs.row2.setAttribute('aria-current', 'step'); else hs.row2.removeAttribute('aria-current'); } }); }); }
+    var nw = nextWords(ut), pw = prevWords(ut); if (nextLabel && nextLabel.textContent !== nw) nextLabel.textContent = nw; if (prevLabel && prevLabel.textContent !== pw) prevLabel.textContent = pw;
     I.use(ctx); screen(); ctx.fillStyle = COL.paper; ctx.fillRect(0, 0, cw, ch); world();
     if (zid === 'room') drawRoom(x);
     else if (zid === 'lab') drawLab(x);
-    else if (zid === 'hill') drawHill(x);
-    else if (zid === 'platform' || zid === 'train'){ if (x < 1720 && vis(PB, PB + 600)) drawPlatform(x); if (vis(RT - 40, RF + 60)) drawTrain(x); }
-    else { if (zid === 'tram' || vis(600, 1990)) drawTram(zid === 'tram' ? ease(seg(x, 3620, 4120)) : 1); if (vis(1300, 2100)) drawStreet(); }
+    else if (zid === 'hill') drawHill(X);
+    else if (zid === 'platform' || zid === 'train'){ if (X < 1720 && vis(PB, PB + 600)) drawPlatform(X); if (vis(RT - 40, RF + 60)) drawTrain(X); }
+    else { if (zid === 'tram' || vis(600, 1990)) drawTram(zid === 'tram' ? ease(seg(X, 3620, 4120)) : 1); if (vis(1300, 2100)) drawStreet(); }
     var f = c.fig;
     if (zid === 'street' && !f){ var mm = I.lookIn(cv, 0, 0, 0, 0, 1); f = streetFigure(mm ? { x: camX + mm.x / s, y: camTop + mm.y / s } : null); }
     if (f && !f.tram && f.alpha !== 0) FIG(f);
@@ -457,8 +539,6 @@
     zonePanels.forEach(function(p){ var on = p.dataset.zonePanel.split(' ').indexOf(zid) > -1; p.classList.toggle('on', on); p.setAttribute('aria-hidden', String(!on)); p.inert = !on; });
     if (zone !== curZone){
       curZone = zone; var i = ZONES.indexOf(zone);
-      if (nextLabel) nextLabel.textContent = zone.next;
-      if (prevLabel) prevLabel.textContent = ZONES[(i - 1 + ZONES.length) % ZONES.length].label;
       if (loopNav) loopNav.querySelectorAll('button').forEach(function(b){ var here = b.dataset.z === zid; b.classList.toggle('here', here); if (here) b.setAttribute('aria-current', 'location'); else b.removeAttribute('aria-current'); });
       clearTimeout(hashTimer); hashTimer = setTimeout(function(){ try { history.replaceState(null, '', zid === 'street' ? location.pathname : '#' + zid); } catch (e) {} }, 600);
       if (active && zid !== 'room' && zid !== 'lab') closePanel();
@@ -467,5 +547,5 @@
   }
   document.addEventListener('plainchange', function(){ if (I.plain()) location.replace(DIRECTORY); });
   if (I.plain()) location.replace(DIRECTORY); else requestAnimationFrame(frame);
-  window.InkWorld = { goTo: goTo, openPanel: openPanel, stops: HASH, next: goNext, prev: goPrev };
+  window.InkWorld = { goTo: goTo, openPanel: openPanel, stops: HASH, next: goNext, prev: goPrev, hotStops: ROOM_HOTS.concat(LAB_HOTS).map(function(h){ return [h.label, h.at]; }) };
 })();

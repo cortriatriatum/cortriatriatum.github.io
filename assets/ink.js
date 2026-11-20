@@ -18,12 +18,12 @@
   try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readColors); } catch (e) {}
   new MutationObserver(readColors).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 
-  var C = null, boil = 0, seedN = 0, T = 2;
+  var C = null, boil = 0, seedN = 0, T = 2, LW = 1;   // LW: line-weight factor, so a figure drawn scaled up keeps the scene's pen
   function rnd(n){ var x = Math.sin(n * 12.9898 + boil * 78.233) * 43758.5453; return x - Math.floor(x); }
   function J(){ return (rnd(++seedN) - .5) * 2; }
   function S(pts, w, a, col){
     if (pts.length < 2) return;
-    C.globalAlpha = a == null ? 1 : a; C.lineWidth = w || 2.2; C.strokeStyle = col || COL.ink; C.beginPath();
+    C.globalAlpha = a == null ? 1 : a; C.lineWidth = (w || 2.2) * LW; C.strokeStyle = col || COL.ink; C.beginPath();
     for (var i = 0; i < pts.length - 1; i++){
       var x1 = pts[i][0], y1 = pts[i][1], x2 = pts[i+1][0], y2 = pts[i+1][1];
       var n = Math.max(1, Math.round(Math.hypot(x2 - x1, y2 - y1) / 14));
@@ -133,7 +133,7 @@
     [e1, e2].forEach(function(ex){
       if (f.shades){ C.fillStyle = COL.ink; C.beginPath(); C.ellipse(ex, eY, 4.4, 3.6, 0, 0, 6.3); C.fill(); }
       else if (blink) Ln(ex - 3, eY, ex + 3, eY, 1.8);
-      else { C.fillStyle = P; C.beginPath(); C.ellipse(ex, eY, 3.6, 4.4, 0, 0, 6.3); C.fill(); C.lineWidth = 1.3; C.strokeStyle = COL.ink; C.stroke(); C.fillStyle = COL.ink; C.beginPath(); C.arc(ex + dx * .7, eY + dy * .8, 1.8, 0, 6.3); C.fill(); }
+      else { C.fillStyle = P; C.beginPath(); C.ellipse(ex, eY, 3.6, 4.4, 0, 0, 6.3); C.fill(); C.lineWidth = 1.3 * LW; C.strokeStyle = COL.ink; C.stroke(); C.fillStyle = COL.ink; C.beginPath(); C.arc(ex + dx * .7, eY + dy * .8, 1.8, 0, 6.3); C.fill(); }
     });
     if (f.shades) Ln(e1 + 4, eY - 1, e2 - 4, eY - 1, 1.6);
     var brow = f.surprise ? -4 : 0;
@@ -234,6 +234,7 @@
   }
 
   window.Ink = {
+    pen: function(k){ LW = k || 1; },
     S: S, Ln: Ln, O: O, R: R, H: H, TX: TX, WASH: WASH, FIG: FIG,
     ease: ease, cl: cl, lerp: lerp, back: back,
     COL: COL, reduce: reduce, mouse: mouse, lookIn: lookIn,

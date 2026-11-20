@@ -1,12 +1,12 @@
 {%- comment %} Food recommendations from _data/food.yml: one city at a time, with buttons to switch. {% endcomment -%}
 <div class="food" data-food>
-  <div class="chips" role="group" aria-label="Choose a city">
+  <div class="chips" role="group" aria-label="Food recs by city">
   {%- for c in site.data.food.cities %}<button type="button" data-city="{{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">{{ c.name }}<b>{{ c.places | size }}</b></button>{% endfor %}
   </div>
   {%- for c in site.data.food.cities %}
   <ul class="food-list" data-city-list="{{ forloop.index }}"{% unless forloop.first %} hidden{% endunless %} aria-label="{{ c.name }}">
-    {%- for p in c.places %}<li><a href="{{ p.url }}" rel="noopener" target="_blank">{{ p.name }}</a>{% if p.where %} <span>{{ p.where }}</span>{% endif %}</li>{% endfor %}
+    {%- for p in c.places %}<li{% if p.closed %} class="closed"{% endif %}><a href="{{ p.url }}" rel="noopener" target="_blank">{{ p.name }}</a>{% if p.vegan %} <b class="ft vegan">Vegan</b>{% endif %}{% if p.closed %} <b class="ft shut">{{ p.closed }}</b>{% endif %}{% if p.maybe_closed %} <b class="ft shut">{{ p.maybe_closed }}</b>{% endif %}{% if p.where %} <span>{{ p.where }}</span>{% endif %}</li>{% endfor %}
   </ul>
   {%- endfor %}
-  <p class="note">From my Google Maps lists. Each name opens it on Google Maps.</p>
+  <p class="note">From my Google Maps lists. Each name opens it on Google Maps. <b class="ft vegan">Vegan</b> means fully vegan. Closures checked November 2026.</p>
 </div>

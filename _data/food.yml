@@ -1,140 +1,278 @@
 # Food recommendations, shown behind the food cart on the home page and on the Directory page.
-# From my Google Maps lists. Each place links to a Google Maps search for it.
+# From my Google Maps lists. Each place links to Google Maps. vegan: true marks fully vegan places;
+# closed: "<note>" labels a place reported closed; maybe_closed: "<note>" one with mixed reports (checked November 2026).
+# Remove a place once it is gone for good.
 cities:
-  - name: "Portland, OR"
-    places:
-      - { name: "Thai Peacock", url: "https://www.google.com/maps/search/?api=1&query=Thai+Peacock+Portland%2C+OR" }
-      - { name: "Luce", url: "https://www.google.com/maps/search/?api=1&query=Luce+Portland%2C+OR" }
-      - { name: "John's Marketplace", url: "https://www.google.com/maps/search/?api=1&query=John%27s+Marketplace+Portland%2C+OR" }
-      - { name: "Les Caves Wine Bar", url: "https://www.google.com/maps/search/?api=1&query=Les+Caves+Wine+Bar+Portland%2C+OR" }
-      - { name: "Kenny's Noodle House", url: "https://www.google.com/maps/search/?api=1&query=Kenny%27s+Noodle+House+Portland%2C+OR" }
-      - { name: "E&R Wine Shop", url: "https://www.google.com/maps/search/?api=1&query=E%26R+Wine+Shop+Portland%2C+OR" }
-      - { name: "Toji Korean Grill House", url: "https://www.google.com/maps/search/?api=1&query=Toji+Korean+Grill+House+Portland%2C+OR" }
-      - { name: "Oma's Hideaway", url: "https://www.google.com/maps/search/?api=1&query=Oma%27s+Hideaway+Portland%2C+OR" }
-      - { name: "ASTERA", url: "https://www.google.com/maps/search/?api=1&query=ASTERA+Portland%2C+OR" }
-      - { name: "Floyd's Coffeehouse", url: "https://www.google.com/maps/search/?api=1&query=Floyd%27s+Coffeehouse+Portland%2C+OR" }
-      - { name: "Bialy Bird", url: "https://www.google.com/maps/search/?api=1&query=Bialy+Bird+Portland%2C+OR" }
-      - { name: "Scotch Lodge", url: "https://www.google.com/maps/search/?api=1&query=Scotch+Lodge+Portland%2C+OR" }
-      - { name: "The Focacceria by Montelupo", url: "https://www.google.com/maps/search/?api=1&query=The+Focacceria+by+Montelupo+Portland%2C+OR" }
-      - { name: "Yaowarat", url: "https://www.google.com/maps/search/?api=1&query=Yaowarat+Portland%2C+OR" }
-      - { name: "East India Co. Grill & Bar", url: "https://www.google.com/maps/search/?api=1&query=East+India+Co.+Grill+%26+Bar+Portland%2C+OR" }
-      - { name: "Orange & Blossom Patisserie", url: "https://www.google.com/maps/search/?api=1&query=Orange+%26+Blossom+Patisserie+Portland%2C+OR" }
-      - { name: "Wu-Rons", url: "https://www.google.com/maps/search/?api=1&query=Wu-Rons+Portland%2C+OR" }
-      - { name: "Boxcar Pizza", url: "https://www.google.com/maps/search/?api=1&query=Boxcar+Pizza+Portland%2C+OR" }
-      - { name: "Matt's BBQ", url: "https://www.google.com/maps/search/?api=1&query=Matt%27s+BBQ+Portland%2C+OR" }
-      - { name: "Nostrana", url: "https://www.google.com/maps/search/?api=1&query=Nostrana+Portland%2C+OR" }
-      - { name: "Lilla", url: "https://www.google.com/maps/search/?api=1&query=Lilla+Portland%2C+OR" }
-      - { name: "Apizza Scholls", url: "https://www.google.com/maps/search/?api=1&query=Apizza+Scholls+Portland%2C+OR" }
-      - { name: "Pizza Thief", url: "https://www.google.com/maps/search/?api=1&query=Pizza+Thief+Portland%2C+OR" }
-      - { name: "Company", url: "https://www.google.com/maps/search/?api=1&query=Company+Portland%2C+OR" }
-      - { name: "Apna Chat Bhavan", url: "https://www.google.com/maps/search/?api=1&query=Apna+Chat+Bhavan+Portland%2C+OR" }
-      - { name: "GrindWitTryz", url: "https://www.google.com/maps/search/?api=1&query=GrindWitTryz+Portland%2C+OR" }
-      - { name: "Expatriate", url: "https://www.google.com/maps/search/?api=1&query=Expatriate+Portland%2C+OR" }
-      - { name: "Proud Mary Cafe", url: "https://www.google.com/maps/search/?api=1&query=Proud+Mary+Cafe+Portland%2C+OR" }
-      - { name: "DesiPDX", url: "https://www.google.com/maps/search/?api=1&query=DesiPDX+Portland%2C+OR" }
-      - { name: "Gado Gado", url: "https://www.google.com/maps/search/?api=1&query=Gado+Gado+Portland%2C+OR" }
-      - { name: "EL CAMPESINO PDX", url: "https://www.google.com/maps/search/?api=1&query=EL+CAMPESINO+PDX+Portland%2C+OR" }
-      - { name: "Kayo's Ramen Bar", url: "https://www.google.com/maps/search/?api=1&query=Kayo%27s+Ramen+Bar+Portland%2C+OR" }
-      - { name: "Basilisk", url: "https://www.google.com/maps/search/?api=1&query=Basilisk+Portland%2C+OR" }
-      - { name: "Yalla", url: "https://www.google.com/maps/search/?api=1&query=Yalla+Portland%2C+OR" }
-      - { name: "Montelupo Italian Market", url: "https://www.google.com/maps/search/?api=1&query=Montelupo+Italian+Market+Portland%2C+OR" }
-      - { name: "GRANA Pizza Napoletana", url: "https://www.google.com/maps/search/?api=1&query=GRANA+Pizza+Napoletana+Portland%2C+OR" }
-      - { name: "Pinolo Gelato", url: "https://www.google.com/maps/search/?api=1&query=Pinolo+Gelato+Portland%2C+OR" }
-      - { name: "Mediterranean Exploration Company", url: "https://www.google.com/maps/search/?api=1&query=Mediterranean+Exploration+Company+Portland%2C+OR" }
-      - { name: "Reel M Inn", url: "https://www.google.com/maps/search/?api=1&query=Reel+M+Inn+Portland%2C+OR" }
-      - { name: "Shalom Y'all", url: "https://www.google.com/maps/search/?api=1&query=Shalom+Y%27all+Portland%2C+OR" }
-      - { name: "Camp 1805 Distillery & Bar", url: "https://www.google.com/maps/search/?api=1&query=Camp+1805+Distillery+%26+Bar+Portland%2C+OR" }
-      - { name: "EaT: An Oyster Bar", url: "https://www.google.com/maps/search/?api=1&query=EaT%3A+An+Oyster+Bar+Portland%2C+OR" }
-      - { name: "Newman's Fish Company", url: "https://www.google.com/maps/search/?api=1&query=Newman%27s+Fish+Company+Portland%2C+OR" }
-      - { name: "Feral", url: "https://www.google.com/maps/search/?api=1&query=Feral+Portland%2C+OR" }
-      - { name: "Mis Tacones", url: "https://www.google.com/maps/search/?api=1&query=Mis+Tacones+Portland%2C+OR" }
-      - { name: "Mirisata", url: "https://www.google.com/maps/search/?api=1&query=Mirisata+Portland%2C+OR" }
-      - { name: "Dolly Olive", url: "https://www.google.com/maps/search/?api=1&query=Dolly+Olive+Portland%2C+OR" }
-      - { name: "Epif", url: "https://www.google.com/maps/search/?api=1&query=Epif+Portland%2C+OR" }
-      - { name: "Best Baguette", url: "https://www.google.com/maps/search/?api=1&query=Best+Baguette+Portland%2C+OR" }
-      - { name: "Lauretta Jean's", url: "https://www.google.com/maps/search/?api=1&query=Lauretta+Jean%27s+Portland%2C+OR" }
-      - { name: "Sushi Ohana", url: "https://www.google.com/maps/search/?api=1&query=Sushi+Ohana+Portland%2C+OR" }
-      - { name: "Birrias Tamazula", url: "https://www.google.com/maps/search/?api=1&query=Birrias+Tamazula+Portland%2C+OR" }
-      - { name: "Habanero Burrito", url: "https://www.google.com/maps/search/?api=1&query=Habanero+Burrito+Portland%2C+OR" }
-      - { name: "Long's Meat Market", url: "https://www.google.com/maps/search/?api=1&query=Long%27s+Meat+Market+Portland%2C+OR" }
-      - { name: "Sweet Life Patisserie", url: "https://www.google.com/maps/search/?api=1&query=Sweet+Life+Patisserie+Portland%2C+OR" }
-      - { name: "Andina", url: "https://www.google.com/maps/search/?api=1&query=Andina+Portland%2C+OR" }
-      - { name: "St. Honoré Bakery", url: "https://www.google.com/maps/search/?api=1&query=St.+Honor%C3%A9+Bakery+Portland%2C+OR" }
-      - { name: "Ken's Artisan Bakery", url: "https://www.google.com/maps/search/?api=1&query=Ken%27s+Artisan+Bakery+Portland%2C+OR" }
-      - { name: "Momo's", url: "https://www.google.com/maps/search/?api=1&query=Momo%27s+Portland%2C+OR" }
-      - { name: "Taqueria Los Gorditos", url: "https://www.google.com/maps/search/?api=1&query=Taqueria+Los+Gorditos+Portland%2C+OR" }
-      - { name: "Justa Pasta Co.", url: "https://www.google.com/maps/search/?api=1&query=Justa+Pasta+Co.+Portland%2C+OR" }
-      - { name: "Birrieria La Plaza", url: "https://www.google.com/maps/search/?api=1&query=Birrieria+La+Plaza+Portland%2C+OR" }
-      - { name: "Baby Doll Pizza", url: "https://www.google.com/maps/search/?api=1&query=Baby+Doll+Pizza+Portland%2C+OR" }
-      - { name: "Stammtisch", url: "https://www.google.com/maps/search/?api=1&query=Stammtisch+Portland%2C+OR" }
-      - { name: "Eem", url: "https://www.google.com/maps/search/?api=1&query=Eem+Portland%2C+OR" }
-      - { name: "Chennai Masala", url: "https://www.google.com/maps/search/?api=1&query=Chennai+Masala+Portland%2C+OR" }
-      - { name: "Rangoon Bistro", url: "https://www.google.com/maps/search/?api=1&query=Rangoon+Bistro+Portland%2C+OR" }
-      - { name: "Someday", url: "https://www.google.com/maps/search/?api=1&query=Someday+Portland%2C+OR" }
-      - { name: "Bar Casa Vale", url: "https://www.google.com/maps/search/?api=1&query=Bar+Casa+Vale+Portland%2C+OR" }
-      - { name: "Loyal Legion", url: "https://www.google.com/maps/search/?api=1&query=Loyal+Legion+Portland%2C+OR" }
-      - { name: "Ranch PDX Southeast", url: "https://www.google.com/maps/search/?api=1&query=Ranch+PDX+Southeast+Portland%2C+OR" }
-      - { name: "Taqueria El Paisano", url: "https://www.google.com/maps/search/?api=1&query=Taqueria+El+Paisano+Portland%2C+OR" }
-      - { name: "Pip's Original Doughnuts & Chai", url: "https://www.google.com/maps/search/?api=1&query=Pip%27s+Original+Doughnuts+%26+Chai+Portland%2C+OR" }
-      - { name: "Gumba", url: "https://www.google.com/maps/search/?api=1&query=Gumba+Portland%2C+OR" }
-      - { name: "Baka Umai", url: "https://www.google.com/maps/search/?api=1&query=Baka+Umai+Portland%2C+OR" }
-      - { name: "Crema Coffee + Bakery", url: "https://www.google.com/maps/search/?api=1&query=Crema+Coffee+%2B+Bakery+Portland%2C+OR" }
-      - { name: "The MAC'D Window", url: "https://www.google.com/maps/search/?api=1&query=The+MAC%27D+Window+Portland%2C+OR" }
-      - { name: "King Burrito Mexican Food", url: "https://www.google.com/maps/search/?api=1&query=King+Burrito+Mexican+Food+Portland%2C+OR" }
-      - { name: "Bellwether Bar", url: "https://www.google.com/maps/search/?api=1&query=Bellwether+Bar+Portland%2C+OR" }
-      - { name: "Fifty Licks Ice Cream", url: "https://www.google.com/maps/search/?api=1&query=Fifty+Licks+Ice+Cream+Portland%2C+OR" }
-      - { name: "Papa Haydn", url: "https://www.google.com/maps/search/?api=1&query=Papa+Haydn+Portland%2C+OR" }
-      - { name: "Blue Star Donuts", url: "https://www.google.com/maps/search/?api=1&query=Blue+Star+Donuts+Portland%2C+OR" }
-      - { name: "Keeper Coffee Co", url: "https://www.google.com/maps/search/?api=1&query=Keeper+Coffee+Co+Portland%2C+OR" }
-      - { name: "Never Coffee", url: "https://www.google.com/maps/search/?api=1&query=Never+Coffee+Portland%2C+OR" }
-      - { name: "Taste Tickler", url: "https://www.google.com/maps/search/?api=1&query=Taste+Tickler+Portland%2C+OR" }
-      - { name: "Ken's Artisan Pizza", url: "https://www.google.com/maps/search/?api=1&query=Ken%27s+Artisan+Pizza+Portland%2C+OR" }
-      - { name: "Jam On Hawthorne", url: "https://www.google.com/maps/search/?api=1&query=Jam+On+Hawthorne+Portland%2C+OR" }
-      - { name: "Bernstein's Bagels", url: "https://www.google.com/maps/search/?api=1&query=Bernstein%27s+Bagels+Portland%2C+OR" }
-      - { name: "Scottie's Pizza Parlor SE", url: "https://www.google.com/maps/search/?api=1&query=Scottie%27s+Pizza+Parlor+SE+Portland%2C+OR" }
-      - { name: "Phuket Cafe", url: "https://www.google.com/maps/search/?api=1&query=Phuket+Cafe+Portland%2C+OR" }
-      - { name: "Katy Jane's", url: "https://www.google.com/maps/search/?api=1&query=Katy+Jane%27s+Portland%2C+OR" }
-      - { name: "Maplewood Coffee & Tea", url: "https://www.google.com/maps/search/?api=1&query=Maplewood+Coffee+%26+Tea+Portland%2C+OR" }
-      - { name: "Tabor Bread", url: "https://www.google.com/maps/search/?api=1&query=Tabor+Bread+Portland%2C+OR" }
-  - name: "New York, NY"
-    places:
-      - { name: "JG Melon", url: "https://www.google.com/maps/search/?api=1&query=JG+Melon+New+York%2C+NY" }
-      - { name: "The Handpulled Noodle", url: "https://www.google.com/maps/search/?api=1&query=The+Handpulled+Noodle+New+York%2C+NY" }
-      - { name: "Little Italy Pizza", url: "https://www.google.com/maps/search/?api=1&query=Little+Italy+Pizza+New+York%2C+NY" }
-      - { name: "The Kati Roll Company", url: "https://www.google.com/maps/search/?api=1&query=The+Kati+Roll+Company+New+York%2C+NY" }
-      - { name: "Jacob's Pickles", url: "https://www.google.com/maps/search/?api=1&query=Jacob%27s+Pickles+New+York%2C+NY" }
-      - { name: "Lincoln Center for the Performing Arts", url: "https://www.google.com/maps/search/?api=1&query=Lincoln+Center+for+the+Performing+Arts+New+York%2C+NY" }
-      - { name: "Magnolia Bakery", url: "https://www.google.com/maps/search/?api=1&query=Magnolia+Bakery+New+York%2C+NY" }
-      - { name: "Levain Bakery", url: "https://www.google.com/maps/search/?api=1&query=Levain+Bakery+New+York%2C+NY" }
-      - { name: "Lombardi's", url: "https://www.google.com/maps/search/?api=1&query=Lombardi%27s+New+York%2C+NY" }
-      - { name: "Van Leeuwen Ice Cream", url: "https://www.google.com/maps/search/?api=1&query=Van+Leeuwen+Ice+Cream+New+York%2C+NY" }
-      - { name: "Veniero's Pasticceria & Caffe", url: "https://www.google.com/maps/search/?api=1&query=Veniero%27s+Pasticceria+%26+Caffe+New+York%2C+NY" }
-      - { name: "Momofuku Noodle Bar", url: "https://www.google.com/maps/search/?api=1&query=Momofuku+Noodle+Bar+New+York%2C+NY" }
-  - name: "Portland, ME"
-    places:
-      - { name: "Pine Street Bakery", url: "https://www.google.com/maps/search/?api=1&query=Pine+Street+Bakery+Portland%2C+ME" }
-      - { name: "LaVerne’s", url: "https://www.google.com/maps/search/?api=1&query=LaVerne%E2%80%99s+Portland%2C+ME" }
-      - { name: "Bard Coffee", url: "https://www.google.com/maps/search/?api=1&query=Bard+Coffee+Portland%2C+ME" }
-      - { name: "Rose Foods", url: "https://www.google.com/maps/search/?api=1&query=Rose+Foods+Portland%2C+ME" }
-      - { name: "Monte's Fine Foods", url: "https://www.google.com/maps/search/?api=1&query=Monte%27s+Fine+Foods+Portland%2C+ME" }
-      - { name: "Standard Baking Co", url: "https://www.google.com/maps/search/?api=1&query=Standard+Baking+Co+Portland%2C+ME" }
-  - name: "Florence, Italy"
-    places:
-      - { name: "Pizzium", url: "https://www.google.com/maps/search/?api=1&query=Pizzium%2C+Piazza+del+Carmine%2C+5%2C+50124+Firenze+FI%2C+Italy", where: "Piazza del Carmine 5" }
-  - name: "Abruzzo, Italy"
-    places:
-      - { name: "Pizzeria Aurora", url: "https://www.google.com/maps/search/?api=1&query=Pizzeria+Aurora%2C+Via+Canaccio%2C+54%2C+66054+Vasto+CH%2C+Italy", where: "Vasto" }
-      - { name: "Biscotteria Artigianale di Rosati Liliana", url: "https://www.google.com/maps/search/?api=1&query=Biscotteria+Artigianale+di+Rosati+Liliana%2C+Str.+Silla%2C+43%2C+67038+Scanno+AQ%2C+Italy", where: "Scanno" }
-      - { name: "A Cavu't", url: "https://www.google.com/maps/search/?api=1&query=A+Cavu%27t%2C+Piazza+Vittorio+Veneto%2C+67032+Pescasseroli+AQ%2C+Italy", where: "Pescasseroli" }
-      - { name: "Brac", url: "https://www.google.com/maps/search/?api=1&query=Hotel+Rojan%2C+Via+degli+Agghiacciati%2C+18%2C+67039+Sulmona+AQ%2C+Italy", where: "Sulmona, at Hotel Rojan" }
-  - name: "Vancouver, BC"
-    places:
-      - { name: "49th Parallel Café & Lucky's Doughnuts", url: "https://www.google.com/maps/search/?api=1&query=49th+Parallel+Caf%C3%A9+%26+Lucky%27s+Doughnuts+Vancouver%2C+BC" }
-      - { name: "Ask for Luigi", url: "https://www.google.com/maps/search/?api=1&query=Ask+for+Luigi+Vancouver%2C+BC" }
-  - name: "Elsewhere in Oregon and Washington"
-    places:
-      - { name: "Groundling Pizza Co.", url: "https://www.google.com/maps/search/?api=1&query=Groundling+Pizza+Co.+Gold+Beach%2C+OR", where: "Gold Beach, OR" }
-      - { name: "Old Agness Store", url: "https://www.google.com/maps/search/?api=1&query=Old+Agness+Store+Agness%2C+OR", where: "Agness, OR" }
-      - { name: "White Salmon Baking Co.", url: "https://www.google.com/maps/search/?api=1&query=White+Salmon+Baking+Co.+White+Salmon%2C+WA", where: "White Salmon, WA" }
-      - { name: "Pacific Sourdough", url: "https://www.google.com/maps/search/?api=1&query=Pacific+Sourdough+Cannon+Beach%2C+OR", where: "Cannon Beach, OR" }
-      - { name: "Sea Level Bakery + Coffee", url: "https://www.google.com/maps/search/?api=1&query=Sea+Level+Bakery+%2B+Coffee+Cannon+Beach%2C+OR", where: "Cannon Beach, OR" }
+- name: Portland, OR
+  places:
+  - name: Thai Peacock
+    url: https://www.google.com/maps/search/?api=1&query=Thai+Peacock+Portland%2C+OR
+  - name: LaVerne’s
+    url: https://www.google.com/maps/search/?api=1&query=LaVerne%27s%2C+700+NE+Dekum+St%2C+Portland%2C+OR
+  - name: Luce
+    url: https://www.google.com/maps/search/?api=1&query=Luce+Portland%2C+OR
+  - name: John's Marketplace
+    url: https://www.google.com/maps/search/?api=1&query=John%27s+Marketplace+Portland%2C+OR
+  - name: Les Caves Wine Bar
+    url: https://www.google.com/maps/search/?api=1&query=Les+Caves+Wine+Bar+Portland%2C+OR
+  - name: Kenny's Noodle House
+    url: https://www.google.com/maps/search/?api=1&query=Kenny%27s+Noodle+House+Portland%2C+OR
+  - name: E&R Wine Shop
+    url: https://www.google.com/maps/search/?api=1&query=E%26R+Wine+Shop+Portland%2C+OR
+  - name: Toji Korean Grill House
+    url: https://www.google.com/maps/search/?api=1&query=Toji+Korean+Grill+House+Portland%2C+OR
+  - name: Oma's Hideaway
+    url: https://www.google.com/maps/search/?api=1&query=Oma%27s+Hideaway+Portland%2C+OR
+  - name: ASTERA
+    url: https://www.google.com/maps/search/?api=1&query=ASTERA+Portland%2C+OR
+  - name: Floyd's Coffeehouse
+    url: https://www.google.com/maps/search/?api=1&query=Floyd%27s+Coffeehouse+Portland%2C+OR
+  - name: Bialy Bird
+    url: https://www.google.com/maps/search/?api=1&query=Bialy+Bird+Portland%2C+OR
+  - name: Scotch Lodge
+    url: https://www.google.com/maps/search/?api=1&query=Scotch+Lodge+Portland%2C+OR
+  - name: The Focacceria by Montelupo
+    url: https://www.google.com/maps/search/?api=1&query=The+Focacceria+by+Montelupo+Portland%2C+OR
+  - name: Yaowarat
+    url: https://www.google.com/maps/search/?api=1&query=Yaowarat+Portland%2C+OR
+  - name: East India Co. Grill & Bar
+    url: https://www.google.com/maps/search/?api=1&query=East+India+Co.+Grill+%26+Bar+Portland%2C+OR
+  - name: Orange & Blossom Patisserie
+    url: https://www.google.com/maps/search/?api=1&query=Orange+%26+Blossom+Patisserie+Portland%2C+OR
+  - name: Wu-Rons
+    url: https://www.google.com/maps/search/?api=1&query=Wu-Rons+Portland%2C+OR
+  - name: Boxcar Pizza
+    url: https://www.google.com/maps/search/?api=1&query=Boxcar+Pizza+Portland%2C+OR
+  - name: Matt's BBQ
+    url: https://www.google.com/maps/search/?api=1&query=Matt%27s+BBQ+Portland%2C+OR
+  - name: Nostrana
+    url: https://www.google.com/maps/search/?api=1&query=Nostrana+Portland%2C+OR
+  - name: Lilla
+    url: https://www.google.com/maps/search/?api=1&query=Lilla+Portland%2C+OR
+    vegan: true
+  - name: Apizza Scholls
+    url: https://www.google.com/maps/search/?api=1&query=Apizza+Scholls+Portland%2C+OR
+  - name: Pizza Thief
+    url: https://www.google.com/maps/search/?api=1&query=Pizza+Thief+Portland%2C+OR
+  - name: Company
+    url: https://www.google.com/maps/search/?api=1&query=Company+Portland%2C+OR
+  - name: Apna Chat Bhavan
+    url: https://www.google.com/maps/search/?api=1&query=Apna+Chat+Bhavan+Portland%2C+OR
+  - name: GrindWitTryz
+    url: https://www.google.com/maps/search/?api=1&query=GrindWitTryz+Portland%2C+OR
+  - name: Proud Mary Cafe
+    url: https://www.google.com/maps/search/?api=1&query=Proud+Mary+Cafe+Portland%2C+OR
+  - name: DesiPDX
+    url: https://www.google.com/maps/search/?api=1&query=DesiPDX+Portland%2C+OR
+  - name: Gado Gado
+    url: https://www.google.com/maps/search/?api=1&query=Gado+Gado+Portland%2C+OR
+  - name: EL CAMPESINO PDX
+    url: https://www.google.com/maps/search/?api=1&query=EL+CAMPESINO+PDX+Portland%2C+OR
+  - name: Kayo's Ramen Bar
+    url: https://www.google.com/maps/search/?api=1&query=Kayo%27s+Ramen+Bar+Portland%2C+OR
+  - name: Basilisk
+    url: https://www.google.com/maps/search/?api=1&query=Basilisk+Portland%2C+OR
+  - name: Yalla
+    url: https://www.google.com/maps/search/?api=1&query=Yalla+Portland%2C+OR
+  - name: Montelupo Italian Market
+    url: https://www.google.com/maps/search/?api=1&query=Montelupo+Italian+Market+Portland%2C+OR
+  - name: GRANA Pizza Napoletana
+    url: https://www.google.com/maps/search/?api=1&query=GRANA+Pizza+Napoletana+Portland%2C+OR
+  - name: Pinolo Gelato
+    url: https://www.google.com/maps/search/?api=1&query=Pinolo+Gelato+Portland%2C+OR
+  - name: Mediterranean Exploration Company
+    url: https://www.google.com/maps/search/?api=1&query=Mediterranean+Exploration+Company+Portland%2C+OR
+  - name: Reel M Inn
+    url: https://www.google.com/maps/search/?api=1&query=Reel+M+Inn+Portland%2C+OR
+  - name: Shalom Y'all
+    url: https://www.google.com/maps/search/?api=1&query=Shalom+Y%27all+Portland%2C+OR
+  - name: Camp 1805 Distillery & Bar
+    url: https://www.google.com/maps/search/?api=1&query=Camp+1805+Distillery+%26+Bar+Portland%2C+OR
+  - name: 'EaT: An Oyster Bar'
+    url: https://www.google.com/maps/search/?api=1&query=EaT%3A+An+Oyster+Bar+Portland%2C+OR
+  - name: Newman's Fish Company
+    url: https://www.google.com/maps/search/?api=1&query=Newman%27s+Fish+Company+Portland%2C+OR
+  - name: Feral
+    url: https://www.google.com/maps/search/?api=1&query=Feral+Portland%2C+OR
+  - name: Mis Tacones
+    url: https://www.google.com/maps/search/?api=1&query=Mis+Tacones+Portland%2C+OR
+  - name: Mirisata
+    url: https://www.google.com/maps/search/?api=1&query=Mirisata+Portland%2C+OR
+    vegan: true
+  - name: Dolly Olive
+    url: https://www.google.com/maps/search/?api=1&query=Dolly+Olive+Portland%2C+OR
+  - name: Epif
+    url: https://www.google.com/maps/search/?api=1&query=Epif+Portland%2C+OR
+    vegan: true
+    maybe_closed: May have closed
+  - name: Best Baguette
+    url: https://www.google.com/maps/search/?api=1&query=Best+Baguette+Portland%2C+OR
+  - name: Lauretta Jean's
+    url: https://www.google.com/maps/search/?api=1&query=Lauretta+Jean%27s+Portland%2C+OR
+  - name: Sushi Ohana
+    url: https://www.google.com/maps/search/?api=1&query=Sushi+Ohana+Portland%2C+OR
+  - name: Birrias Tamazula
+    url: https://www.google.com/maps/search/?api=1&query=Birrias+Tamazula+Portland%2C+OR
+  - name: Habanero Burrito
+    url: https://www.google.com/maps/search/?api=1&query=Habanero+Burrito+Portland%2C+OR
+  - name: Long's Meat Market
+    url: https://www.google.com/maps/search/?api=1&query=Long%27s+Meat+Market+Portland%2C+OR
+  - name: Sweet Life Patisserie
+    url: https://www.google.com/maps/search/?api=1&query=Sweet+Life+Patisserie+Portland%2C+OR
+  - name: Andina
+    url: https://www.google.com/maps/search/?api=1&query=Andina+Portland%2C+OR
+  - name: St. Honoré Bakery
+    url: https://www.google.com/maps/search/?api=1&query=St.+Honor%C3%A9+Bakery+Portland%2C+OR
+  - name: Ken's Artisan Bakery
+    url: https://www.google.com/maps/search/?api=1&query=Ken%27s+Artisan+Bakery+Portland%2C+OR
+  - name: Momo's
+    url: https://www.google.com/maps/search/?api=1&query=Momo%27s+Portland%2C+OR
+  - name: Taqueria Los Gorditos
+    url: https://www.google.com/maps/search/?api=1&query=Taqueria+Los+Gorditos+Portland%2C+OR
+  - name: Justa Pasta Co.
+    url: https://www.google.com/maps/search/?api=1&query=Justa+Pasta+Co.+Portland%2C+OR
+  - name: Birrieria La Plaza
+    url: https://www.google.com/maps/search/?api=1&query=Birrieria+La+Plaza+Portland%2C+OR
+  - name: Baby Doll Pizza
+    url: https://www.google.com/maps/search/?api=1&query=Baby+Doll+Pizza+Portland%2C+OR
+  - name: Stammtisch
+    url: https://www.google.com/maps/search/?api=1&query=Stammtisch+Portland%2C+OR
+  - name: Eem
+    url: https://www.google.com/maps/search/?api=1&query=Eem+Portland%2C+OR
+  - name: Chennai Masala
+    url: https://www.google.com/maps/search/?api=1&query=Chennai+Masala+Portland%2C+OR
+  - name: Rangoon Bistro
+    url: https://www.google.com/maps/search/?api=1&query=Rangoon+Bistro+Portland%2C+OR
+  - name: Someday
+    url: https://www.google.com/maps/search/?api=1&query=Someday+Portland%2C+OR
+  - name: Bar Casa Vale
+    url: https://www.google.com/maps/search/?api=1&query=Bar+Casa+Vale+Portland%2C+OR
+    closed: Reported closed in 2026
+  - name: Loyal Legion
+    url: https://www.google.com/maps/search/?api=1&query=Loyal+Legion+Portland%2C+OR
+  - name: Ranch PDX Southeast
+    url: https://www.google.com/maps/search/?api=1&query=Ranch+PDX+Southeast+Portland%2C+OR
+  - name: Taqueria El Paisano
+    url: https://www.google.com/maps/search/?api=1&query=Taqueria+El+Paisano+Portland%2C+OR
+  - name: Pip's Original Doughnuts & Chai
+    url: https://www.google.com/maps/search/?api=1&query=Pip%27s+Original+Doughnuts+%26+Chai+Portland%2C+OR
+  - name: Gumba
+    url: https://www.google.com/maps/search/?api=1&query=Gumba+Portland%2C+OR
+  - name: Baka Umai
+    url: https://www.google.com/maps/search/?api=1&query=Baka+Umai+Portland%2C+OR
+  - name: Crema Coffee + Bakery
+    url: https://www.google.com/maps/search/?api=1&query=Crema+Coffee+%2B+Bakery+Portland%2C+OR
+  - name: The MAC'D Window
+    url: https://www.google.com/maps/search/?api=1&query=The+MAC%27D+Window+Portland%2C+OR
+  - name: King Burrito Mexican Food
+    url: https://www.google.com/maps/search/?api=1&query=King+Burrito+Mexican+Food+Portland%2C+OR
+  - name: Bellwether Bar
+    url: https://www.google.com/maps/search/?api=1&query=Bellwether+Bar+Portland%2C+OR
+  - name: Fifty Licks Ice Cream
+    url: https://www.google.com/maps/search/?api=1&query=Fifty+Licks+Ice+Cream+Portland%2C+OR
+  - name: Papa Haydn
+    url: https://www.google.com/maps/search/?api=1&query=Papa+Haydn+Portland%2C+OR
+  - name: Blue Star Donuts
+    url: https://www.google.com/maps/search/?api=1&query=Blue+Star+Donuts+Portland%2C+OR
+  - name: Keeper Coffee Co
+    url: https://www.google.com/maps/search/?api=1&query=Keeper+Coffee+Co+Portland%2C+OR
+  - name: Never Coffee
+    url: https://www.google.com/maps/search/?api=1&query=Never+Coffee+Portland%2C+OR
+  - name: Taste Tickler
+    url: https://www.google.com/maps/search/?api=1&query=Taste+Tickler+Portland%2C+OR
+  - name: Ken's Artisan Pizza
+    url: https://www.google.com/maps/search/?api=1&query=Ken%27s+Artisan+Pizza+Portland%2C+OR
+  - name: Jam On Hawthorne
+    url: https://www.google.com/maps/search/?api=1&query=Jam+On+Hawthorne+Portland%2C+OR
+  - name: Bernstein's Bagels
+    url: https://www.google.com/maps/search/?api=1&query=Bernstein%27s+Bagels+Portland%2C+OR
+  - name: Scottie's Pizza Parlor SE
+    url: https://www.google.com/maps/search/?api=1&query=Scottie%27s+Pizza+Parlor+SE+Portland%2C+OR
+  - name: Phuket Cafe
+    url: https://www.google.com/maps/search/?api=1&query=Phuket+Cafe+Portland%2C+OR
+  - name: Katy Jane's
+    url: https://www.google.com/maps/search/?api=1&query=Katy+Jane%27s+Portland%2C+OR
+  - name: Maplewood Coffee & Tea
+    url: https://www.google.com/maps/search/?api=1&query=Maplewood+Coffee+%26+Tea+Portland%2C+OR
+  - name: Tabor Bread
+    url: https://www.google.com/maps/search/?api=1&query=Tabor+Bread+Portland%2C+OR
+- name: New York, NY
+  places:
+  - name: JG Melon
+    url: https://www.google.com/maps/search/?api=1&query=JG+Melon+New+York%2C+NY
+  - name: The Handpulled Noodle
+    url: https://www.google.com/maps/search/?api=1&query=The+Handpulled+Noodle+New+York%2C+NY
+  - name: Little Italy Pizza
+    url: https://www.google.com/maps/search/?api=1&query=Little+Italy+Pizza+New+York%2C+NY
+  - name: The Kati Roll Company
+    url: https://www.google.com/maps/search/?api=1&query=The+Kati+Roll+Company+New+York%2C+NY
+  - name: Jacob's Pickles
+    url: https://www.google.com/maps/search/?api=1&query=Jacob%27s+Pickles+New+York%2C+NY
+  - name: Lincoln Center for the Performing Arts
+    url: https://www.google.com/maps/search/?api=1&query=Lincoln+Center+for+the+Performing+Arts+New+York%2C+NY
+  - name: Magnolia Bakery
+    url: https://www.google.com/maps/search/?api=1&query=Magnolia+Bakery+New+York%2C+NY
+  - name: Levain Bakery
+    url: https://www.google.com/maps/search/?api=1&query=Levain+Bakery+New+York%2C+NY
+  - name: Lombardi's
+    url: https://www.google.com/maps/search/?api=1&query=Lombardi%27s+New+York%2C+NY
+  - name: Van Leeuwen Ice Cream
+    url: https://www.google.com/maps/search/?api=1&query=Van+Leeuwen+Ice+Cream+New+York%2C+NY
+  - name: Veniero's Pasticceria & Caffe
+    url: https://www.google.com/maps/search/?api=1&query=Veniero%27s+Pasticceria+%26+Caffe+New+York%2C+NY
+  - name: Momofuku Noodle Bar
+    url: https://www.google.com/maps/search/?api=1&query=Momofuku+Noodle+Bar+New+York%2C+NY
+- name: Portland, ME
+  places:
+  - name: Pine Street Bakery
+    url: https://www.google.com/maps/search/?api=1&query=Pine+Street+Bakery+Portland%2C+ME
+  - name: Bard Coffee
+    url: https://www.google.com/maps/search/?api=1&query=Bard+Coffee+Portland%2C+ME
+  - name: Rose Foods
+    url: https://www.google.com/maps/search/?api=1&query=Rose+Foods+Portland%2C+ME
+  - name: Monte's Fine Foods
+    url: https://www.google.com/maps/search/?api=1&query=Monte%27s+Fine+Foods+Portland%2C+ME
+  - name: Standard Baking Co
+    url: https://www.google.com/maps/search/?api=1&query=Standard+Baking+Co+Portland%2C+ME
+- name: Florence, Italy
+  places:
+  - name: Pizzium
+    url: https://www.google.com/maps/search/?api=1&query=Pizzium%2C+Piazza+del+Carmine%2C+5%2C+50124+Firenze+FI%2C+Italy
+    where: Piazza del Carmine 5
+- name: Abruzzo, Italy
+  places:
+  - name: Pizzeria Aurora
+    url: https://www.google.com/maps/search/?api=1&query=Pizzeria+Aurora%2C+Via+Canaccio%2C+54%2C+66054+Vasto+CH%2C+Italy
+    where: Vasto
+  - name: Biscotteria Artigianale di Rosati Liliana
+    url: https://www.google.com/maps/search/?api=1&query=Biscotteria+Artigianale+di+Rosati+Liliana%2C+Str.+Silla%2C+43%2C+67038+Scanno+AQ%2C+Italy
+    where: Scanno
+  - name: A Cavu't
+    url: https://www.google.com/maps/search/?api=1&query=A+Cavu%27t%2C+Piazza+Vittorio+Veneto%2C+67032+Pescasseroli+AQ%2C+Italy
+    where: Pescasseroli
+  - name: Brac
+    url: https://www.google.com/maps/search/?api=1&query=Hotel+Rojan%2C+Via+degli+Agghiacciati%2C+18%2C+67039+Sulmona+AQ%2C+Italy
+    where: Sulmona, at Hotel Rojan
+- name: Vancouver, BC
+  places:
+  - name: 49th Parallel Café & Lucky's Doughnuts
+    url: https://www.google.com/maps/search/?api=1&query=49th+Parallel+Caf%C3%A9+%26+Lucky%27s+Doughnuts+Vancouver%2C+BC
+  - name: Ask for Luigi
+    url: https://www.google.com/maps/search/?api=1&query=Ask+for+Luigi+Vancouver%2C+BC
+- name: Elsewhere in Oregon and Washington
+  places:
+  - name: Groundling Pizza Co.
+    url: https://www.google.com/maps/search/?api=1&query=Groundling+Pizza+Co.+Gold+Beach%2C+OR
+    where: Gold Beach, OR
+  - name: Old Agness Store
+    url: https://www.google.com/maps/search/?api=1&query=Old+Agness+Store+Agness%2C+OR
+    where: Agness, OR
+  - name: White Salmon Baking Co.
+    url: https://www.google.com/maps/search/?api=1&query=White+Salmon+Baking+Co.+White+Salmon%2C+WA
+    where: White Salmon, WA
+  - name: Pacific Sourdough
+    url: https://www.google.com/maps/search/?api=1&query=Pacific+Sourdough+Cannon+Beach%2C+OR
+    where: Cannon Beach, OR
+  - name: Sea Level Bakery + Coffee
+    url: https://www.google.com/maps/search/?api=1&query=Sea+Level+Bakery+%2B+Coffee+Cannon+Beach%2C+OR
+    where: Cannon Beach, OR
