@@ -10,7 +10,11 @@ filter). The home page opens on a full-screen live drawing of a Portland street 
 the lit window (`/room/`), the directory board (scrolling moves the camera into it until it becomes the page), and Plain.
 Search (the Search button, `/` or Ctrl/Cmd K, in `assets/site.js`) indexes the home page's own sections, so it never
 needs updating. The Plain switch on every page turns all drawings off; visitors who ask for reduced motion get still frames.
-The essays map and essay pages still use `_includes/subway.css`.
+Every page now uses this look: the essays map (an ink subway line), each essay (its LaTeX sheet lies on the ink page,
+with the ink nav and an essay toolbar), and the 404 page. Small drawings come from `assets/vig.js`
+(`<canvas class="vig" data-vig="toss|scope|train|study|carry|mail|desk|lost">`). On the home page every object
+in the scene is a way in (stairs, room, directory lines, coffee cart for contact), and a route rail down the side
+tracks the sections. `_includes/subway.css` is no longer used by any page.
 Essays: see `WRITING.md` (web page + PDF from one Markdown file).
 Publications: `_data/publications.yml` (the Research section on the home page and the microscope in `/room/`). See "Publications" in `WRITING.md`.
 

@@ -5,44 +5,40 @@ permalink: /404.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="32x32">
-  <link rel="icon" href="{{ '/img/favicon.svg' | relative_url }}" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="{{ '/img/apple-touch-icon.png' | relative_url }}">
+{% include ink/head.html %}
   <title>Not in service | {{ site.title }}</title>
   <meta name="robots" content="noindex">
-  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   <style>
-{% include subway.css %}
-    .essay-page .station.lost { max-width: 720px; }
-    .lost .station-content { padding: 22px 28px 28px; }
-    .lost h1 { font-size: 1.6rem; line-height: 1.2; margin: 0 0 10px; }
-    .lost p { font-size: var(--fs-base); color: var(--sub-strong); margin: 0 0 18px; max-width: 40rem; }
-    .lost ul { list-style: none; margin: 0 0 22px; padding: 0; }
-    .lost li { margin: 0 0 8px; }
-    .lost li a { color: var(--link); font-weight: 700; text-decoration: none; }
-    .lost li a:hover { text-decoration: underline; }
+    .lost{max-width:900px;margin:0 auto;padding-block:8px 70px}
+    .lost .grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:28px;align-items:center;margin-top:24px}
+    .lost h1{font:800 clamp(30px,4vw,46px)/1.05 var(--grot);letter-spacing:-.03em;margin:0 0 12px}
+    .lost p{font-size:17px;color:var(--soft);margin:0 0 18px;max-width:40rem}
+    .lost ul{margin:0 0 22px}
+    @media (max-width: 700px){ .lost .grid{grid-template-columns:minmax(0,1fr)} }
   </style>
 </head>
-<body class="essay-page">
-<nav class="topline" aria-label="Site"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></nav>
-<main class="station line-gray lost">
-  <div class="station-header"><div class="bullet gray" aria-hidden="true">?</div><span class="station-title">Not in service</span></div>
-  <div class="station-content">
-    <h1>This page is not in service.</h1>
-    <p>The address may have changed, or the page was taken down. The site moved from <code>/me/</code> to the root address, so older links may need updating.</p>
-    {%- assign recent = site.essays | sort: "date" | reverse %}
-    <ul>
-    {%- for e in recent %}
-      <li><a href="{{ e.url | relative_url }}">{{ e.title }}</a></li>
-    {%- endfor %}
-    </ul>
-    <div class="essay-nav button-group">
-      <a class="portal-btn" href="{{ '/' | relative_url }}">Home</a>
-      <a class="portal-btn" href="{{ '/essays/' | relative_url }}">All essays</a>
+<body>
+{% assign navpage = "404" %}{% include ink/nav.html %}
+<main class="lost" id="main">
+  <header class="sign"><span class="bul" aria-hidden="true">?</span><span style="font:800 22px/1 var(--grot)">Not in service</span></header>
+  <div class="grid">
+    <div>
+      <h1>This page is not in service.</h1>
+      <p>The address may have changed, or the page was taken down. The site moved from <code>/me/</code> to the root address, so older links may need updating.</p>
     </div>
+    <canvas class="vig" data-vig="lost" role="img" aria-label="Drawing: the figure scratches his head beside a Not in service sign"></canvas>
   </div>
+  {%- assign recent = site.essays | sort: "date" | reverse %}
+  <ul class="rows">
+  {%- for e in recent %}
+    <li><div class="data-title"><span class="t"><a href="{{ e.url | relative_url }}">{{ e.title }}</a></span></div><span class="d">{{ e.date | date: "%Y" }}</span></li>
+  {%- endfor %}
+  </ul>
+  <div class="links"><a class="key" href="{{ '/' | relative_url }}">Home</a><a href="{{ '/essays/' | relative_url }}">All essays</a><button type="button" data-search>Search</button></div>
 </main>
+{% include ink/foot.html %}
+<script src="{{ '/assets/ink.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/vig.js' | relative_url }}" defer></script>
 </body>
 </html>

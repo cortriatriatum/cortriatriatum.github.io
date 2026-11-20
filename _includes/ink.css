@@ -125,6 +125,52 @@ details.course li{break-inside:avoid;margin-bottom:3px}
 .build div{border-left:2px solid var(--ink);padding-left:12px}
 .build b{font:700 17px/1.2 var(--grot)}
 
+
+/* ---------- station-sign section headers ---------- */
+.sec{grid-template-columns:minmax(0,4fr) minmax(0,8fr);border-top:0;padding-block:28px 64px;row-gap:22px}
+.sign{grid-column:1/-1;display:flex;align-items:center;gap:14px;background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:6px;margin:0}
+.sign h2{margin:0;font-weight:800;font-size:clamp(22px,2.6vw,32px);line-height:1.05;letter-spacing:-.02em;color:var(--paper)}
+.bul{display:inline-grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;font:800 18px/1 var(--grot);background:var(--paper);color:var(--ink)}
+.sign .bul{width:38px;height:38px;font-size:20px}
+.sec .side .vig{margin-top:0}
+.more{all:unset;cursor:pointer;display:inline-block;margin-top:12px;font:600 14px/1 var(--grot);padding:10px 15px;border:1.5px solid var(--ink);border-radius:999px}
+.more:hover{background:var(--ink);color:var(--paper)}
+.more:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
+.rows.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}
+.rows.two>li:nth-child(2){border-top:1px solid var(--rule)}
+@media (max-width: 700px){ .rows.two{grid-template-columns:minmax(0,1fr)} .rows.two>li:nth-child(2){border-top:0} }
+@media (max-width: 860px){ .sec{grid-template-columns:minmax(0,1fr);padding-block:20px 44px} .sec .side .vig{max-width:260px} }
+
+/* ---------- the route rail: a subway line down the side ---------- */
+.page{max-width:1380px;margin:0 auto;display:grid;grid-template-columns:190px minmax(0,1fr);gap:34px}
+.rail{position:sticky;top:0;align-self:start;height:100vh;height:100svh;padding-block:90px 30px;overflow:visible}
+.rail-track{position:relative}
+.rail ol{list-style:none;margin:0;padding:0;position:relative;display:flex;flex-direction:column;gap:20px}
+.rail-line,.rail-fill{position:absolute;left:15px;top:17px;bottom:17px;width:6px;border-radius:3px;background:var(--rule)}
+.rail-fill{background:var(--ink);transform-origin:top;transform:scaleY(var(--p,0));transition:transform .3s ease}
+.rail a{position:relative;display:flex;align-items:center;gap:12px;text-decoration:none;font:600 14px/1.15 var(--grot);color:var(--soft)}
+.rail a .bul{width:36px;height:36px;font-size:16px;border:3px solid var(--ink);background:var(--paper);color:var(--ink);transition:transform .2s ease}
+.rail a:hover{color:var(--ink)}
+.rail a:hover .bul{transform:scale(1.08)}
+.rail a.past .bul{background:var(--tint)}
+.rail a.here{color:var(--ink);font-weight:800}
+.rail a.here .bul{background:var(--ink);color:var(--paper);transform:scale(1.12)}
+.rail .rail-top{font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin:0 0 16px}
+@media (max-width: 1100px){
+  .page{grid-template-columns:minmax(0,1fr);gap:0}
+  .rail{position:sticky;top:0;z-index:8;height:auto;padding:8px 0;background:color-mix(in srgb,var(--paper) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1.5px solid var(--ink);overflow-x:auto;scrollbar-width:none;margin-inline:calc(-1 * max(20px,env(safe-area-inset-left,0px)))}
+  .rail::-webkit-scrollbar{display:none}
+  .rail .rail-top{display:none}
+  .rail-track{width:max-content}
+  .rail ol{flex-direction:row;gap:18px;padding-inline:20px;width:max-content}
+  .rail-line,.rail-fill{left:38px;right:38px;top:16px;bottom:auto;height:5px;width:auto}
+  .rail-fill{transform-origin:left;transform:scaleX(var(--p,0))}
+  .rail a{flex-direction:column;gap:4px;font-size:11px;text-align:center;min-width:48px}
+  .rail a .bul{width:30px;height:30px;font-size:14px;border-width:2.5px}
+}
+@media (prefers-reduced-motion: reduce){ .rail-fill,.rail a .bul{transition:none} }
+@media print{ .rail{display:none} .page{display:block} }
+
 /* ---------- Cite and Share skin (structure in cite-share.css) ---------- */
 .cite-btn{all:unset;cursor:pointer;font:600 11.5px/1 var(--grot);letter-spacing:.02em;padding:5px 9px;border:1.2px solid var(--ink);border-radius:999px;margin-top:4px}
 .cite-btn:hover{background:var(--ink);color:var(--paper)}

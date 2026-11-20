@@ -4,11 +4,7 @@ layout: null
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="32x32">
-  <link rel="icon" href="{{ '/img/favicon.svg' | relative_url }}" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="{{ '/img/apple-touch-icon.png' | relative_url }}">
+{% include ink/head.html %}
   <title>Essays | {{ site.title }}</title>
   <meta name="description" content="Essays by Rick Mathews, PhD, on how science and medicine discover questions, evaluate evidence, and share results.">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
@@ -24,91 +20,81 @@ layout: null
    "mainEntity": {"@type": "ItemList", "itemListElement": [{% for e in listed %}{"@type": "ListItem", "position": {{ forloop.index }}, "url": {{ e.url | absolute_url | jsonify }}, "name": {{ e.title | jsonify }}}{% unless forloop.last %}, {% endunless %}{% endfor %}]}}
   </script>
   <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/essays/feed.xml' | relative_url }}">
-  <script>try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   <style>
-{% include subway.css %}
-    /* Essays as a subway line: one trunk, a station per essay, route bullets by topic, transfers between essays. */
-    .essay-page .station.map { max-width: 1040px; }
-    .map .station-content { padding: 22px 28px 28px; }
-    .map-intro { font-size: var(--fs-base); color: var(--sub-strong); max-width: 46rem; margin: 0 0 22px; }
-    .line { position: relative; list-style: none; margin: 0; padding: 0 0 0 64px; }
-    /* The trunk is drawn stop to stop, so it starts and ends at a station and is centered on the dots. */
-    .stop:not(:last-child)::after { content: ""; position: absolute; left: -45px; top: 18px; bottom: -18px; width: 8px;
-      background: var(--mta-dark-gray); transform-origin: top; animation: draw .45s cubic-bezier(.2,.7,.2,1) both; }
-    .stop:nth-child(2)::after { animation-delay: .35s; } .stop:nth-child(3)::after { animation-delay: .7s; }
-    .stop:nth-child(n+4)::after { animation-delay: 1.05s; }
-    @keyframes draw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-    @media (prefers-reduced-motion: reduce) { .stop::after { animation: none !important; } }
-    .stop { position: relative; padding: 4px 0 30px; }
-    .stop:last-child { padding-bottom: 4px; }
-    .stop::before { content: ""; position: absolute; left: -50px; top: 9px; width: 18px; height: 18px; border-radius: 50%;
-      background: var(--surface); border: 4px solid var(--ink); box-sizing: border-box; z-index: 1; }
-    .stop-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .route { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%;
-      font-weight: 800; font-size: 17px; flex: none; }
-    .stop-date { font-size: var(--fs-xs); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sub); }
-    .stop-title { display: block; font-size: 1.32rem; line-height: 1.25; font-weight: 800; letter-spacing: -.01em; color: var(--ink);
-      text-decoration: none; margin: 6px 0 4px; max-width: 48rem; }
-    .stop-title:hover, .stop-title:focus-visible { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-    .stop-sub { font-size: var(--fs-base); color: var(--sub-strong); max-width: 46rem; }
-    .stop-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; font-size: var(--fs-xs); font-weight: 700;
-      letter-spacing: .06em; text-transform: uppercase; color: var(--sub); }
-    .stop-meta a { color: var(--link); text-decoration: none; }
-    .stop-meta a:hover { text-decoration: underline; }
-    .xfer { display: inline-flex; align-items: center; gap: 5px; }
-    .xfer { min-height: 24px; }
-    .xfer .route { width: 24px; height: 24px; font-size: 13px; }
-    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-    .stop:target .stop-title { background: var(--hl-green); }
-    @media (max-width: 600px) {
-      .map .station-content { padding: 16px 14px 20px; }
-      .line { padding-left: 44px; } .stop::before { left: -38px; width: 16px; height: 16px; }
-      .stop:not(:last-child)::after { left: -33px; width: 6px; top: 16px; bottom: -16px; }
-      .stop-title { font-size: 1.15rem; }
+    /* Essays as one subway line: a station per essay, a route bullet per essay, transfers between them. */
+    .map{max-width:1180px;margin:0 auto;padding-block:8px 70px}
+    .map .sign{margin-bottom:26px}
+    .map-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:28px;align-items:end;margin-bottom:26px}
+    .map-intro{font-size:18px;line-height:1.55;max-width:46rem;margin:0}
+    .line{position:relative;list-style:none;margin:0;padding:0 0 0 70px}
+    .stop:not(:last-child)::after{content:"";position:absolute;left:-47px;top:20px;bottom:-20px;width:7px;border-radius:4px;background:var(--ink);transform-origin:top;animation:draw .45s cubic-bezier(.2,.7,.2,1) both}
+    .stop:nth-child(2)::after{animation-delay:.3s}.stop:nth-child(3)::after{animation-delay:.6s}.stop:nth-child(n+4)::after{animation-delay:.9s}
+    @keyframes draw{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+    @media (prefers-reduced-motion: reduce){.stop::after{animation:none!important}}
+    .stop{position:relative;padding:4px 0 34px}
+    .stop:last-child{padding-bottom:4px}
+    .stop::before{content:"";position:absolute;left:-54px;top:9px;width:21px;height:21px;border-radius:50%;background:var(--paper);border:4px solid var(--ink);box-sizing:border-box;z-index:1}
+    .stop-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .rb{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;font:800 16px/1 var(--grot);flex:none}
+    .stop-date{font:500 12px/1.4 var(--mono);color:var(--soft)}
+    .stop-title{display:block;font:800 clamp(22px,2.4vw,28px)/1.15 var(--grot);letter-spacing:-.02em;color:var(--ink);text-decoration:none;margin:8px 0 4px;max-width:48rem}
+    .stop-title:hover,.stop-title:focus-visible{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+    .stop-sub{font-size:16.5px;color:var(--soft);max-width:46rem}
+    .stop-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin-top:10px;font:500 12px/1.4 var(--mono);color:var(--soft)}
+    .stop-meta a{color:inherit}
+    .xfer{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+    .xfer .rb{width:24px;height:24px;font-size:12px}
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+    .stop:target .stop-title{background:color-mix(in srgb,var(--sun) 45%,transparent)}
+    @media (max-width: 760px){
+      .map-top{grid-template-columns:minmax(0,1fr)}
+      .line{padding-left:46px}.stop::before{left:-40px;width:18px;height:18px}
+      .stop:not(:last-child)::after{left:-34px;width:6px;top:17px;bottom:-17px}
     }
   </style>
 </head>
-<body class="essay-page">
-<nav class="topline" aria-label="Site"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></nav>
-<main class="station line-yellow map">
-  <div class="station-header"><div class="bullet yellow" aria-hidden="true">N</div><span class="station-title">Notes, Scribbles &amp; Ideas in Progress</span></div>
-  <div class="station-content">
+<body>
+{% assign navpage = "essays" %}{% include ink/nav.html %}
+<main class="map" id="main">
+  <header class="sign"><span class="bul" aria-hidden="true">N</span><h1 style="margin:0;font-weight:800;font-size:clamp(24px,3vw,36px);line-height:1.05;letter-spacing:-.02em;color:var(--paper)">Notes, Scribbles &amp; Ideas in Progress</h1></header>
+  <div class="map-top">
     <p class="map-intro">Essays on how science and medicine discover questions, evaluate evidence, and share results. Each one is a work in progress: I revise it as I learn, and each shows its original draft, every edit, and the exact words of its sources.</p>
-    <ol class="line">
-    {%- for e in listed %}
-      {%- assign words = e.content | number_of_words %}
-      {%- assign minutes = words | divided_by: 230 | plus: 1 %}
-      {%- assign slug = e.url | split: "/" | last %}
-      <li class="stop" id="{{ slug }}" data-cite-id="essay:{{ slug }}">
-        <div class="stop-head">
-          {%- if e.route %}<span class="route" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span>{% endif %}
-          <span class="stop-date"><time datetime="{{ e.date | date_to_xml_schema }}">{{ e.date | date: "%B %-d, %Y" }}</time>{% if e.updated %} · revised <time datetime="{{ e.updated | date_to_xml_schema }}">{{ e.updated | date: "%B %-d" }}</time>{% endif %}</span>
-          {%- if e.status and e.status != "" %}<span class="wip-tag">{{ e.status }}</span>{% endif %}
-        </div>
-        <a class="stop-title" href="{{ e.url | relative_url }}">{{ e.title }}</a>
-        {%- if e.description %}<div class="stop-sub">{{ e.description }}</div>{% endif %}
-        <div class="stop-meta">
-          <span>{{ minutes }} min read</span>
-          {%- if e.references %}<span>{{ e.references | size }} sources</span>{% endif %}
-          {%- if e.pdf %}<a href="{{ e.pdf | relative_url }}" target="_blank" rel="noopener">PDF</a>{% endif %}
-          {%- for t in e.transfers %}{% for other in site.essays %}{% if other.url contains t %}
-            <a class="xfer" href="{{ other.url | relative_url }}" title="Transfer to {{ other.title | escape }}">Transfer <span class="route" style="background:{{ other.route_color }};color:{{ other.route_text }}" aria-hidden="true">{{ other.route }}</span><span class="sr-only">to {{ other.title }}</span></a>
-          {%- endif %}{% endfor %}{% endfor %}
-        </div>
-        <div class="cs-slot"></div>
-      </li>
-    {%- endfor %}
-    </ol>
-    <div class="essay-nav button-group">
-      <a class="portal-btn" href="{{ '/' | relative_url }}">Home</a>
-      <a class="portal-btn" href="{{ '/#subscribe' | relative_url }}">Subscribe</a>
-      <a class="portal-btn" href="{{ '/essays/feed.xml' | relative_url }}">RSS</a>
-    </div>
+    <canvas class="vig" data-vig="toss" role="img" aria-label="Drawing: the figure crumples a draft and tosses it into a bin labeled drafts"></canvas>
   </div>
+  <ol class="line">
+  {%- for e in listed %}
+    {%- assign words = e.content | number_of_words %}
+    {%- assign minutes = words | divided_by: 230 | plus: 1 %}
+    {%- assign slug = e.url | split: "/" | last %}
+    <li class="stop" id="{{ slug }}" data-cite-id="essay:{{ slug }}">
+      <div class="stop-head">
+        {%- if e.route %}<span class="rb" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span>{% endif %}
+        <span class="stop-date"><time datetime="{{ e.date | date_to_xml_schema }}">{{ e.date | date: "%B %-d, %Y" }}</time>{% if e.updated %} · revised <time datetime="{{ e.updated | date_to_xml_schema }}">{{ e.updated | date: "%B %-d, %Y" }}</time>{% endif %}</span>
+        {%- if e.status and e.status != "" %}<span class="wip">{{ e.status | downcase }}</span>{% endif %}
+      </div>
+      <a class="stop-title" href="{{ e.url | relative_url }}">{{ e.title }}</a>
+      {%- if e.description %}<div class="stop-sub">{{ e.description }}</div>{% endif %}
+      <div class="stop-meta">
+        <span>{{ minutes }} min read</span>
+        {%- if e.references %}<span>{{ e.references | size }} sources</span>{% endif %}
+        {%- if e.pdf %}<a href="{{ e.pdf | relative_url }}" target="_blank" rel="noopener">PDF</a>{% endif %}
+        {%- for t in e.transfers %}{% for other in site.essays %}{% if other.url contains t %}
+          <a class="xfer" href="{{ other.url | relative_url }}" title="Transfer to {{ other.title | escape }}">Transfer <span class="rb" style="background:{{ other.route_color }};color:{{ other.route_text }}" aria-hidden="true">{{ other.route }}</span><span class="sr-only">to {{ other.title }}</span></a>
+        {%- endif %}{% endfor %}{% endfor %}
+      </div>
+      <div class="cs-slot"></div>
+    </li>
+  {%- endfor %}
+  </ol>
+  <div class="links" style="margin-top:34px"><a href="{{ '/' | relative_url }}">Home</a><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/feed.xml' | relative_url }}">RSS</a></div>
 </main>
+{% include ink/foot.html %}
 {% include citable.html %}
 <script>
 {% include cite-share.js %}
 </script>
+<script src="{{ '/assets/ink.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/vig.js' | relative_url }}" defer></script>
 </body>
 </html>

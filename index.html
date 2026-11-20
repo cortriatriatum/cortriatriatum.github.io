@@ -29,169 +29,177 @@ layout: null
 <meta content="https://cortriatriatum.github.io/img/share.jpg" name="twitter:image"/>
 <meta content="Rick Mathews, PhD. Physician-Scientist in Training, MD/PhD, Oregon Health &amp; Science University." name="twitter:image:alt"/>
 <style>
-  /* The stage: a full-screen drawing, held in place while the scroll carries the camera into it. */
   body.home{padding:0}
   body.home>.nav{position:absolute;top:0;left:0;right:0;z-index:6;max-width:none;padding-inline:max(20px,env(safe-area-inset-left,0px)) max(20px,env(safe-area-inset-right,0px))}
-  #stage{position:relative;height:230vh}
-  #stage .hold{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+  #stage{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden}
   #live{position:absolute;inset:0;width:100%;height:100%;display:block}
-  #stageUi{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none;
-    padding:calc(76px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
-  #stageUi>*{pointer-events:auto}
-  .intro{max-width:470px;background:color-mix(in srgb,var(--paper) 80%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:16px 18px;border-radius:14px}
-  .intro .who{display:flex;gap:14px;align-items:center}
-  .me-photo{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1.5px solid var(--ink);flex:none}
-  .intro h1{font-weight:800;font-size:clamp(34px,4.6vw,58px);line-height:.95;letter-spacing:-.04em;margin:0}
-  .intro .bio{margin:12px 0 0;font-size:16.5px;line-height:1.45}
-  .intro .now{display:block;margin-top:8px;font:500 12px/1.5 var(--mono);color:var(--soft)}
-  .seek{all:unset;box-sizing:border-box;cursor:text;display:flex;align-items:center;gap:10px;width:100%;margin-top:14px;padding:11px 14px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);font:500 15px/1 var(--grot);color:var(--soft)}
+  #hot{position:absolute;inset:0;pointer-events:none}
+  #hot>*{pointer-events:auto}
+  .tag-in{all:unset;box-sizing:border-box;position:absolute;transform:translate(-50%,-100%);cursor:pointer;white-space:nowrap;font:400 19px/1 var(--hand);
+    background:var(--ink);color:var(--paper);padding:7px 12px 8px;border-radius:14px 11px 15px 10px;box-shadow:3px 3px 0 color-mix(in srgb,var(--ink) 25%,transparent);animation:boil 1s steps(1) infinite}
+  .tag-in::after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;background:inherit;transform:translateX(-50%) rotate(45deg);z-index:-1}
+  .tag-in:hover,.tag-in:focus-visible{background:var(--pop);color:#fff;transform:translate(-50%,-112%)}
+  .tag-in:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .tag-in.dir-head{font-size:16px;padding:5px 10px 6px}
+  .dir-line{position:absolute;display:block;border-radius:2px}
+  .dir-line:focus-visible{outline:2px solid var(--pop)}
+  @keyframes boil{0%{border-radius:14px 11px 15px 10px}33%{border-radius:11px 15px 10px 14px}66%{border-radius:15px 10px 13px 12px}}
+  .intro{position:absolute;z-index:4;left:max(20px,env(safe-area-inset-left,0px));top:calc(74px + env(safe-area-inset-top,0px));width:min(470px,calc(100% - 40px));
+    background:color-mix(in srgb,var(--paper) 86%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:18px 20px;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.08)}
+  .intro .who{display:grid;grid-template-columns:112px minmax(0,1fr);gap:18px;align-items:center}
+  .me-photo{display:block;width:112px;height:112px;border-radius:50%;object-fit:cover;border:2px solid var(--ink)}
+  .intro h1{font-weight:800;font-size:clamp(32px,3.6vw,48px);line-height:.95;letter-spacing:-.04em;margin:0}
+  .intro .bio{margin:10px 0 0;font-size:15.5px;line-height:1.45}
+  .intro .now{display:block;margin-top:12px;font:500 12px/1.5 var(--mono);color:var(--soft)}
+  .seek{all:unset;box-sizing:border-box;cursor:text;display:flex;align-items:center;gap:10px;width:100%;margin-top:12px;padding:11px 14px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);font:500 15px/1 var(--grot);color:var(--soft)}
   .seek:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
   .seek kbd{margin-left:auto;font:500 11px/1 var(--mono);border:1px solid currentColor;border-radius:4px;padding:2px 5px}
-  .choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:1100px}
-  .choice{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:var(--paper);border:2px solid var(--ink);border-radius:16px 20px 14px 18px;padding:14px 16px 15px;
-    box-shadow:4px 4px 0 var(--ink);animation:rise .6s cubic-bezier(.2,.9,.2,1.2) backwards,boil 1s steps(1) infinite;transition:transform .15s ease,box-shadow .15s ease}
-  .choice:nth-child(2){animation-delay:.08s,.25s}.choice:nth-child(3){animation-delay:.16s,.5s}.choice:nth-child(4){animation-delay:.24s,.75s}
-  .choice:hover,.choice:focus-visible{transform:translate(-2px,-3px) rotate(-.4deg);box-shadow:7px 8px 0 var(--ink);color:inherit;animation-play-state:running,paused}
-  .choice:focus-visible{outline:2px solid var(--pop);outline-offset:3px}
-  .choice b{display:block;font:800 19px/1.1 var(--grot);letter-spacing:-.01em}
-  .choice span{display:block;margin-top:5px;font-size:14px;line-height:1.35;color:var(--soft)}
-  @keyframes rise{from{opacity:0;transform:translateY(18px)}}
-  @keyframes boil{0%{border-radius:16px 20px 14px 18px}25%{border-radius:18px 15px 19px 14px}50%{border-radius:14px 19px 16px 20px}75%{border-radius:19px 14px 18px 15px}}
-  .cue{align-self:center;font:400 18px/1 var(--hand);display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:10px}
+  .ways{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+  .ways>*{all:unset;cursor:pointer;font:600 13.5px/1 var(--grot);padding:8px 12px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper)}
+  .ways>*:hover,.ways>*:focus-visible{background:var(--ink);color:var(--paper)}
+  .ways>*:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
+  .cue{position:absolute;z-index:4;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font:400 18px/1 var(--hand);display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;background:var(--paper);padding:6px 12px;border-radius:12px}
   .cue span{animation:nudge 1.6s ease-in-out infinite}
-  @keyframes nudge{50%{transform:translateY(6px)}}
-  /* Plain: no drawing, no camera move; the same intro and choices as an ordinary header */
-  html.plain #stage{height:auto}
-  html.plain #stage .hold{position:static;height:auto;overflow:visible}
-  html.plain #live,html.plain .cue{display:none}
-  html.plain #stageUi{position:static;opacity:1!important;visibility:visible!important;gap:22px}
-  html.plain .intro{background:none;padding:0;-webkit-backdrop-filter:none;backdrop-filter:none}
-  html.plain .choice{animation:none}
-  #main{padding-inline:max(20px,env(safe-area-inset-left,0px)) max(20px,env(safe-area-inset-right,0px))}
+  @keyframes nudge{50%{transform:translateY(5px)}}
+  html.plain #stage{height:auto;min-height:0;overflow:visible;padding-bottom:20px}
+  html.plain #live,html.plain #hot,html.plain .cue{display:none}
+  html.plain .intro{position:static;margin:80px max(20px,env(safe-area-inset-left,0px)) 0;background:none;box-shadow:none;padding:0;-webkit-backdrop-filter:none;backdrop-filter:none;width:auto;max-width:680px}
+  html.plain .ways [data-go="plain"]{display:none}
+  .page{padding-inline:max(20px,env(safe-area-inset-left,0px)) max(20px,env(safe-area-inset-right,0px))}
   body.home>.foot{margin-inline:max(20px,env(safe-area-inset-left,0px)) max(20px,env(safe-area-inset-right,0px))}
   @media (min-width: 1240px){ body.home>.foot{margin-inline:auto} }
-  @media (max-width: 900px){ .choices{grid-template-columns:repeat(2,minmax(0,1fr))} }
-  @media (max-width: 560px){
-    .intro{padding:12px 14px}.intro .bio{font-size:15px}.me-photo{width:48px;height:48px}
-    .choice{padding:11px 12px;box-shadow:3px 3px 0 var(--ink)}.choice b{font-size:16px}.choice span{font-size:12.5px}
+  @media (max-width: 700px){
+    #stage{min-height:620px}
+    .intro{padding:14px 15px;top:calc(64px + env(safe-area-inset-top,0px))}
+    .intro .who{grid-template-columns:84px minmax(0,1fr);gap:14px}
+    .me-photo{width:84px;height:84px}
+    .intro h1{font-size:30px}
+    .seek{padding:9px 12px;font-size:14px}
+    .ways{gap:6px}.ways>*{font-size:12.5px;padding:7px 10px}
+    .intro .bio{font-size:14px}
+    .tag-in{font-size:16px;padding:6px 10px 7px}
     .cue{display:none}
   }
-  @media (prefers-reduced-motion: reduce){ .choice{animation:none;transition:none} .cue span{animation:none} }
+  @media (prefers-reduced-motion: reduce){ .tag-in{animation:none} .cue span{animation:none} }
 </style>
 </head>
 <body class="home">
 {% assign navpage = "home" %}{% include ink/nav.html %}
-<section id="stage" aria-label="Ways into this site">
-  <div class="hold">
-    <canvas id="live" role="img" aria-label="A live ink drawing of a Portland street, drawn from the current weather and time of day: a building with a lit window, a station directory board, and a subway entrance"></canvas>
-    <div id="stageUi">
-      <div class="intro">
-        <div class="who"><img class="me-photo" src="https://cortriatriatum.github.io/img/rick-1.webp" alt="Rick Mathews" width="64" height="64" decoding="async" fetchpriority="high"><h1>Rick Mathews, PhD</h1></div>
-        <p class="bio">Physician-Scientist in Training at the <a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a> <a href="https://www.ohsu.edu/school-of-medicine/md-phd-program/rick-mathews-phd">Medical Scientist Training Program</a></p>
-        <span class="now" id="liveNow">Portland, Oregon</span>
-        <button type="button" class="seek" data-search aria-haspopup="dialog">Search notes, papers, awards, courses <kbd>/</kbd></button>
-      </div>
-      <div>
-        <nav class="choices" aria-label="How to explore">
-          <a class="choice" data-go="ride" href="{{ '/ride/' | relative_url }}"><b>Take the stairs down</b><span>Scroll through a station: Education, Notes, Research, Route.</span></a>
-          <a class="choice" data-go="room" href="{{ '/room/' | relative_url }}"><b>Walk into the room</b><span>Click the notebook, microscope, diplomas or suitcase.</span></a>
-          <a class="choice" data-go="read" href="#main"><b>Read the directory</b><span>Scroll in. Everything, section by section.</span></a>
-          <button type="button" class="choice" data-go="plain" data-plain-go><b>Plain page</b><span>No drawings. Text and links only.</span></button>
-        </nav>
-        <div class="cue" aria-hidden="true">scroll in<span>↓</span></div>
-      </div>
+<section id="stage" aria-label="Rick Mathews, and the ways into this site">
+  <canvas id="live" role="img" aria-label="A live ink drawing of a Portland street from the current weather and time of day: a building with a lit window marked Room, a station directory board, a subway entrance, and a coffee cart"></canvas>
+  <div id="hot" data-ride="{{ '/ride/' | relative_url }}" data-room="{{ '/room/' | relative_url }}"></div>
+  <div class="intro">
+    <div class="who">
+      <img class="me-photo" src="https://cortriatriatum.github.io/img/rick-1.webp" alt="Rick Mathews" width="112" height="112" decoding="async" fetchpriority="high">
+      <h1>Rick Mathews, PhD</h1>
     </div>
+    <p class="bio">Physician-Scientist in Training at the <a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a> <a href="https://www.ohsu.edu/school-of-medicine/md-phd-program/rick-mathews-phd">Medical Scientist Training Program</a></p>
+    <span class="now" id="liveNow">Portland, Oregon</span>
+    <button type="button" class="seek" data-search aria-haspopup="dialog">Search notes, papers, awards, courses <kbd>/</kbd></button>
+    <nav class="ways" aria-label="Ways in">
+      <a href="{{ '/ride/' | relative_url }}" data-go="ride">Take the stairs down</a>
+      <a href="{{ '/room/' | relative_url }}" data-go="room">Walk into the room</a>
+      <a href="#main" data-go="read" data-sec="main">Read the directory</a>
+      <button type="button" data-go="coffee">Grab a coffee</button>
+      <button type="button" data-go="plain" data-plain-go>Plain page</button>
+    </nav>
   </div>
+  <a class="cue" href="#main" aria-label="Scroll to everything">everything<span>↓</span></a>
 </section>
-<main id="main">
-  <section class="sec" id="notes" aria-labelledby="notes-h">
-    <div class="side">
-      <span class="k">N line</span>
-      <h2 id="notes-h">Notes, Scribbles &amp; Ideas in Progress</h2>
-      <div class="links"><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/' | relative_url }}">All notes</a></div>
-      <canvas class="vig" data-vig="toss" role="img" aria-label="Drawing: the figure crumples a draft and tosses it into a bin labeled drafts"></canvas>
-    </div>
-    <div class="body">{% include ink/notes.html %}</div>
-  </section>
 
-  <section class="sec" id="research" aria-labelledby="research-h">
-    <div class="side">
-      <span class="k">R line</span>
-      <h2 id="research-h">Research</h2>
-      <canvas class="vig" data-vig="scope" role="img" aria-label="Drawing: the figure peers into a microscope and pictures a heart and aorta"></canvas>
-    </div>
-    <div class="body">
-      <h3 class="sub">Current research focus</h3>
-      {% include ink/focus.html %}
-      <h3 class="sub">Manuscripts and publications</h3>
-      {% include ink/pubs.html %}
-      <h3 class="sub">Research funding</h3>
-      {% include ink/funding.html %}
-    </div>
-  </section>
+<div class="page" id="main">
+  <nav class="rail" aria-label="Sections">
+    <p class="rail-top">Directory</p>
+    <div class="rail-track"><span class="rail-line" aria-hidden="true"></span><span class="rail-fill" aria-hidden="true"></span>
+    <ol>
+      <li><a href="#notes"><span class="bul">N</span>Notes</a></li>
+      <li><a href="#research"><span class="bul">R</span>Research</a></li>
+      <li><a href="#route"><span class="bul">→</span>Route</a></li>
+      <li><a href="#training"><span class="bul">E</span>Education</a></li>
+      <li><a href="#work"><span class="bul">W</span>Work &amp; Service</a></li>
+      <li><a href="#awards"><span class="bul">A</span>Awards</a></li>
+      <li><a href="#dev"><span class="bul">D</span>Dev</a></li>
+      <li><a href="#contact"><span class="bul">C</span>Contact</a></li>
+    </ol></div>
+  </nav>
+  <main>
+    <section class="sec" id="notes" aria-labelledby="notes-h">
+      <header class="sign"><span class="bul" aria-hidden="true">N</span><h2 id="notes-h">Notes, Scribbles &amp; Ideas in Progress</h2></header>
+      <div class="side">
+        <canvas class="vig" data-vig="toss" role="img" aria-label="Drawing: the figure crumples a draft and tosses it into a bin labeled drafts"></canvas>
+        <div class="links"><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/' | relative_url }}">All notes</a></div>
+      </div>
+      <div class="body">{% include ink/notes.html %}</div>
+    </section>
 
-  <section class="sec" id="route" aria-labelledby="route-h">
-    <div class="side">
-      <span class="k">Route</span>
-      <h2 id="route-h">New Delhi to Portland</h2>
-      <div class="links"><a href="{{ '/ride/' | relative_url }}">Take the ride</a></div>
-      <canvas class="vig" data-vig="train" role="img" aria-label="Drawing: a little train runs from New Delhi to Portland"></canvas>
-    </div>
-    <div class="body">{% include ink/route.html %}</div>
-  </section>
+    <section class="sec" id="research" aria-labelledby="research-h">
+      <header class="sign"><span class="bul" aria-hidden="true">R</span><h2 id="research-h">Research</h2></header>
+      <div class="side">
+        <canvas class="vig" data-vig="scope" role="img" aria-label="Drawing: the figure peers into a microscope and pictures a heart and aorta"></canvas>
+        <h3 class="sub">Current research focus</h3>
+        {% include ink/focus.html %}
+      </div>
+      <div class="body">
+        <h3 class="sub">Manuscripts and publications</h3>
+        {% include ink/pubs.html %}
+        <h3 class="sub">Research funding</h3>
+        {% include ink/funding.html %}
+      </div>
+    </section>
 
-  <section class="sec" id="training" aria-labelledby="training-h">
-    <div class="side">
-      <span class="k">E line</span>
-      <h2 id="training-h">Education</h2>
-      <canvas class="vig" data-vig="study" role="img" aria-label="Drawing: the figure sits on a stack of books labeled BE, PhD and MD, writing in a notebook"></canvas>
-    </div>
-    <div class="body">
-      {% include ink/education.html %}
-      <h3 class="sub">Coursework</h3>
-      {% include ink/coursework.html %}
-    </div>
-  </section>
+    <section class="sec" id="route" aria-labelledby="route-h">
+      <header class="sign"><span class="bul" aria-hidden="true">→</span><h2 id="route-h">New Delhi to Portland</h2></header>
+      <div class="side">
+        <canvas class="vig" data-vig="train" role="img" aria-label="Drawing: a little train runs from New Delhi to Portland"></canvas>
+        <div class="links"><a href="{{ '/ride/' | relative_url }}">Take the ride</a></div>
+      </div>
+      <div class="body">{% include ink/route.html %}</div>
+    </section>
 
-  <section class="sec" id="work" aria-labelledby="work-h">
-    <div class="side">
-      <span class="k">W line</span>
-      <h2 id="work-h">Work Experience &amp; Community Service</h2>
-      <canvas class="vig" data-vig="carry" role="img" aria-label="Drawing: the figure carries a wobbling stack of boxes"></canvas>
-    </div>
-    <div class="body">{% include ink/work.html %}</div>
-  </section>
+    <section class="sec" id="training" aria-labelledby="training-h">
+      <header class="sign"><span class="bul" aria-hidden="true">E</span><h2 id="training-h">Education</h2></header>
+      <div class="side"><canvas class="vig" data-vig="study" role="img" aria-label="Drawing: the figure sits on a stack of books labeled BE, PhD and MD, writing in a notebook"></canvas></div>
+      <div class="body">
+        {% include ink/education.html %}
+        <h3 class="sub">Coursework</h3>
+        {% include ink/coursework.html %}
+      </div>
+    </section>
 
-  <section class="sec" id="awards" aria-labelledby="awards-h">
-    <div class="side"><span class="k">A line</span><h2 id="awards-h">Awards</h2></div>
-    <div class="body">{% include ink/awards.html %}</div>
-  </section>
+    <section class="sec" id="work" aria-labelledby="work-h">
+      <header class="sign"><span class="bul" aria-hidden="true">W</span><h2 id="work-h">Work Experience &amp; Community Service</h2></header>
+      <div class="side"><canvas class="vig" data-vig="carry" role="img" aria-label="Drawing: the figure carries a wobbling stack of boxes"></canvas></div>
+      <div class="body">{% include ink/work.html %}</div>
+    </section>
 
-  <section class="sec" id="dev" aria-labelledby="dev-h">
-    <div class="side"><span class="k">D line</span><h2 id="dev-h">Dev</h2></div>
-    <div class="body">{% include ink/dev.html %}</div>
-  </section>
+    <section class="sec" id="awards" aria-labelledby="awards-h">
+      <header class="sign"><span class="bul" aria-hidden="true">A</span><h2 id="awards-h">Awards</h2></header>
+      <div class="body" style="grid-column:1/-1">{% include ink/awards.html %}</div>
+    </section>
 
-  <section class="sec" id="contact" aria-labelledby="contact-h">
-    <div class="side">
-      <span class="k">C line</span>
-      <h2 id="contact-h">Contact</h2>
-      <canvas class="vig" data-vig="mail" role="img" aria-label="Drawing: the figure posts a letter and waves"></canvas>
-    </div>
-    <div class="body">
-      {% include ink/links.html %}
-      <div class="links"><a href="#subscribe" data-open="subscribe">Subscribe to new notes</a><a href="https://cortriatriatum.github.io/essays/feed.xml">RSS</a></div>
-    </div>
-  </section>
-</main>
+    <section class="sec" id="dev" aria-labelledby="dev-h">
+      <header class="sign"><span class="bul" aria-hidden="true">D</span><h2 id="dev-h">Dev</h2></header>
+      <div class="body" style="grid-column:1/-1">{% include ink/dev.html %}</div>
+    </section>
+
+    <section class="sec" id="contact" aria-labelledby="contact-h">
+      <header class="sign"><span class="bul" aria-hidden="true">C</span><h2 id="contact-h">Contact</h2></header>
+      <div class="side">
+        <canvas class="vig" data-vig="mail" role="img" aria-label="Drawing: the figure posts a letter and waves"></canvas>
+      </div>
+      <div class="body">
+        {% include ink/links.html %}
+        <div class="links"><button type="button" data-open="contact">Grab a coffee</button><a href="#subscribe" data-open="subscribe">Subscribe to new notes</a><a href="https://cortriatriatum.github.io/essays/feed.xml">RSS</a></div>
+      </div>
+    </section>
+  </main>
+</div>
 {% include ink/foot.html %}
-{% include ink/dialogs.html %}
 {% include citable.html %}
 <script>
 {% include cite-share.js %}
 </script>
 <script>
-  /* "Plain page" turns the drawings off and goes straight to the reading */
   document.querySelectorAll('[data-plain-go]').forEach(function(b){ b.addEventListener('click', function(){
     if (!document.documentElement.classList.contains('plain')) document.getElementById('plainToggle').click();
     document.getElementById('main').scrollIntoView();
@@ -200,5 +208,6 @@ layout: null
 <script src="{{ '/assets/ink.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/site.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/home.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/vig.js' | relative_url }}" defer></script>
 </body>
 </html>

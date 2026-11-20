@@ -38,6 +38,7 @@
   var openSub = wire({ dlg: 'subDlg', hash: 'subscribe', minMs: 2000, invalid: 'Please enter a valid email.', done: 'Subscribed. Thank you.' });
   document.querySelectorAll('#contactBtn, [data-open="contact"]').forEach(function(b){ if (openContact){ b.hidden = false; b.addEventListener('click', function(e){ e.preventDefault(); openContact(); }); } });
   document.querySelectorAll('[data-open="subscribe"]').forEach(function(b){ if (openSub) b.addEventListener('click', function(e){ e.preventDefault(); openSub(); }); });
+  window.InkSite = { openContact: function(){ if (openContact) openContact(); else location.href = (document.querySelector('.nav .me') || {}).href + '#contact'; }, openSub: function(){ if (openSub) openSub(); } };
 
   /* Publication topics: grouped by words in the title, counted, and filterable. */
   function topic(t){ t = t.toLowerCase();
@@ -49,16 +50,23 @@
     var chips = list.parentNode.querySelector('[data-pub-filter]'); if (!chips) return;
     var rows = [].slice.call(list.children);
     rows.forEach(function(li){ var a = li.querySelector('.t'); li.dataset.topic = topic(a ? a.textContent : ''); });
+    /* Long lists start short: the first few, then a button for the rest. */
+    var limit = +list.dataset.limit || 0, more = null, cur = 'all';
+    function apply(){ var shown = 0; rows.forEach(function(li){ var ok = cur === 'all' || li.dataset.topic === cur; if (ok) shown++; li.hidden = !ok || (limit && cur === 'all' && !list.classList.contains('all') && shown > limit); });
+      if (more) more.hidden = !(limit && cur === 'all' && !list.classList.contains('all') && rows.length > limit); }
+    if (limit && rows.length > limit){ more = document.createElement('button'); more.type = 'button'; more.className = 'more'; more.textContent = 'Show all ' + rows.length;
+      more.addEventListener('click', function(){ list.classList.add('all'); apply(); rows[limit].querySelector('a').focus(); }); list.after(more); }
     TOPICS.forEach(function(tp){
       var n = tp[0] === 'all' ? rows.length : rows.filter(function(li){ return li.dataset.topic === tp[0]; }).length;
       var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-pressed', String(tp[0] === 'all'));
       b.textContent = tp[1]; var c = document.createElement('b'); c.textContent = n; b.appendChild(c);
       b.addEventListener('click', function(){
-        rows.forEach(function(li){ li.hidden = !(tp[0] === 'all' || li.dataset.topic === tp[0]); });
+        cur = tp[0]; apply();
         chips.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
       });
       chips.appendChild(b);
     });
+    apply();
   });
 })();
 
@@ -154,4 +162,28 @@
     if ((e.key === '/' && !typing && !e.metaKey && !e.ctrlKey) || (e.key.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey))){ if (document.querySelector('dialog[open]:not(#searchDlg)')) return; e.preventDefault(); open(); }
   });
   if (onHome){ tagRows(document); var h = location.hash.slice(1); if (h && /-\d+$/.test(h)) setTimeout(function(){ highlight(h); }, 60); addEventListener('hashchange', function(){ var k = location.hash.slice(1); if (/-\d+$/.test(k)) highlight(k); }); }
+})();
+
+/* The route rail: a subway line down the side of the home page. The current station fills in as you
+   scroll, the line fills behind you, and every station is a link. */
+(function(){
+  'use strict';
+  var rail = document.querySelector('.rail'); if (!rail) return;
+  var links = [].slice.call(rail.querySelectorAll('a[href^="#"]')), fill = rail.querySelector('.rail-fill');
+  var secs = links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  var tick = false;
+  function update(){
+    tick = false; var mid = innerHeight * .35, cur = -1;
+    secs.forEach(function(s, i){ if (s && s.getBoundingClientRect().top < mid) cur = i; });
+    links.forEach(function(a, i){ a.classList.toggle('here', i === cur); a.classList.toggle('past', i < cur); if (i === cur) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); });
+    if (fill && links.length > 1){
+      var first = links[0].querySelector('.bul').getBoundingClientRect(), last = links[links.length - 1].querySelector('.bul').getBoundingClientRect();
+      var total = rail.classList.contains('flat') || matchMedia('(max-width: 1100px)').matches ? last.left - first.left : last.top - first.top;
+      var at = cur < 0 ? 0 : (cur >= links.length - 1 ? 1 : cur / (links.length - 1));
+      fill.style.setProperty('--p', at);
+    }
+    var here = rail.querySelector('a.here'); if (here && matchMedia('(max-width: 1100px)').matches){ var r = here.getBoundingClientRect(), rr = rail.getBoundingClientRect(); if (r.left < rr.left || r.right > rr.right) rail.scrollBy({ left: r.left - rr.left - rr.width / 2 + r.width / 2, behavior: 'smooth' }); }
+  }
+  addEventListener('scroll', function(){ if (!tick){ tick = true; requestAnimationFrame(update); } }, { passive: true });
+  addEventListener('resize', update); update();
 })();
