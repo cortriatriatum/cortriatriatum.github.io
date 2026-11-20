@@ -8,7 +8,7 @@ description: "Biomedical Research Scientists and Engineers stand to benefit from
 route: "M"
 route_color: "#FF6319"
 route_text: "#FFFFFF"
-transfers: [peer-review-scaled-and-continuous]
+transfers: [peer-review-scaled-and-continuous, sampling-rate-healthcare]
 image: /img/og/medicines-missing-experiments.png
 
 # Provenance. The original is shown on the page under "Original", compared word by word under "Markup",
