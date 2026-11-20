@@ -29,225 +29,130 @@ layout: null
 <meta content="https://cortriatriatum.github.io/img/share.jpg" name="twitter:image"/>
 <meta content="Rick Mathews, PhD. Physician-Scientist in Training, MD/PhD, Oregon Health &amp; Science University." name="twitter:image:alt"/>
 <style>
-  html,body.world{height:100%;overflow:hidden;overscroll-behavior:none}
-  body.world{padding:0;touch-action:none}
-  body.world>.nav{position:fixed;top:0;left:0;right:0;z-index:30;max-width:none;padding-inline:max(18px,env(safe-area-inset-left,0px)) max(18px,env(safe-area-inset-right,0px));pointer-events:none}
-  body.world>.nav>*{pointer-events:auto}
-  body.world>.foot{display:none}
-  #world{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;display:block}
-  #hot{position:fixed;inset:0;pointer-events:none;z-index:5}
-  #hot>*{pointer-events:auto}
-  .tag-in{all:unset;box-sizing:border-box;position:absolute;transform:translate(-50%,-100%);cursor:pointer;white-space:nowrap;font:400 18px/1 var(--hand);
-    background:var(--ink);color:var(--paper);padding:7px 12px 8px;border-radius:14px 11px 15px 10px;box-shadow:3px 3px 0 color-mix(in srgb,var(--ink) 25%,transparent);animation:boil 1s steps(1) infinite}
-  .tag-in::after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;background:inherit;transform:translateX(-50%) rotate(45deg);z-index:-1}
-  .tag-in:hover,.tag-in:focus-visible{background:var(--pop);color:#fff}
-  .tag-in:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-  .dir-line,.hot{position:absolute;display:block;border-radius:6px;background:transparent;border:0;padding:0;cursor:pointer}
-  .dir-line:focus-visible,.hot:focus-visible{outline:2.5px dashed var(--pop);outline-offset:2px}
-  @keyframes boil{0%{border-radius:14px 11px 15px 10px}33%{border-radius:11px 15px 10px 14px}66%{border-radius:15px 10px 13px 12px}}
-  /* one panel per stop, on the left; they fade in when you arrive */
-  .zp{position:fixed;z-index:10;left:max(18px,env(safe-area-inset-left,0px));top:calc(72px + env(safe-area-inset-top,0px));width:min(440px,calc(100vw - 36px));max-height:calc(100dvh - 100px);overflow-y:auto;
-    background:color-mix(in srgb,var(--paper) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:18px 20px;border-radius:16px;box-shadow:0 14px 44px rgba(0,0,0,.1);
-    opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease,visibility 0s linear .35s;overscroll-behavior:contain}
-  .zp.on{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .35s ease}
-  .zp h2{font:800 clamp(24px,2.4vw,30px)/1.05 var(--grot);letter-spacing:-.02em;margin:6px 0 10px}
-  .zp .k{display:block}
-  .zp .more{margin-top:14px}
-  .intro .who{display:grid;grid-template-columns:116px minmax(0,1fr);gap:16px;align-items:center}
-  .me-photo{position:relative;display:block;width:116px;height:116px;border-radius:50%;overflow:hidden;border:2px solid var(--ink);background:var(--paper)}
-  .me-photo img,.me-photo canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-  .intro h1{font-weight:800;font-size:clamp(30px,3.3vw,44px);line-height:.95;letter-spacing:-.04em;margin:0}
-  .intro .bio{margin:10px 0 0;font-size:15.5px;line-height:1.45}
-  .intro .now{display:block;margin-top:10px;font:500 12px/1.5 var(--mono);color:var(--soft)}
-  .seek{all:unset;box-sizing:border-box;cursor:text;display:flex;align-items:center;gap:10px;width:100%;margin-top:12px;padding:10px 14px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);font:500 15px/1 var(--grot);color:var(--soft)}
-  .seek kbd{margin-left:auto;font:500 11px/1 var(--mono);border:1px solid currentColor;border-radius:4px;padding:2px 5px}
-  .ways{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
-  .ways>*{all:unset;cursor:pointer;font:600 13.5px/1 var(--grot);padding:8px 12px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper)}
-  .ways>*:hover,.ways>*:focus-visible{background:var(--ink);color:var(--paper)}
-  .ways>*:focus-visible,.seek:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
-  .hint{font:400 17px/1.3 var(--hand);color:var(--soft);margin:10px 0 0}
-  .zp .rows>li{padding:9px 0}
-  .zp .rows.two{grid-template-columns:minmax(0,1fr)}.zp .rows.two>li:nth-child(2){border-top:0}
-  .zp ol.mini{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-  .zp ol.mini li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start}
-  .zp ol.mini a{font:700 16px/1.25 var(--grot);text-decoration:none}
-  .zp ol.mini a:hover{text-decoration:underline}
-  .zp .xf{font:500 11.5px/1.6 var(--mono);color:var(--soft)}
-  .rb{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font:800 14px/1 var(--grot);flex:none}
-  .rb.sm{width:20px;height:20px;font-size:10.5px;vertical-align:-4px;margin-left:3px}
-  /* the stops of the loop, as dots between Back and Next; the current one filled. It loops: after the
-     last dot comes the first. */
-  .loop{position:relative;margin:0;padding:0 4px;list-style:none;display:flex;align-items:center;gap:6px}
-  .loop::before{content:"";position:absolute;left:12px;right:12px;top:50%;border-top:2.5px solid var(--ink);transform:translateY(-50%)}
-  .loop button{all:unset;cursor:pointer;position:relative;display:grid;place-items:center;padding:4px 2px}
-  .loop .dot{width:14px;height:14px;border-radius:50%;border:2.5px solid var(--ink);background:var(--paper);box-sizing:border-box;position:relative;z-index:1}
-  .loop .lb{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);white-space:nowrap;font:600 12px/1 var(--grot);background:var(--ink);color:var(--paper);padding:5px 8px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .15s}
-  .loop button:hover .lb,.loop button:focus-visible .lb{opacity:1}
-  .loop button.here .dot{background:var(--ink)}
-  .loop button:focus-visible{outline:2px solid var(--pop);outline-offset:1px;border-radius:6px}
-  /* the detail panel for the room's objects and the coffee cart */
-  .panel{position:fixed;top:0;right:0;bottom:0;width:min(500px,94vw);z-index:40;background:var(--paper);border-left:1.5px solid var(--ink);
-    transform:translateX(104%);transition:transform .32s cubic-bezier(.2,.8,.2,1);overflow-y:auto;visibility:hidden;overscroll-behavior:contain;
-    padding:calc(24px + env(safe-area-inset-top,0px)) calc(24px + env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) 26px;box-shadow:-20px 0 60px rgba(0,0,0,.08)}
-  .panel.open{transform:none;visibility:visible}
-  .panel h2{font:800 32px/1.02 var(--grot);letter-spacing:-.03em;margin:8px 0 14px}
-  .panel .close{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:calc(18px + env(safe-area-inset-right,0px))}
-  .panel section[hidden]{display:none}
-  .panel .ideas>li{grid-template-columns:40px minmax(0,1fr)}.panel .ideas>li::before{font-size:38px}.panel .ideas .data-title>a{font-size:20px}
-  .recs h3{font:700 16px/1.2 var(--grot);margin:18px 0 6px}
-
-  /* things in the room and the lab: a small marker on each; the one you are at pops up into its label */
-  .obj{all:unset;box-sizing:border-box;position:absolute;transform:translate(-50%,-100%);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:7px;margin-top:-8px;
-    font:400 18px/1 var(--hand);color:var(--ink);padding:4px;border-radius:999px;transition:background .2s,color .2s,padding .2s}
-  .obj .mk{width:14px;height:14px;border-radius:50%;border:2.5px solid var(--ink);background:var(--paper);flex:none;box-sizing:border-box}
-  .obj .l,.obj .go{display:none}
-  .obj .go{font:600 11px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;border:1px solid currentColor;border-radius:99px;padding:3px 6px}
-  .obj:hover,.obj:focus-visible,.obj.now{background:var(--ink);color:var(--paper);padding:7px 12px 8px;border-radius:14px 11px 15px 10px;box-shadow:3px 3px 0 color-mix(in srgb,var(--ink) 25%,transparent)}
-  .obj:hover .mk,.obj:focus-visible .mk,.obj.now .mk{display:none}
-  .obj:hover .l,.obj:focus-visible .l,.obj.now .l,.obj.now .go{display:inline}
-  .obj.now{animation:pop .35s cubic-bezier(.2,1.6,.4,1),boil 1s steps(1) .35s infinite;z-index:2}
-  .obj:hover,.obj:focus-visible{background:var(--pop);color:#fff;z-index:3}
-  .obj:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-  @keyframes pop{0%{transform:translate(-50%,-100%) scale(.4)}100%{transform:translate(-50%,-100%) scale(1)}}
-  /* the room's and the lab's left-hand list, in walking order */
-  .pass{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:4px}
-  .pass button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;font:600 14.5px/1.2 var(--grot)}
-  .pass .n{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;border:2px solid var(--ink);font:700 11px/1 var(--mono)}
-  .pass .go{font:600 11px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;border:1px solid currentColor;border-radius:99px;padding:3px 6px;visibility:hidden}
-  .pass button:hover .go,.pass button:focus-visible .go,.pass li.here .go{visibility:visible}
-  .pass button:hover{background:color-mix(in srgb,var(--ink) 7%,transparent)}
-  .pass button:focus-visible{outline:2px solid var(--pop);outline-offset:1px}
-  .pass li.here button{background:var(--ink);color:var(--paper)}.pass li.here .n{border-color:var(--paper)}
-  .pass .pv{display:none;padding:6px 10px 8px 44px;font-size:13.5px;line-height:1.35;color:var(--soft)}
-  .pass .pv span{display:block}.pass .pv span+span{margin-top:3px}
-  .pass li.here .pv{display:block}
-  .panel .rows>li.lit{background:color-mix(in srgb,var(--pop) 14%,transparent);border-radius:8px;box-shadow:0 0 0 6px color-mix(in srgb,var(--pop) 14%,transparent)}
-  .card-hot{position:absolute;display:block;border-radius:4px}
-  .card-hot:focus-visible{outline:2.5px dashed var(--pop);outline-offset:2px}
-  .journey{position:fixed;z-index:14;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;
-    background:color-mix(in srgb,var(--paper) 90%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:6px;border-radius:999px;box-shadow:0 8px 30px rgba(0,0,0,.12)}
-  .jb{all:unset;cursor:pointer;font:600 14px/1 var(--grot);padding:10px 15px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);white-space:nowrap}
-  .jb.key{background:var(--ink);color:var(--paper)}
-  .jb:hover{transform:translateY(-1px)}
-  .jb:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
-  .skip-dir{position:absolute;left:-9999px;top:8px;z-index:100;background:var(--ink);color:var(--paper);padding:8px 12px}
-  .skip-dir:focus{left:12px}
-  @media (max-width: 900px){
-    .journey{left:12px;right:12px;transform:none;justify-content:space-between;bottom:calc(10px + env(safe-area-inset-bottom,0px))}.jb{font-size:12.5px;padding:9px 11px}.jb .jl{overflow:hidden;text-overflow:ellipsis;max-width:38vw;display:inline-block;vertical-align:bottom}
-    .obj{font-size:11.5px;padding:5px 8px}
-    .zp{top:auto;bottom:calc(66px + env(safe-area-inset-bottom,0px));max-height:42dvh;padding:14px 16px;background:color-mix(in srgb,var(--paper) 97%,transparent)}
-    .intro .who{grid-template-columns:76px minmax(0,1fr);gap:12px}.me-photo{width:76px;height:76px}.intro h1{font-size:27px}
-    .intro .bio{font-size:14px}.ways>*{font-size:12.5px;padding:7px 10px}
-    .journey{align-items:center}.loop{gap:3px}.loop .dot{width:11px;height:11px;border-width:2px}
-    .tag-in{font-size:15px;padding:6px 10px 7px}
-    .panel{top:auto;left:0;width:100%;max-height:82vh;border-left:0;border-top:1.5px solid var(--ink);transform:translateY(104%);border-radius:16px 16px 0 0}
-  }
-  @media (max-width: 600px){ .obj:not(.now),.loop,.tag-in.wide-only{display:none!important} .pass .pv{display:none!important} .pass button{padding:6px 8px} }
-  @media (prefers-reduced-motion: reduce){ .tag-in,.obj.now{animation:none} .zp,.panel{transition:none} }
+  .page{padding-block:6px 40px}
+  .grid{columns:2 520px;column-gap:28px}
+  .card{break-inside:avoid;margin:0 0 28px;padding:0 0 18px;border-bottom:1.5px solid var(--ink)}
+  .card .sign{margin-bottom:16px}
+  .card h2{color:var(--paper)}
+  .card h3.sub{margin-top:20px}
+  .card .vig{max-width:220px;float:right;margin:0 0 6px 16px}
+  .bio .who{display:grid;grid-template-columns:104px minmax(0,1fr);gap:16px;align-items:center;margin-bottom:6px}
+  .bio .me-photo{width:104px;height:104px;border-radius:50%;object-fit:cover;border:2px solid var(--ink)}
+  .bio h1{font-weight:800;font-size:clamp(30px,3.2vw,42px);line-height:.95;letter-spacing:-.04em;margin:0}
+  .bio .line{margin:16px 0 0}
+  .rail{padding-top:24px}
+  .choose{padding-bottom:22px}
+  .modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .mode-b{display:grid;gap:4px;padding:12px 14px;border:2px solid var(--ink);border-radius:12px;text-decoration:none;color:var(--ink);background:var(--paper)}
+  .mode-b b{font:800 18px/1.1 var(--grot)}.mode-b span{font-size:14px;line-height:1.35;color:var(--soft)}
+  .mode-b.on{background:var(--ink);color:var(--paper)}.mode-b.on span{color:color-mix(in srgb,var(--paper) 80%,transparent)}
+  .mode-b:not(.on):hover{background:color-mix(in srgb,var(--pop) 12%,var(--paper))}
+  .mode-b:focus-visible{outline:3px solid var(--pop);outline-offset:2px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  @media (max-width: 520px){ .modes{grid-template-columns:minmax(0,1fr)} }
+  @media (max-width: 700px){ .card .vig{float:none;margin:0 0 10px} }
 </style>
 </head>
-<body class="world">
-<a class="skip-dir" href="{{ '/directory/' | relative_url }}">Skip the drawing: everything on one page</a>
+<body>
 {% assign navpage = "home" %}{% include ink/nav.html %}
-<canvas id="world" role="img" aria-label="A looping ink drawing of a day in Portland: a street at South Waterfront, stairs down into a station with a room inside it, a platform, a train to Marquam Hill, an elevator up to a lab at OHSU, and the Aerial Tram back down to the street. Scroll, swipe, the arrow keys or the Next button move along it."></canvas>
-<div id="hot" data-directory="{{ '/directory/' | relative_url }}"></div>
+<div class="page" id="main">
+  <nav class="rail" aria-label="Sections">
+    <p class="rail-top">Rick Mathews</p>
+    <div class="rail-track"><span class="rail-line" aria-hidden="true"></span><span class="rail-fill" aria-hidden="true"></span>
+    <ol>
+      <li><a href="#about"><span class="bul">B</span>Bio</a></li>
+      <li><a href="#research"><span class="bul">R</span>Research</a></li>
+      <li><a href="#notes"><span class="bul">N</span>Notes</a></li>
+      <li><a href="#education"><span class="bul">E</span>Education</a></li>
+      <li><a href="#work"><span class="bul">W</span>Work &amp; Service</a></li>
+      <li><a href="#awards"><span class="bul">A</span>Awards</a></li>
+      <li><a href="#dev"><span class="bul">D</span>Dev</a></li>
+      <li><a href="#contact"><span class="bul">C</span>Contact</a></li>
+    </ol></div>
+  </nav>
+  <main class="grid">
+    <section class="card choose" aria-labelledby="choose-h">
+      <h2 class="sr" id="choose-h">Two ways to look around</h2>
+      <div class="modes" role="group" aria-label="How to look around">
+        <a class="mode-b on" href="#about" aria-current="true" data-pick="simple"><b>Simple</b><span>One page, scroll down. You are here.</span></a>
+        <a class="mode-b" href="{{ '/explore/' | relative_url }}" data-pick="walk"><b>Animated</b><span>Walk through a drawing of Portland, room by room. There is more to find in there.</span></a>
+      </div>
+    </section>
 
-<main id="main">
-  <section class="zp intro" data-zone-panel="street" aria-label="Rick Mathews">
-    <div class="who">
-      <span class="me-photo"><img src="{{ '/img/rick-1.webp' | relative_url }}" alt="Rick Mathews" width="116" height="116" decoding="async" fetchpriority="high"></span>
-      <h1>Rick Mathews, PhD</h1>
-    </div>
-    <p class="bio">Physician-Scientist in Training at the <a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a> <a href="https://www.ohsu.edu/school-of-medicine/md-phd-program/rick-mathews-phd">Medical Scientist Training Program</a></p>
-    <span class="now" id="liveNow">Portland, Oregon</span>
-    <button type="button" class="seek" data-search aria-haspopup="dialog">Search notes, papers, awards, courses, food recs <kbd>/</kbd></button>
-    <nav class="ways" aria-label="Where to go from here">
-      <a href="#room" data-goto-zone="room">Down to the station ↓</a>
-      <a href="#lab" data-goto-zone="lab">Aerial Tram up to OHSU ↑</a>
-      <button type="button" data-open-panel="food">Coffee &amp; food recs</button>
-      <a href="{{ '/directory/' | relative_url }}">Everything on one page</a>
-    </nav>
-  </section>
+    <section class="card bio" id="about" data-index aria-labelledby="about-h">
+      <header class="sign"><span class="bul" aria-hidden="true">B</span><h2 id="about-h">Bio</h2></header>
+      <div class="who"><img class="me-photo" src="{{ '/img/rick-1.webp' | relative_url }}" alt="Rick Mathews" width="104" height="104"><h1>Rick Mathews, PhD</h1></div>
+      <p>Physician-Scientist in Training at the <a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a> <a href="https://www.ohsu.edu/school-of-medicine/md-phd-program/rick-mathews-phd">Medical Scientist Training Program</a>. Portland, Oregon.</p>
+      {% include ink/links.html %}
+    </section>
 
-  <section class="zp" data-zone-panel="room" aria-labelledby="room-h">
-    <span class="k">Inside the station</span>
-    <h2 id="room-h">The room</h2>
-    <p class="hint">Scroll to walk past each thing. The lit one opens. The far door goes to the platform.</p>
-    <ol class="pass" data-pass="room" aria-label="Things in the room, in walking order"></ol>
-  </section>
+    <section class="card" id="research" data-index aria-labelledby="research-h">
+      <header class="sign"><span class="bul" aria-hidden="true">R</span><h2 id="research-h">Research</h2></header>
+      <canvas class="vig" data-vig="scope" data-still role="img" aria-label="Drawing: the figure at a microscope"></canvas>
+      <h3 class="sub">Current research focus</h3>
+      {% include ink/focus.html %}
+      <h3 class="sub">Manuscripts and publications</h3>
+      {% include ink/pubs.html %}
+      <h3 class="sub">Research funding</h3>
+      {% include ink/funding.html %}
+    </section>
 
-  <section class="zp" data-zone-panel="platform" aria-labelledby="plat-h">
-    <span class="k">Platform</span>
-    <h2 id="plat-h">Train to Marquam Hill</h2>
-    <p class="hint">On the train, the cards over the windows are my notes.</p>
-  </section>
+    <section class="card" id="notes" data-index aria-labelledby="notes-h">
+      <header class="sign"><span class="bul" aria-hidden="true">N</span><h2 id="notes-h">Notes, Scribbles &amp; Ideas in Progress</h2></header>
+      <canvas class="vig" data-vig="notebook" data-still role="img" aria-label="Drawing: the figure writing in a notebook"></canvas>
+      {% include ink/notes.html %}
+      <div class="links"><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/' | relative_url }}">The whole line</a></div>
+    </section>
 
-  <section class="zp" data-zone-panel="train" aria-labelledby="notes-h">
-    <span class="k">On the train · the cards over the windows</span>
-    <h2 id="notes-h">Notes, Scribbles &amp; Ideas in Progress</h2>
-    <ol class="mini" id="noteCards">
-    {%- assign recent = site.essays | sort: "date" | reverse -%}
-    {%- for e in recent %}
-      <li>{% if e.route %}<span class="rb" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span>{% else %}<span></span>{% endif %}<div><a href="{{ e.url | relative_url }}" data-title="{{ e.title | escape }}" data-route="{{ e.route }}" data-color="{{ e.route_color }}">{{ e.title }}</a>
-        <div class="xf">{{ e.date | date: "%Y" }} · <span class="wip">{{ e.status | downcase }}</span>{% for t in e.transfers %}{% for o in site.essays %}{% if o.url contains t %} · transfer <span class="rb sm" style="background:{{ o.route_color }};color:{{ o.route_text }}" title="{{ o.title | escape }}">{{ o.route }}</span>{% endif %}{% endfor %}{% endfor %}</div></div></li>
-    {%- endfor %}
-    </ol>
-    <a class="more" href="{{ '/essays/' | relative_url }}">The whole line</a>
-  </section>
+    <section class="card" id="education" data-index aria-labelledby="education-h">
+      <header class="sign"><span class="bul" aria-hidden="true">E</span><h2 id="education-h">Education</h2></header>
+      <canvas class="vig" data-vig="study" data-still role="img" aria-label="Drawing: the figure on a stack of books labeled BE, PhD and MD"></canvas>
+      {% include ink/education.html %}
+      <h3 class="sub">Coursework</h3>
+      {% include ink/coursework.html %}
+    </section>
 
-  <section class="zp" data-zone-panel="hill" aria-labelledby="hill-h">
-    <span class="k">Marquam Hill station</span>
-    <h2 id="hill-h">Elevator up to OHSU</h2>
-    <p class="hint">The lab is at the top.</p>
-  </section>
+    <section class="card" id="work" data-index aria-labelledby="work-h">
+      <header class="sign"><span class="bul" aria-hidden="true">W</span><h2 id="work-h">Work Experience &amp; Community Service</h2></header>
+      <canvas class="vig" data-vig="coat" data-still role="img" aria-label="Drawing: the figure hanging a coat with badges on a rack"></canvas>
+      {% include ink/work.html %}
+    </section>
 
-  <section class="zp" data-zone-panel="lab" aria-labelledby="lab-h">
-    <span class="k">OHSU · Marquam Hill</span>
-    <h2 id="lab-h">The lab</h2>
-    <p class="hint">Scroll to walk past the bench and the diplomas. The lit one opens. The far door goes to the Aerial Tram.</p>
-    <ol class="pass" data-pass="lab" aria-label="Things in the lab, in walking order"></ol>
-  </section>
+    <section class="card" id="awards" data-index aria-labelledby="awards-h">
+      <header class="sign"><span class="bul" aria-hidden="true">A</span><h2 id="awards-h">Awards</h2></header>
+      <canvas class="vig" data-vig="shelf" data-still role="img" aria-label="Drawing: the figure looking up at a shelf of awards"></canvas>
+      {% include ink/awards.html %}
+    </section>
 
-  <section class="zp" data-zone-panel="tram" aria-labelledby="tram-h">
-    <span class="k">OHSU Aerial Tram</span>
-    <h2 id="tram-h">Down to South Waterfront</h2>
-    <p class="hint">It lands on the street you started on.</p>
-  </section>
-</main>
+    <section class="card" id="dev" data-index aria-labelledby="dev-h">
+      <header class="sign"><span class="bul" aria-hidden="true">D</span><h2 id="dev-h">Dev</h2></header>
+      <canvas class="vig" data-vig="laptop" data-still role="img" aria-label="Drawing: the figure typing at a laptop"></canvas>
+      {% include ink/dev.html %}
+    </section>
 
-<nav class="journey" aria-label="Move along the loop">
-  <button type="button" id="goPrev" class="jb"><span aria-hidden="true">↑</span> <span class="jl">Back: <span id="prevLabel">Aerial Tram</span></span></button>
-  <ol class="loop" id="loopNav" aria-label="Stops on the loop (it loops)"></ol>
-  <button type="button" id="goNext" class="jb key"><span class="jl">Next: <span id="nextLabel">Down to the station</span></span> <span aria-hidden="true">↓</span></button>
-</nav>
-
-
-<aside class="panel" id="panel" aria-label="Details">
-  <button type="button" class="pill close" id="panelClose">Close</button>
-  <section data-c="food" hidden><span class="k">The food cart</span><h2>Coffee &amp; food recs</h2>
-    <div class="links"><button type="button" class="key" data-open="contact" data-prefill="Coffee in Portland?">Grab a coffee with me</button><button type="button" data-open="contact">Write to me</button></div>
-    <h3 class="sub">Recommendations</h3>
-    {% include ink/food.html %}</section>
-  <section data-c="notes" hidden><span class="k">The notebook</span><h2>Notes, Scribbles &amp; Ideas in Progress</h2>{% include ink/notes.html %}
-    <div class="links"><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/' | relative_url }}">The whole line</a></div></section>
-  <section data-c="research" hidden><span class="k">The microscope</span><h2>Research</h2><h3 class="sub">Current research focus</h3>{% include ink/focus.html %}
-    <h3 class="sub">Manuscripts and publications</h3>{% include ink/pubs.html %}
-    <h3 class="sub">Research funding</h3>{% include ink/funding.html %}</section>
-  <section data-c="training" hidden><span class="k">The diplomas</span><h2>Education</h2>{% include ink/education.html %}
-    <h3 class="sub">Coursework</h3>{% include ink/coursework.html %}</section>
-  <section data-c="awards" hidden><span class="k">The shelf</span><h2>Awards</h2>{% include ink/awards.html %}</section>
-  <section data-c="work" hidden><span class="k">The coat rack</span><h2>Work Experience &amp; Community Service</h2>{% include ink/work.html %}</section>
-  <section data-c="dev" hidden><span class="k">The laptop</span><h2>Dev</h2>{% include ink/dev.html %}</section>
-  <section data-c="contact" hidden><span class="k">The mailbox</span><h2>Contact</h2>{% include ink/links.html %}
-    <div class="links"><button type="button" data-open="contact" data-prefill="Coffee in Portland?">Grab a coffee</button><a href="#subscribe" data-open="subscribe">Subscribe</a><a href="https://cortriatriatum.github.io/essays/feed.xml">RSS</a></div></section>
-</aside>
+    <section class="card" id="contact" data-index aria-labelledby="contact-h">
+      <header class="sign"><span class="bul" aria-hidden="true">C</span><h2 id="contact-h">Contact</h2></header>
+      <canvas class="vig" data-vig="mail" data-still role="img" aria-label="Drawing: the figure at a mailbox"></canvas>
+      {% include ink/links.html %}
+      <div class="links"><button type="button" data-open="contact" data-prefill="Coffee in Portland?">Grab a coffee</button><a href="#subscribe" data-open="subscribe">Subscribe to new notes</a><a href="https://cortriatriatum.github.io/essays/feed.xml">RSS</a></div>
+    </section>
+  </main>
+</div>
 {% include ink/foot.html %}
 {% include citable.html %}
 <script>
 {% include cite-share.js %}
 </script>
-<script src="{{ '/assets/ink.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/world.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261120" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261120" defer></script>
+<script src="{{ '/assets/vig.js' | relative_url }}?v=20261120" defer></script>
+<script>
+/* Simple is the default. Choosing Animated is remembered, and then the drawings here move too. */
+(function(){
+  var KEY = 'mode', walk = false;
+  try { walk = localStorage.getItem(KEY) === 'walk'; } catch (e) {}
+  if (walk) document.querySelectorAll('canvas.vig[data-still]').forEach(function(c){ c.removeAttribute('data-still'); });
+})();
+</script>
 </body>
 </html>

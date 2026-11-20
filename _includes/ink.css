@@ -245,3 +245,10 @@ dialog.search::backdrop{background:rgba(20,20,18,.35)}
 .ft.vegan{color:var(--leaf-ink,#2F7A45)}
 .ft.shut{color:var(--soft)}
 .food-list li.closed a{color:var(--soft);text-decoration:line-through;text-decoration-thickness:1px}
+/* route and section bullets: drawn in ink, the same as on the train, not flat circles */
+html .rb,html .fb,html .bul{border:2px solid var(--ink);border-radius:53% 47% 51% 49% / 47% 53% 48% 52%;box-shadow:1.5px 1.5px 0 color-mix(in srgb,var(--ink) 28%,transparent);box-sizing:border-box}
+html .rail a .bul{border-width:2.5px}
+html .sign .bul{border-color:var(--paper);box-shadow:none}
+html .fb{border-width:1.5px;box-shadow:none}
+html .rb:nth-of-type(2n),html .rail li:nth-child(2n) .bul{border-radius:48% 52% 47% 53% / 53% 48% 52% 47%}
+.foot .credit{display:block;margin-top:6px;color:var(--soft);font-size:12.5px}

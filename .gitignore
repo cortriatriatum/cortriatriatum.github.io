@@ -5,3 +5,4 @@ _preview/
 Gemfile.lock
 vendor/
 .DS_Store
+tools/photo-review/

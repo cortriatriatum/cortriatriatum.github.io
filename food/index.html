@@ -1,0 +1,76 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.classList.add('js');</script>
+{% include ink/head.html %}
+<title>Food recs · Rick Mathews, PhD</title>
+<meta name="description" content="Food recommendations by Rick Mathews, PhD, as a walk through Portland, New York, Florence, Abruzzo and more.">
+<link href="https://cortriatriatum.github.io/food/" rel="canonical"/>
+<meta name="robots" content="noindex">
+<meta content="https://cortriatriatum.github.io/img/share.jpg" property="og:image"/>
+<style>
+{% include strip.css %}
+  #cartPanel{display:none}
+  .pod-side{position:fixed;z-index:12;left:max(18px,env(safe-area-inset-left,0px));top:150px;bottom:90px;width:300px;display:flex;flex-direction:column;
+    background:color-mix(in srgb,var(--paper) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:16px;box-shadow:0 14px 44px rgba(0,0,0,.1);padding:14px 14px 10px}
+  .pod-side h2{font:800 24px/1.05 var(--grot);letter-spacing:-.02em;margin:0}
+  .pod-side .meta{font:500 12px/1.4 var(--mono);color:var(--soft);margin:4px 0 10px}
+  .pod-side ol{list-style:none;margin:0;padding:0;overflow-y:auto;overscroll-behavior:contain;display:grid;gap:2px;align-content:start;flex:1}
+  .pod-side li{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:6px 8px;border-radius:10px}
+  .pod-side li button{all:unset;cursor:pointer;font:600 14px/1.25 var(--grot);flex:1 1 140px}
+  .pod-side li button:focus-visible,.pod-side li a:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
+  .pod-side li .mp{font:600 11px/1 var(--mono);text-decoration:none;border:1px solid currentColor;border-radius:99px;padding:3px 6px}
+  .pod-side li.here{background:var(--ink);color:var(--paper)}.pod-side li.here .mp{color:var(--paper)}
+  .pod-side li.closed button{text-decoration:line-through;opacity:.7}
+  .pod-side .x{display:none}
+  .strip-bar .jl{display:inline-block;max-width:24vw;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
+  #podListBtn{display:none}
+  @media (max-width: 900px){
+    .pod-side{top:auto;left:0;right:0;bottom:0;width:auto;max-height:70vh;border-radius:16px 16px 0 0;transform:translateY(104%);transition:transform .3s ease;z-index:40;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px))}
+    html.side-open .pod-side{transform:none}
+    .pod-side .x{display:inline-block;position:absolute;top:12px;right:12px}
+    #podListBtn{display:inline-block}
+    .strip-bar .jl{max-width:30vw}
+  }
+  @media (max-width: 600px){ .strip-bar .ct{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){ .pod-side{transition:none} }
+</style>
+</head>
+<body class="strip-page" data-scene="pod">
+{% assign navpage = "photos" %}{% include ink/nav.html %}
+<canvas id="strip" class="strip-ui" role="img" aria-label="An ink drawing of a walk through the cities where these places are: Portland's food cart pods, a New York street of brownstones, Portland Maine's Old Port, Florence under the Duomo, a stone town in Abruzzo, Vancouver by the water, and the Columbia River Gorge. Every place is its own cart or shop with its name on the sign. Each city's sky shows its weather right now. Scroll to walk; the subway takes you to the next city."></canvas>
+<div id="stripHot" class="strip-ui"></div>
+<div id="stripLen" class="strip-ui"></div>
+<header class="strip-top strip-ui">
+  <h1>Food recs</h1>
+  <a href="{{ '/explore/' | relative_url }}">Back to the walk</a>
+  <span class="sky" id="stripSky" aria-live="off"></span>
+</header>
+<aside class="pod-side strip-ui" id="podSide" aria-labelledby="podCity">
+  <button type="button" class="pill x" onclick="document.documentElement.classList.remove('side-open')">Close</button>
+  <h2 id="podCity">Food recs</h2>
+  <p class="meta" id="podMeta"></p>
+  <ol id="podList" aria-label="Spots in this city"></ol>
+</aside>
+<nav class="strip-bar strip-ui" aria-label="Move between cities">
+  <button type="button" class="jb" id="stripPrev" data-end="{{ '/explore/' | relative_url }}"><span aria-hidden="true">←</span> <span class="jl" id="prevCity">The street</span></button>
+  <button type="button" class="jb" id="podListBtn" aria-controls="podSide" aria-expanded="false">List</button>
+  <span class="ct" id="stripCount" aria-live="polite"></span>
+  <button type="button" class="jb key" id="stripNext" data-end="{{ '/explore/' | relative_url }}"><span class="jl" id="nextCity">New York</span> <span aria-hidden="true">→</span></button>
+</nav>
+<div id="cartPanel" hidden>{% include ink/food.html %}</div>
+<main class="plain-view" id="main">
+  <h1>Food recs</h1>
+  {% include ink/food.html %}
+  <p><a href="{{ '/explore/' | relative_url }}">Back to the street</a></p>
+</main>
+{% include ink/foot.html %}
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261120" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261120" defer></script>
+<script src="{{ '/assets/pod.js' | relative_url }}?v=20261120" defer></script>
+</body>
+</html>

@@ -76,7 +76,7 @@
   'use strict';
   var dlg = document.getElementById('searchDlg'); if (!dlg || typeof dlg.showModal !== 'function') return;
   var q = document.getElementById('searchQ'), out = document.getElementById('searchResults');
-  var dirLink = document.querySelector('.nav [data-dir]'), HOME = dirLink ? dirLink.href.replace(/#.*$/, '') : '/directory/';
+  var dirLink = document.querySelector('.nav [data-dir]'), HOME = dirLink ? dirLink.href.replace(/#.*$/, '') : '/';
   var onHome = location.href.replace(/[?#].*$/, '') === HOME.replace(/[?#].*$/, '');
   var INDEX = null, sel = 0, hits = [];
   function txt(el){ return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
@@ -200,3 +200,6 @@
     }); });
   });
 })();
+
+/* Simple or Animated: remember the visitor's pick. Simple is the default. */
+document.addEventListener('click', function(e){ var a = e.target.closest && e.target.closest('[data-pick]'); if (!a) return; try { localStorage.setItem('mode', a.dataset.pick); } catch (err) {} });

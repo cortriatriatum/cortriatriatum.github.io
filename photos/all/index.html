@@ -1,0 +1,127 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include ink/head.html %}
+<title>Photos · Rick Mathews, PhD</title>
+<meta name="description" content="Photographs by Rick Mathews, PhD: Abruzzo, Sorrento, Florence, Siena, Portland, Oregon, Seattle and more. In color or black and white.">
+<link href="https://cortriatriatum.github.io/photos/all/" rel="canonical"/>
+<meta name="robots" content="noindex">
+<meta content="website" property="og:type"/>
+<meta content="Photos · Rick Mathews, PhD" property="og:title"/>
+<meta content="Photographs in color or black and white." property="og:description"/>
+<meta content="https://cortriatriatum.github.io/photos/" property="og:url"/>
+<meta content="https://cortriatriatum.github.io/img/share.jpg" property="og:image"/>
+<style>
+  .page{padding-block:6px 40px}
+  .ph-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:14px 24px;margin:0 0 22px}
+  .ph-head h1{font-weight:800;font-size:clamp(34px,4vw,52px);line-height:.95;letter-spacing:-.04em;margin:0}
+  .ph-head p{margin:8px 0 0;color:var(--soft)}
+  .mode{display:inline-flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden;flex:none}
+  .mode button{font:600 14px/1 var(--grot);padding:10px 16px;border:0;background:var(--paper);color:var(--ink);cursor:pointer}
+  .mode button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .mode button:focus-visible{outline:3px solid var(--pop);outline-offset:-3px}
+  .set{margin:0 0 34px}
+  .set .sign{margin-bottom:14px}
+  .set .sign .yr{margin-left:auto;font:500 14px/1 var(--mono);opacity:.8}
+  .wall{columns:3 260px;column-gap:12px}
+  .wall figure{break-inside:avoid;margin:0 0 12px}
+  .wall button{display:block;width:100%;padding:0;border:0;background:var(--rule);cursor:zoom-in;border-radius:4px;overflow:hidden}
+  .wall img{display:block;width:100%;height:auto;transition:transform .35s ease}
+  .wall button:hover img{transform:scale(1.02)}
+  .wall button:focus-visible{outline:3px solid var(--pop);outline-offset:2px}
+  .wall figcaption{font:500 12px/1.3 var(--mono);color:var(--soft);padding:5px 2px 0}
+  .lb{border:0;padding:0;margin:0;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;background:rgba(10,10,10,.94);color:#f4f1ea}
+  .lb::backdrop{background:rgba(10,10,10,.94)}
+  .lb[open]{display:grid;grid-template-rows:minmax(0,1fr) auto}
+  .lb .stage{display:grid;place-items:center;min-height:0;padding:56px 64px 8px}
+  .lb img{display:block;width:auto;height:auto;max-width:calc(100vw - 128px);max-height:calc(100vh - 130px);max-height:calc(100dvh - 130px);object-fit:contain}
+  .lb .bar{display:flex;align-items:center;gap:12px;justify-content:center;padding:10px 16px 18px;font:500 14px/1.3 var(--mono)}
+  .lb .bar .cap{min-width:0;text-align:center}
+  .lb button{font:600 14px/1 var(--grot);border:2px solid #f4f1ea;background:transparent;color:#f4f1ea;border-radius:999px;padding:10px 14px;cursor:pointer}
+  .lb button:focus-visible{outline:3px solid var(--pop);outline-offset:2px}
+  .lb .x{position:absolute;top:12px;right:12px}
+  .lb .nav-b{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;padding:0;font-size:20px}
+  .lb .prev{left:10px}.lb .next{right:10px}
+  @media (max-width: 700px){
+    .wall{columns:2 140px;column-gap:8px}.wall figure{margin-bottom:8px}
+    .lb .stage{padding:56px 8px 8px}
+    .lb img{max-width:calc(100vw - 16px);max-height:calc(100dvh - 190px)}
+    .lb .nav-b{top:auto;bottom:12px;transform:none}
+    .lb .bar{padding:10px 64px 18px}
+  }
+</style>
+</head>
+<body>
+{% assign navpage = "photos" %}{% include ink/nav.html %}
+{% assign P = site.data.photos %}
+<div class="page" id="main">
+  <nav class="rail" aria-label="Places">
+    <p class="rail-top">Photos</p>
+    <div class="rail-track"><span class="rail-line" aria-hidden="true"></span><span class="rail-fill" aria-hidden="true"></span>
+    <ol>{% for g in P.groups %}
+      <li><a href="#{{ g.id | downcase }}"><span class="bul">{{ g.id | slice: 0 }}</span>{{ g.id }}</a></li>{% endfor %}
+    </ol></div>
+  </nav>
+  <main>
+    <header class="ph-head">
+      <div><h1>Photos</h1><p>{{ P.photos.size }} photographs. Click one to see it large. <a href="{{ '/photos/' | relative_url }}">Walk the gallery</a> · <a href="{{ '/explore/' | relative_url }}#room">Back to the room</a></p></div>
+      <div class="mode" role="group" aria-label="Show photos in">
+        <button type="button" data-mode="c" aria-pressed="true">Color</button><button type="button" data-mode="bw" aria-pressed="false">Black &amp; white</button>
+      </div>
+    </header>
+    {% for g in P.groups %}{% assign set = P.photos | where: "group", g.id %}
+    <section class="set" id="{{ g.id | downcase }}" data-index aria-labelledby="{{ g.id | downcase }}-h">
+      <header class="sign"><span class="bul" aria-hidden="true">{{ g.id | slice: 0 }}</span><h2 id="{{ g.id | downcase }}-h">{{ g.label }}</h2><span class="yr">{{ g.years }}</span></header>
+      <div class="wall">{% for p in set %}{% assign base = '/img/photos/' | append: p.id %}{% if p.bwonly %}{% assign kind = '-bw-640.webp' %}{% else %}{% assign kind = '-c-640.webp' %}{% endif %}
+        <figure><button type="button" data-id="{{ p.id }}" data-bwonly="{{ p.bwonly }}" data-place="{{ p.place }}" aria-label="Open photo {{ forloop.index }} of {{ set.size }}{% if p.place != '' %}, {{ p.place }}{% endif %}"><img src="{{ base | append: kind | relative_url }}" data-base="{{ base | relative_url }}" width="{{ p.w }}" height="{{ p.h }}" alt="Photo{% if p.place != '' %}, {{ p.place }}{% endif %}{% if p.bwonly %}, shot in black and white{% endif %}" loading="lazy" decoding="async"></button>{% if p.place != '' and p.place != g.label and p.place != g.id %}<figcaption>{{ p.place }}</figcaption>{% endif %}</figure>{% endfor %}
+      </div>
+    </section>{% endfor %}
+  </main>
+</div>
+<dialog class="lb" id="lb" aria-label="Photo viewer">
+  <div class="stage"><img id="lbImg" alt=""></div>
+  <div class="bar"><span class="cap" id="lbCap" aria-live="polite"></span></div>
+  <button type="button" class="x" id="lbX">Close</button>
+  <button type="button" class="nav-b prev" id="lbPrev" aria-label="Previous photo">←</button>
+  <button type="button" class="nav-b next" id="lbNext" aria-label="Next photo">→</button>
+</dialog>
+{% include ink/foot.html %}
+<script>
+(function(){
+  var KEY = 'photoMode', mode = 'c';
+  try { if (localStorage.getItem(KEY) === 'bw') mode = 'bw'; } catch (e) {}
+  var btns = [].slice.call(document.querySelectorAll('.wall button'));
+  function src(b, w){ var kind = (mode === 'bw' || b.dataset.bwonly === 'true') ? 'bw' : 'c'; return b.querySelector('img').dataset.base + '-' + kind + '-' + w + '.webp'; }
+  function paint(){
+    document.querySelectorAll('.mode button').forEach(function(m){ m.setAttribute('aria-pressed', String(m.dataset.mode === mode)); });
+    btns.forEach(function(b){ b.querySelector('img').src = src(b, 640); });
+    if (lb.open) show(cur);
+  }
+  document.querySelectorAll('.mode button').forEach(function(m){ m.addEventListener('click', function(){ mode = m.dataset.mode; try { localStorage.setItem(KEY, mode); } catch (e) {} paint(); }); });
+  var lb = document.getElementById('lb'), img = document.getElementById('lbImg'), cap = document.getElementById('lbCap'), cur = 0, opener = null;
+  function show(i){
+    cur = (i + btns.length) % btns.length; var b = btns[cur], set = b.closest('.set');
+    img.src = src(b, 1600); img.alt = b.querySelector('img').alt;
+    var place = b.dataset.place || set.querySelector('h2').textContent;
+    cap.textContent = place + (b.dataset.bwonly === 'true' && mode === 'c' ? ' · shot in black and white' : '') + ' · ' + (cur + 1) + ' / ' + btns.length;
+    var nx = btns[(cur + 1) % btns.length]; new Image().src = src(nx, 1600);
+  }
+  btns.forEach(function(b, i){ b.addEventListener('click', function(){ opener = b; show(i); lb.showModal(); }); });
+  document.getElementById('lbX').addEventListener('click', function(){ lb.close(); });
+  document.getElementById('lbPrev').addEventListener('click', function(){ show(cur - 1); });
+  document.getElementById('lbNext').addEventListener('click', function(){ show(cur + 1); });
+  lb.addEventListener('keydown', function(e){ if (e.key === 'ArrowRight') { show(cur + 1); e.preventDefault(); } else if (e.key === 'ArrowLeft') { show(cur - 1); e.preventDefault(); } });
+  lb.addEventListener('click', function(e){ if (e.target === lb || e.target.classList.contains('stage')) lb.close(); });
+  lb.addEventListener('close', function(){ img.removeAttribute('src'); if (opener) opener.focus(); });
+  var x0 = null; lb.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, {passive: true});
+  lb.addEventListener('touchend', function(e){ if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); x0 = null; });
+  paint();
+})();
+</script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261120" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261120" defer></script>
+</body>
+</html>

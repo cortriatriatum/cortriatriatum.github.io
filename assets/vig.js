@@ -83,6 +83,68 @@
       if (f.mode === 'stand'){ for (var i = 0; i < 3; i++) R(x + fc * 22 - 14, 158 - i * 18, 28, 18, 2, COL.paper); }
       S([[0, 176], [300, 176]], 2);
     },
+    /* Notes: writing at a little table; now and then an idea lights up over the page */
+    notebook: function(T, lk, hov){
+      var u = T % 6;
+      WASH(170, 140, 90, 40, COL.sun, .26, 11);
+      R(130, 140, 120, 8, 2, COL.paper); Ln(140, 148, 140, 176, 2); Ln(240, 148, 240, 176, 2);
+      S([[150, 140], [156, 124], [206, 124], [210, 140]], 2); Ln(180, 125, 180, 140, 1.2, .6);
+      var lines = I.reduce.matches ? 4 : Math.floor(u * 1.4) % 5;
+      for (var i = 0; i < lines; i++) Ln(158 + i * 2, 128 + i * 3, 176, 128 + i * 3, 1, .55);
+      R(92, 150, 30, 6, 1.8, COL.paper); Ln(96, 156, 96, 176, 1.8); Ln(118, 156, 118, 176, 1.8);
+      var idea = u > 4 && u < 5.6;
+      var f = { x: 110, y: 176, mode: idea || hov ? 'sit' : 'write', face: 1, seat: 20, look: idea ? { x: 180, y: 60 } : lk, smile: idea || !!lk };
+      FIG(f);
+      if (idea){ var k = back(cl((u - 4) / .3, 0, 1)), c = I.ctx; c.save(); c.translate(180, 64); c.scale(k, k);
+        O(0, 0, 14, 2, COL.sun); Ln(-5, 16, 5, 16, 1.6); Ln(-4, 21, 4, 21, 1.6);
+        for (var r = 0; r < 6; r++){ var a = r / 6 * 6.283; Ln(Math.cos(a) * 20, Math.sin(a) * 20, Math.cos(a) * 27, Math.sin(a) * 27, 1.4); }
+        c.restore(); }
+      S([[0, 176], [300, 176]], 2);
+    },
+    /* Work & Service: walks in, hangs the coat with its badges on the rack, waves */
+    coat: function(T, lk, hov){
+      var u = T % 6;
+      WASH(210, 110, 50, 70, COL.leaf, .26, 12);
+      S([[210, 176], [210, 40]], 2.4); S([[186, 176], [210, 160], [234, 176]], 2); S([[210, 52], [190, 44]], 1.8); S([[210, 52], [230, 44]], 1.8);
+      var hung = u >= 1.8, x = u < 1.2 ? lerp(30, 140, ease(u / 1.2)) : 140;
+      function coat(cx, cy){ S([[cx, cy], [cx - 22, cy + 8], [cx - 28, cy + 60], [cx - 14, cy + 100], [cx + 14, cy + 100], [cx + 28, cy + 60], [cx + 22, cy + 8], [cx, cy]], 2, 1, null);
+        [[-16, 40, 'OHSU'], [4, 62, 'CCNY']].forEach(function(b){ R(cx + b[0], cy + b[1], 18, 22, 1.4, COL.paper); TX(b[2], cx + b[0] + 9, cy + b[1] + 14, 5.5, 'center', MONO); }); }
+      if (hung) coat(210, 56);
+      var f = { x: x, y: 176, mode: u < 1.2 ? 'walk' : u < 1.8 ? 'point' : 'wave', ph: u * 9, face: 1, look: hung ? (lk || { x: 20, y: 60 }) : { x: 210, y: 60 }, smile: hung };
+      if (hov && hung){ f.look = lk; }
+      FIG(f);
+      if (!hung){ var k = u < 1.2 ? 0 : (u - 1.2) / .6; if (k > 0){ var c = I.ctx; c.save(); c.translate(lerp(186, 210, k), lerp(90, 56, k)); c.scale(.6, .6); coat(0, 0); c.restore(); } }
+      S([[0, 176], [300, 176]], 2);
+    },
+    /* Awards: a shelf of cups and medals; one shines when the figure looks up */
+    shelf: function(T, lk, hov){
+      var u = T % 5, c = I.ctx;
+      WASH(205, 56, 95, 34, COL.sun, .3, 13);
+      c.save(); c.translate(30, -20);
+      R(80, 98, 190, 8, 2, COL.paper); Ln(100, 106, 106, 120, 1.6); Ln(250, 106, 244, 120, 1.6);
+      S([[104, 98], [100, 70], [126, 70], [122, 98]], 2); O(113, 64, 9, 1.8, COL.sun);
+      S([[146, 98], [146, 60], [176, 60], [176, 98]], 1.8); TX('2nd', 161, 84, 9, 'center', MONO);
+      S([[196, 98], [204, 54], [224, 54], [232, 98]], 1.8); O(214, 46, 7, 1.6, COL.sun);
+      R(244, 70, 22, 28, 1.6, COL.rose);
+      var shine = u > 1.4 && u < 3.6;
+      if (shine){ var k = Math.sin(cl((u - 1.4) / 2.2, 0, 1) * Math.PI); for (var r = 0; r < 8; r++){ var a = r / 8 * 6.283; Ln(214 + Math.cos(a) * 14, 46 + Math.sin(a) * 14, 214 + Math.cos(a) * (14 + 10 * k), 46 + Math.sin(a) * (14 + 10 * k), 1.4, k); } }
+      c.restore();
+      var f = { x: 70, y: 176, mode: shine ? 'point' : 'stand', face: 1, look: shine ? { x: 244, y: 26 } : (lk || { x: 200, y: 50 }), smile: shine || !!lk, surprise: shine && u < 1.7 };
+      FIG(f); S([[0, 176], [300, 176]], 2);
+    },
+    /* Dev: typing at a laptop; the code on the screen grows, then a green check */
+    laptop: function(T, lk, hov){
+      var u = T % 6;
+      WASH(190, 130, 80, 40, COL.sky, .26, 14);
+      R(120, 140, 150, 8, 2, COL.paper); Ln(132, 148, 132, 176, 2); Ln(258, 148, 258, 176, 2);
+      R(170, 132, 70, 8, 2, COL.paper); I.ctx.fillStyle = COL.paper; I.ctx.fillRect(176, 92, 58, 40); S([[174, 132], [178, 90], [234, 90], [236, 132]], 2.2);
+      var done = u > 4.2, n = I.reduce.matches ? 4 : Math.min(4, Math.floor(u * 1.1));
+      for (var k = 0; k < n; k++) Ln(184 + (k % 2) * 6, 100 + k * 7, 184 + (k % 2) * 6 + 14 + (k * 7) % 18, 100 + k * 7, 1.2, .7);
+      if (done){ S([[196, 112], [203, 120], [218, 102]], 2.6, 1, COL.leaf); }
+      R(76, 150, 30, 6, 1.8, COL.paper); Ln(80, 156, 80, 176, 1.8); Ln(102, 156, 102, 176, 1.8);
+      var f = { x: 96, y: 176, mode: done || hov ? 'sit' : 'write', face: 1, seat: 20, look: done ? (lk || { x: 40, y: 50 }) : lk, smile: done || !!lk };
+      FIG(f); S([[0, 176], [300, 176]], 2);
+    },
     mail: function(T, lk, hov){
       var u = T % 6;
       WASH(200, 130, 60, 48, COL.rose, .26, 7);

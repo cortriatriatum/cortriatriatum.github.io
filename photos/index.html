@@ -1,0 +1,71 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.classList.add('js');</script>
+{% include ink/head.html %}
+<title>Photos · Rick Mathews, PhD</title>
+<meta name="description" content="A walk through a gallery of photographs by Rick Mathews, PhD.">
+<link href="https://cortriatriatum.github.io/photos/" rel="canonical"/>
+<meta name="robots" content="noindex">
+<meta content="https://cortriatriatum.github.io/img/share.jpg" property="og:image"/>
+<style>
+{% include strip.css %}
+  .lb{border:0;padding:0;margin:0;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;background:rgba(10,10,10,.94);color:#f4f1ea}
+  .lb::backdrop{background:rgba(10,10,10,.94)}
+  .lb[open]{display:grid;grid-template-rows:minmax(0,1fr) auto}
+  .lb .stage{display:grid;place-items:center;min-height:0;padding:56px 64px 8px}
+  .lb img{display:block;width:auto;height:auto;max-width:calc(100vw - 128px);max-height:calc(100vh - 130px);max-height:calc(100dvh - 130px);object-fit:contain}
+  .lb .bar{display:flex;align-items:center;gap:12px;justify-content:center;padding:10px 16px 18px;font:500 14px/1.3 var(--mono)}
+  .lb .bar .cap{min-width:0;text-align:center}
+  .lb button{font:600 14px/1 var(--grot);border:2px solid #f4f1ea;background:transparent;color:#f4f1ea;border-radius:999px;padding:10px 14px;cursor:pointer}
+  .lb button:focus-visible{outline:3px solid var(--pop);outline-offset:2px}
+  .lb .x{position:absolute;top:12px;right:12px}
+  .lb .nav-b{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;padding:0;font-size:20px}
+  .lb .prev{left:10px}.lb .next{right:10px}
+    .lb .stage{padding:56px 8px 8px}
+    .lb img{max-width:calc(100vw - 16px);max-height:calc(100dvh - 190px)}
+    .lb .nav-b{top:auto;bottom:12px;transform:none}
+    .lb .bar{padding:10px 64px 18px}
+  .lb .bar .cap{min-width:0;text-align:center}
+  .plain-view .wall-link{font:700 20px/1.3 var(--grot)}
+</style>
+</head>
+<body class="strip-page" data-scene="gallery">
+{% assign navpage = "photos" %}{% include ink/nav.html %}
+<canvas id="strip" class="strip-ui" role="img" aria-label="An ink drawing of a gallery. The photographs hang on the wall in frames, newest first, each with a label giving the place and the date. The figure walks from one to the next as you scroll."></canvas>
+<div id="stripHot" class="strip-ui"></div>
+<div id="stripLen" class="strip-ui"></div>
+<header class="strip-top strip-ui">
+  <h1>The gallery</h1>
+  <div class="mode" role="group" aria-label="Show photos in"><button type="button" data-mode="c" aria-pressed="true">Color</button><button type="button" data-mode="bw" aria-pressed="false">Black &amp; white</button></div>
+  <a href="{{ '/photos/all/' | relative_url }}">All at once</a>
+  <span class="sky" id="stripSky" aria-live="off"></span>
+</header>
+<nav class="sr sr-list strip-ui" aria-label="Every photo, in order"><ol id="stripList"></ol></nav>
+<nav class="strip-bar strip-ui" aria-label="Move through the gallery">
+  <button type="button" class="jb" id="stripPrev"><span aria-hidden="true">←</span> Back</button>
+  <span class="ct" id="stripCount" aria-live="polite"></span>
+  <button type="button" class="jb key" id="stripNext">Next <span aria-hidden="true">→</span></button>
+</nav>
+<main class="plain-view" id="main">
+  <h1>Photos</h1>
+  <p class="wall-link"><a href="{{ '/photos/all/' | relative_url }}">See all {{ site.data.photos.photos.size }} photographs</a></p>
+  <p><a href="{{ '/explore/' | relative_url }}#room">Back to the room</a></p>
+</main>
+<dialog class="lb" id="lb" aria-label="Photo viewer">
+  <div class="stage"><img id="lbImg" alt=""></div>
+  <div class="bar"><span class="cap" id="lbCap" aria-live="polite"></span></div>
+  <button type="button" class="x" id="lbX">Close</button>
+  <button type="button" class="nav-b prev" id="lbPrev" aria-label="Previous photo">←</button>
+  <button type="button" class="nav-b next" id="lbNext" aria-label="Next photo">→</button>
+</dialog>
+<script type="application/json" id="photoData">[{% for p in site.data.photos.photos %}{"base":"{{ '/img/photos/' | append: p.id | relative_url }}","place":"{{ p.place }}","date":"{{ p.date }}","o":{{ p.o }},"w":{{ p.w }},"h":{{ p.h }},"bwonly":{{ p.bwonly }}}{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
+{% include ink/foot.html %}
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261120" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261120" defer></script>
+<script src="{{ '/assets/strip.js' | relative_url }}?v=20261120" defer></script>
+</body>
+</html>

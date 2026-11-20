@@ -1,0 +1,95 @@
+# Written by tools/photo-review/export.py. Edit decisions.py, then re-run.
+groups:
+  - {id: Abruzzo, label: "Abruzzo, Italy", years: "2025"}
+  - {id: Sorrento, label: "Sorrento, Italy", years: "2025"}
+  - {id: Florence, label: "Florence, Italy", years: "2025"}
+  - {id: Umbria, label: "Umbria, Italy", years: "2025"}
+  - {id: Siena, label: "Siena, Italy", years: "2025"}
+  - {id: Bologna, label: "Bologna, Italy", years: "2025"}
+  - {id: Portland, label: "Portland", years: "2021–2025"}
+  - {id: Oregon, label: "Oregon", years: "2023–2025"}
+  - {id: Maryhill, label: "Maryhill, Washington", years: "2025"}
+  - {id: Seattle, label: "Seattle", years: "2021"}
+  - {id: Denver, label: "Denver", years: "2021"}
+photos:
+  - {id: img-6862, group: Abruzzo, place: "Abruzzo", w: 1600, h: 1200, bwonly: false, date: "2025-10", o: 21}
+  - {id: img-6761, group: Abruzzo, place: "Abruzzo", w: 1600, h: 1200, bwonly: false, date: "2025-10", o: 28}
+  - {id: img-6843, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 22}
+  - {id: img-6837, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 23}
+  - {id: img-6834, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 24}
+  - {id: img-6810, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 25}
+  - {id: img-6807, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 26}
+  - {id: img-6787, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 27}
+  - {id: img-6747, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 29}
+  - {id: img-6731, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 30}
+  - {id: img-6653, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 31}
+  - {id: img-6651, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 32}
+  - {id: img-6650, group: Abruzzo, place: "Abruzzo", w: 1600, h: 1200, bwonly: false, date: "2025-10", o: 33}
+  - {id: img-6649, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 34}
+  - {id: img-6647, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 35}
+  - {id: img-6631, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 36}
+  - {id: img-6630, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 37}
+  - {id: img-6626, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 38}
+  - {id: img-6617, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 39}
+  - {id: img-6585, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 40}
+  - {id: img-6561, group: Abruzzo, place: "Abruzzo", w: 1600, h: 1200, bwonly: false, date: "2025-10", o: 41}
+  - {id: img-6538, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 42}
+  - {id: img-6466, group: Abruzzo, place: "Abruzzo", w: 1600, h: 1200, bwonly: false, date: "2025-10", o: 43}
+  - {id: img-6447, group: Abruzzo, place: "Abruzzo", w: 1600, h: 1200, bwonly: false, date: "2025-10", o: 44}
+  - {id: img-6412, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 45}
+  - {id: img-6411, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 46}
+  - {id: img-6406, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 47}
+  - {id: img-6405, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 48}
+  - {id: img-6397, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 49}
+  - {id: img-6339, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 50}
+  - {id: img-6334, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 51}
+  - {id: img-6329, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 52}
+  - {id: img-6314, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 53}
+  - {id: img-6310, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 54}
+  - {id: img-6306, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 55}
+  - {id: img-6902, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 20}
+  - {id: img-6994, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 19}
+  - {id: img-7014, group: Abruzzo, place: "Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 18}
+  - {id: img-7088, group: Abruzzo, place: "Vasto, Abruzzo", w: 1600, h: 1200, bwonly: false, date: "2025-11", o: 16}
+  - {id: img-7076, group: Abruzzo, place: "Vasto, Abruzzo", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 17}
+  - {id: img-7177, group: Sorrento, place: "Sorrento", w: 1600, h: 1200, bwonly: false, date: "2025-11", o: 13}
+  - {id: img-7178, group: Sorrento, place: "Sorrento", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 12}
+  - {id: img-7125, group: Sorrento, place: "Sorrento", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 15}
+  - {id: img-7154, group: Sorrento, place: "Sorrento", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 14}
+  - {id: img-7305, group: Florence, place: "Florence", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 9}
+  - {id: img-7326, group: Florence, place: "Florence", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 8}
+  - {id: img-7237, group: Florence, place: "Florence", w: 1600, h: 1200, bwonly: false, date: "2025-11", o: 10}
+  - {id: img-7208, group: Florence, place: "Florence", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 11}
+  - {id: img-7417, group: Umbria, place: "Umbria", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 7}
+  - {id: img-7451, group: Siena, place: "Siena", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 5}
+  - {id: img-7454, group: Siena, place: "Siena", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 4}
+  - {id: img-7465, group: Siena, place: "Siena", w: 1600, h: 1200, bwonly: false, date: "2025-11", o: 3}
+  - {id: img-7445, group: Siena, place: "Siena", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 6}
+  - {id: img-7543, group: Bologna, place: "Bologna", w: 1200, h: 1600, bwonly: false, date: "2025-11", o: 2}
+  - {id: img-7617, group: Portland, place: "Portland", w: 1600, h: 1200, bwonly: false, date: "2025-11", o: 1}
+  - {id: heaq5627, group: Portland, place: "Portland", w: 1600, h: 1200, bwonly: false, date: "2023-09", o: 65}
+  - {id: img-e5151, group: Portland, place: "Portland", w: 1200, h: 1600, bwonly: false, date: "2025-03", o: 64}
+  - {id: img-e1339, group: Portland, place: "Portland", w: 1200, h: 1600, bwonly: false, date: "2021-04", o: 77}
+  - {id: img-e1245, group: Portland, place: "Portland", w: 1200, h: 1600, bwonly: false, date: "2021-02", o: 78}
+  - {id: img-e5753, group: Portland, place: "Portland", w: 1200, h: 1600, bwonly: false, date: "2025-07", o: 63}
+  - {id: img-3788, group: Oregon, place: "Oregon Coast", w: 1200, h: 1600, bwonly: false, date: "2023-09", o: 66}
+  - {id: oytf2732, group: Oregon, place: "Oregon Coast", w: 1200, h: 1600, bwonly: false, date: "", o: 81}
+  - {id: sesq3412, group: Oregon, place: "Oregon Coast", w: 1200, h: 1600, bwonly: false, date: "", o: 80}
+  - {id: img-3579, group: Oregon, place: "Central Oregon", w: 1600, h: 1200, bwonly: false, date: "2023-05", o: 67}
+  - {id: img-6255, group: Oregon, place: "", w: 1200, h: 1600, bwonly: false, date: "2025-10", o: 56}
+  - {id: sfmy2202, group: Oregon, place: "", w: 900, h: 1600, bwonly: false, date: "", o: 79}
+  - {id: img-6110, group: Maryhill, place: "Maryhill, Washington", w: 1600, h: 1200, bwonly: false, date: "2025-09", o: 57}
+  - {id: img-6089, group: Maryhill, place: "Maryhill, Washington", w: 1600, h: 497, bwonly: false, date: "2025-09", o: 59}
+  - {id: img-6090, group: Maryhill, place: "Maryhill, Washington", w: 1600, h: 1200, bwonly: false, date: "2025-09", o: 58}
+  - {id: img-6079, group: Maryhill, place: "Maryhill, Washington", w: 1200, h: 1600, bwonly: false, date: "2025-09", o: 60}
+  - {id: img-6064, group: Maryhill, place: "Maryhill, Washington", w: 1600, h: 1200, bwonly: false, date: "2025-09", o: 61}
+  - {id: img-6057, group: Maryhill, place: "Maryhill, Washington", w: 1200, h: 1600, bwonly: false, date: "2025-09", o: 62}
+  - {id: img-e1873, group: Seattle, place: "Seattle", w: 1200, h: 1600, bwonly: false, date: "2021-09", o: 74}
+  - {id: img-e1878, group: Seattle, place: "Seattle", w: 1200, h: 1600, bwonly: false, date: "2021-09", o: 73}
+  - {id: img-e1880, group: Seattle, place: "Seattle", w: 1200, h: 1600, bwonly: false, date: "2021-09", o: 72}
+  - {id: img-e1881, group: Seattle, place: "Seattle", w: 1200, h: 1600, bwonly: false, date: "2021-09", o: 71}
+  - {id: bsdi8465, group: Seattle, place: "Seattle", w: 900, h: 1600, bwonly: false, date: "2021-09", o: 75}
+  - {id: fxyie0903, group: Seattle, place: "Seattle", w: 1600, h: 900, bwonly: true, date: "2021-09", o: 76}
+  - {id: icut8370, group: Seattle, place: "", w: 1200, h: 1600, bwonly: true, date: "2021-09", o: 70}
+  - {id: img-1945, group: Denver, place: "Denver", w: 1200, h: 1600, bwonly: false, date: "2021-10", o: 69}
+  - {id: aauv9058, group: Denver, place: "Denver", w: 1600, h: 900, bwonly: false, date: "2021-10", o: 68}

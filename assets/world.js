@@ -10,7 +10,7 @@
    Backward runs it in reverse. Where you go through a door, stairs or an elevator, the page washes to paper
    and back. In the room and the lab you walk past each object in turn: the one you are at lights up, its label
    pops up, and the panel on the left shows what is in it. Next and Previous step object by object there, and
-   stop by stop elsewhere; the stop list on the right jumps. Plain mode goes to /directory/. */
+   stop by stop elsewhere; the stop list on the right jumps. Plain mode goes to the simple version at /. */
 (function(){
   'use strict';
   var I = window.Ink; if (!I) return;
@@ -19,7 +19,7 @@
   var cv = document.getElementById('world'); if (!cv) return;
   var ctx = cv.getContext('2d'), hot = document.getElementById('hot'), loopNav = document.getElementById('loopNav');
   var still = function(){ return I.reduce.matches; };
-  var DIRECTORY = (hot && hot.dataset.directory) || '/directory/';
+  var DIRECTORY = (hot && hot.dataset.directory) || '/', FOOD = (hot && hot.dataset.food) || '/food/';
 
   /* ---------- the loop ---------- */
   /* The room and the lab are walked through object by object: a short way in, a dwell at each object
@@ -27,6 +27,7 @@
      scroll position is filled in below as hs.at. The other stops are drawn against fixed ranges (d). */
   var WALK = 60, DWELL = 110, IN = 100, OUT = 150;
   var ROOM_HOTS = [
+    { id: 'photos', label: 'Photos on the wall · Photos', r: [155, 176, 120, 130], stand: 225, act: 'point', lookY: 245 },
     { id: 'notes', label: 'Notebook · Notes', r: [270, 392, 130, 46], stand: 330, act: 'write', lookY: 420 },
     { id: 'dev', label: 'Laptop · Dev', r: [440, 376, 80, 62], stand: 470, act: 'point', lookY: 400 },
     { id: 'awards', label: 'Shelf · Awards', r: [560, 150, 210, 110], stand: 600, act: 'point', lookY: 200 },
@@ -210,6 +211,11 @@
     WASH(470, 140, 160, 70, COL.night, .18, 31); R(330, 70, 260, 150, 2.4, null); Ln(460, 70, 460, 220, 1.6);
     ctx.save(); ctx.beginPath(); ctx.rect(332, 72, 256, 146); ctx.clip(); tiles(332, 72, 256, 146);
     var tp = still() ? .5 : (T * .12) % 1.6; R(332 + tp * 600 - 300, 120, 240, 80, 2, COL.paper); for (var w = 0; w < 4; w++) R(332 + tp * 600 - 290 + w * 58, 134, 40, 26, 1.4, COL.sun); ctx.restore();
+    /* photos on the wall by the stairs */
+    WASH(214, 250, 62, 56, COL.sky, .2, 30);
+    [[160, 200, 50, 42, COL.sky], [218, 194, 52, 60, COL.leaf], [160, 250, 50, 50, COL.rose], [218, 262, 52, 38, COL.sun]].forEach(function(f){
+      R(f[0], f[1], f[2], f[3], 2, P); R(f[0] + 6, f[1] + 6, f[2] - 12, f[3] - 12, 1.2, null); WASH(f[0] + f[2] / 2, f[1] + f[3] / 2, f[2] / 3, f[3] / 4, f[4], .45, f[0]);
+      S([[f[0] + 8, f[1] + f[3] - 9], [f[0] + f[2] * .4, f[1] + f[3] * .45], [f[0] + f[2] * .6, f[1] + f[3] * .65], [f[0] + f[2] - 8, f[1] + f[3] * .35]], 1.1, .7); });
     /* the desk: notebook and laptop */
     WASH(420, 440, 220, 40, COL.sun, .22, 32);
     R(240, 436, 340, 14, 2.4, P); Ln(260, 450, 260, 610, 2.2); Ln(560, 450, 560, 610, 2.2);
@@ -285,10 +291,10 @@
   }
 
   /* ================= 1 · the street at South Waterfront ================= */
-  var DIR = ['Research', 'Notes', 'Education', 'Work & Service', 'Awards', 'Dev', 'Food recs', 'Contact'];
-  var DIR_IDS = ['research', 'notes', 'education', 'work', 'awards', 'dev', 'food', 'contact'];
+  var DIR = ['Research', 'Notes', 'Education', 'Work & Service', 'Awards', 'Dev', 'Contact'];
+  var DIR_IDS = ['research', 'notes', 'education', 'work', 'awards', 'dev', 'contact'];
   var streetTarget = null, streetAct = null, dirLines = [];
-  var BX = 410, BY = 230, BW = 220, BH = 190, LH = 18;            // the directory board, big enough to read
+  var BX = 410, BY = 230, BW = 220, BH = 190, LH = 20;            // the directory board, big enough to read
   function drawStreet(){
     var kind = WX ? WX.kind : 'cloudy', nt = night(), T = I.T, i, k;
     var wet = kind === 'drizzle' || kind === 'rain' || kind === 'storm', windy = WX ? Math.min(1, WX.wind / 25) : .2;
@@ -320,6 +326,9 @@
     /* the Aerial Tram's lower terminal */
     R(40, 380, 150, 88, 2.2, COL.paper); S([[30, 380], [200, 380]], 2.6); TX('AERIAL TRAM', 115, 410, 13, 'center', MONO); R(70, 424, 30, 44, 1.6, COL.paper); R(130, 424, 30, 44, 1.6, COL.paper);
     Ln(110, 380, 360, 120, 1.4, .8); Ln(110, 388, 360, 128, 1.4, .8);
+    /* the street sign at the tram's corner: SW Bond Ave and SW Gibbs St */
+    Ln(238, GL, 238, 282, 2.2); R(176, 262, 124, 18, 1.8, COL.leaf); R(192, 282, 92, 16, 1.6, COL.leaf);
+    ctx.fillStyle = '#fff'; ctx.font = '700 10.5px ' + MONO; ctx.textAlign = 'center'; ctx.fillText('SW BOND AVE', 238, 275); ctx.font = '700 9.5px ' + MONO; ctx.fillText('SW GIBBS ST', 238, 294);
     if (nt) WASH(276, 300, 60, 110, COL.sun, .3, 11);
     S([[266, GL], [266, 250], [280, 236], [298, 238]], 2.4); O(300, 248, 9, 1.8, nt ? COL.sun : COL.paper);
     /* the directory board */
@@ -422,7 +431,7 @@
   if (hot){
     tag('tram', 'Aerial Tram up to OHSU ↑', 115, SY + 372, 'street', function(){ streetAct = 'tram'; goBack(HASH.lab); setTimeout(function(){ streetAct = null; }, 900); });
     tag('station', 'Down to the station ↓', 746, SY + 304, 'street', function(){ streetAct = 'station'; goForward(HASH.room); setTimeout(function(){ streetAct = null; }, 900); });
-    tag('food', 'Coffee & food recs', 891, SY + 366, 'street', function(){ streetAct = 'food'; openPanel('food'); setTimeout(function(){ streetAct = null; }, 1200); });
+    tag('food', 'Into the food cart pod →', 891, SY + 366, 'street', function(){ streetAct = 'food'; setTimeout(function(){ location.href = FOOD; }, still() ? 0 : 450); });
     tags[tags.length - 1].el.classList.add('wide-only');
     tag('roomout', 'To the platform →', 1120 * K, ROOM_Y + 140 * K, 'room', function(){ goForward(HASH.platform); });
     tag('roomup', '↑ Back up to the street', 45 * K + 40, ROOM_Y + 140 * K, 'room', function(){ goBack(HASH.street); });
