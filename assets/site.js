@@ -139,6 +139,7 @@
   }
   function highlight(id){
     var el = document.getElementById(id); if (!el) return false;
+    if (window.openFold) window.openFold(id);
     var det = el.closest('details'); if (det) det.open = true;
     var fl = el.closest('[data-city-list]'); if (fl && fl.hidden){ var fb = fl.closest('[data-food]').querySelector('[data-city="' + fl.dataset.cityList + '"]'); if (fb) fb.click(); }
     el.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });

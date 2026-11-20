@@ -1,0 +1,13 @@
+# The photo show: 24 prints chosen from the archive, hung as five series. Order here is the order on the wall.
+# Each id is a photo in _data/photos.yml (its file is img/photos/<id>-bw-<size>.webp).
+series:
+  - title: Windows
+    photos: [img-7543, img-7445, img-6747, img-7014, img-6653, img-e1339]
+  - title: Looking up
+    photos: [img-7451, img-1945, img-e1873, img-7305]
+  - title: Ways through
+    photos: [img-6731, img-6339, img-6405, img-6902, img-6787]
+  - title: Far off
+    photos: [img-6761, img-6862, img-7177, img-6994, img-3788, oytf2732]
+  - title: Watching
+    photos: [img-e5151, img-6064, img-7076]

@@ -68,36 +68,53 @@
   /* ================= the gallery ================= */
   var imgs = {};
   function src(p, w){ return p.base + '-bw-' + w + '.webp'; }   // black and white only; color on request
-  function img(p){ var u = src(p, 640); if (!imgs[u]){ var im = new Image(); im.decoding = 'async'; im.src = u; imgs[u] = im; } return imgs[u]; }
+  /* the print's file: the 1600 px one once it is shown large (sharp on any screen), else the 640 px one */
+  function img(p, big){ var u = src(p, big ? 1600 : 640); if (!imgs[u]){ var im = new Image(); im.decoding = 'async'; im.src = u; imgs[u] = im; } return imgs[u]; }
+  function bigOn(s){ return s.w * K * dpr > 640; }
+  function best(s){ var b = img(s.p, bigOn(s)); if (b.complete && b.naturalWidth) return b; var a = imgs[src(s.p, 640)]; return a && a.complete && a.naturalWidth ? a : b; }
   var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   function when(d){ if (!d) return ''; var b = d.split('-'); return MONTHS[+b[1] - 1] + ' ' + b[0]; }
+  var ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+  /* each print's place, live: its time and weather now (city centres, never where the photo was taken) */
+  var PLACES = { 'Bologna': [44.49, 11.34], 'Siena': [43.32, 11.33], 'Abruzzo': [42.35, 13.40], 'Vasto, Abruzzo': [42.11, 14.71], 'Florence': [43.77, 11.25], 'Sorrento': [40.63, 14.37],
+    'Portland': [45.52, -122.68], 'Oregon Coast': [44.63, -124.05], 'Central Oregon': [44.06, -121.31], 'Seattle': [47.61, -122.33], 'Denver': [39.74, -104.99], 'Maryhill, Washington': [45.68, -120.82] };
+  var PWX = {};
+  function nowAt(place){ var w = PWX[place]; return w ? I.timeIn(w.tz) + ', ' + w.tempF + '°F, ' + I.WORDS[w.kind] : ''; }
   function setupGallery(){
-    var data = JSON.parse(document.getElementById('photoData').textContent), x = 520, year = null;
-    data.sort(function(a, b){ return a.o - b.o; });
-    data.forEach(function(p, i){
-      var y = (p.date || '').slice(0, 4) || 'Undated';
-      if (y !== year){ year = y; signs.push({ x: x, t: y }); x += 460; }
-      var box = p.w >= p.h ? [280, 280 * p.h / p.w] : [230 * p.w / p.h, 230];
-      if (box[1] > 230){ box = [box[0] * 230 / box[1], 230]; }
-      stops.push({ p: p, x: x, w: box[0], h: box[1], cy: 250, stand: x - box[0] / 2 - 70, act: 'stand', label: (p.place || 'Photo') + (p.date ? ', ' + when(p.date) : '') });
-      x += Math.max(500, box[0] + 300);
+    /* hung in the order of _data/gallery.yml: five series, each opened by its own title wall */
+    var data = JSON.parse(document.getElementById('photoData').textContent), x = 760, cur = 0;
+    data.forEach(function(p){
+      if (p.si !== cur){ cur = p.si; signs.push({ x: x, t: p.series, n: ROMAN[p.si] || p.si, c: p.sn }); x += 520; }
+      var box = p.w >= p.h ? [600, 600 * p.h / p.w] : [410 * p.w / p.h, 410];
+      if (box[1] > 410){ box = [box[0] * 410 / box[1], 410]; }
+      stops.push({ p: p, x: x, w: box[0], h: box[1], cy: 252, stand: x - box[0] / 2 - 80, act: 'stand',
+        label: (p.place || 'Untitled') + (p.date ? ', ' + when(p.date) : ''), series: p.series + ' · ' + p.k + ' of ' + p.sn });
+      x += Math.max(820, box[0] + 360);
     });
     END = x + 400;
     stops.forEach(function(s){ s.look = { x: s.x, y: s.cy }; });
+    var seen = {}, list = []; stops.forEach(function(s){ var pl = s.p.place; if (PLACES[pl] && !seen[pl]){ seen[pl] = 1; list.push({ key: pl, lat: PLACES[pl][0], lon: PLACES[pl][1] }); } });
+    if (list.length) I.wxAt(list).then(function(w){ PWX = w || {}; });
   }
   function drawGallery(lo, hi, wk){
     var P = COL.paper, T = I.T;
     /* wall, ceiling, floor */
-    S([[lo, 40], [hi, 40]], 2.2); S([[lo, FLOOR], [hi, FLOOR]], 2.6); S([[lo, FLOOR - 14], [hi, FLOOR - 14]], 1.4, .6);
+    S([[lo, 18], [hi, 18]], 2.2); S([[lo, FLOOR], [hi, FLOOR]], 2.6); S([[lo, FLOOR - 14], [hi, FLOOR - 14]], 1.4, .6);
     for (var b = Math.floor(lo / 90) * 90; b < hi; b += 90) Ln(b, FLOOR + 6, b - 40, FLOOR + 60, 1.2, .35);
     H(lo, FLOOR + 4, hi - lo, 70, 16, .1);
-    /* high windows every 1400 units: the real sky */
-    for (var wx = Math.floor(lo / 1400) * 1400 + 180; wx < hi; wx += 1400) skyIn(wx, 54, 150, 60, (wx / 1400) | 0);
     /* entrance and exit */
     if (lo < 400){ R(60, 200, 150, FLOOR - 200, 2.4, P); Ln(135, 210, 135, FLOOR, 1.6); R(70, 170, 130, 24, 1.8, P); TX('← THE ROOM', 135, 187, 12, 'center', MONO); }
     if (hi > END - 300){ R(END - 220, 200, 150, FLOOR - 200, 2.4, P); R(END - 230, 170, 170, 24, 1.8, P); TX('BACK TO THE CV →', END - 145, 187, 11, 'center', MONO); }
     /* year signs, painted on the wall */
-    signs.forEach(function(s){ if (s.x < lo - 300 || s.x > hi + 300) return; WASH(s.x + 120, 220, 90, 46, COL.sun, .28, 50); TX(s.t, s.x + 120, 236, 64, 'center'); Ln(s.x + 50, 262, s.x + 190, 262, 2); });
+    /* the entrance wall: what the show is */
+    if (lo < 900){ ctx.fillStyle = COL.ink; ctx.textAlign = 'left'; ctx.font = '500 13px ' + MONO; ctx.fillText('PHOTOGRAPHS', 300, 190);
+      ctx.font = '800 54px "Bricolage Grotesque",sans-serif'; ctx.fillText('Rick Mathews', 296, 246);
+      ctx.font = '400 19px Literata,serif'; ctx.fillStyle = COL.soft; ctx.fillText(stops.length + ' prints in ' + signs.length + ' series, black and white.', 300, 286); ctx.fillText('Walk on. Click a print to look closer.', 300, 314); ctx.fillStyle = COL.ink; Ln(300, 336, 420, 336, 2.4); }
+    /* each series opens with its title, painted on the wall */
+    signs.forEach(function(s){ if (s.x < lo - 400 || s.x > hi + 400) return; var cx = s.x + 170;
+      WASH(cx, 236, 150, 70, COL.sun, .26, 50 + s.n.length); ctx.fillStyle = COL.ink; ctx.textAlign = 'center';
+      ctx.font = '500 14px ' + MONO; ctx.fillText('SERIES ' + s.n, cx, 178); TX(s.t, cx, 252, 66, 'center'); Ln(cx - 90, 280, cx + 90, 280, 2.2);
+      ctx.font = '12px ' + MONO; ctx.fillStyle = COL.soft; ctx.fillText(s.c + (s.c === 1 ? ' print' : ' prints'), cx, 304); ctx.fillStyle = COL.ink; });
     /* benches */
     for (var bx = 1100; bx < END; bx += 2100){ if (bx < lo - 200 || bx > hi + 200) continue; R(bx - 80, FLOOR - 46, 160, 12, 2, P); Ln(bx - 64, FLOOR - 34, bx - 64, FLOOR, 2); Ln(bx + 64, FLOOR - 34, bx + 64, FLOOR, 2); }
     /* the prints */
@@ -105,18 +122,20 @@
       if (s.x + s.w < lo - 60 || s.x - s.w > hi + 60) return;
       var here = wk.i === i, hov = hoverI === i, x0 = s.x - s.w / 2, y0 = s.cy - s.h / 2;
       /* the light over it */
-      ctx.save(); ctx.globalAlpha = here || hov ? .5 : .22; ctx.fillStyle = COL.sun; ctx.beginPath(); ctx.moveTo(s.x - 14, 44); ctx.lineTo(x0 - 20, y0 + s.h + 30); ctx.lineTo(x0 + s.w + 20, y0 + s.h + 30); ctx.lineTo(s.x + 14, 44); ctx.closePath(); ctx.fill(); ctx.restore();
-      S([[s.x - 10, 42], [s.x - 6, 54], [s.x + 6, 54], [s.x + 10, 42]], 1.6);
+      ctx.save(); ctx.globalAlpha = here || hov ? .42 : .16; ctx.fillStyle = COL.sun; ctx.beginPath(); ctx.moveTo(s.x - 14, 30); ctx.lineTo(x0 - 20, y0 + s.h + 30); ctx.lineTo(x0 + s.w + 20, y0 + s.h + 30); ctx.lineTo(s.x + 14, 30); ctx.closePath(); ctx.fill(); ctx.restore();
+      Ln(s.x, 18, s.x, 24, 1.4); S([[s.x - 10, 24], [s.x - 6, 32], [s.x + 6, 32], [s.x + 10, 24]], 1.6);
       /* frame, mat, photo */
       ctx.fillStyle = P; ctx.fillRect(x0 - 16, y0 - 16, s.w + 32, s.h + 32);
-      var im = img(s.p); if (im.complete && im.naturalWidth){ ctx.drawImage(im, x0, y0, s.w, s.h); } else { H(x0, y0, s.w, s.h, 10, .15); }
+      var im = best(s); if (im.complete && im.naturalWidth){ ctx.drawImage(im, x0, y0, s.w, s.h); } else { ctx.fillStyle = COL.tint; ctx.fillRect(x0, y0, s.w, s.h); }
       R(x0 - 16, y0 - 16, s.w + 32, s.h + 32, here || hov ? 3.2 : 2.6, null); R(x0, y0, s.w, s.h, 1.4, null);
       if (here || hov) R(x0 - 22, y0 - 22, s.w + 44, s.h + 44, 1.2, null);
       /* the wall label */
-      var narrow = cw < 700, lx = narrow ? s.x - 75 : x0 + s.w + 34, ly = narrow ? y0 + s.h + 30 : s.cy + s.h / 2 - 50;
-      R(lx, ly, 150, 50, 1.4, P);
+      var narrow = cw < 700, lx = narrow ? s.x - 75 : x0 + s.w + 34, ly = narrow ? y0 + s.h + 26 : s.cy + s.h / 2 - 98;
+      s.lx = lx; s.ly = ly; R(lx, ly, 150, 72, 1.4, P); Ln(lx + 9, ly + 47, lx + 141, ly + 47, .8, .4);
       ctx.fillStyle = COL.ink; ctx.textAlign = 'left'; ctx.font = '600 13px ' + MONO; fitText(s.p.place || 'Untitled', lx + 9, ly + 20, 134);
       ctx.font = '12px ' + MONO; ctx.fillStyle = COL.soft; fitText(when(s.p.date) || 'Undated', lx + 9, ly + 38, 134); ctx.fillStyle = COL.ink;
+      ctx.font = '11px ' + MONO; ctx.fillStyle = COL.soft; fitText(s.series, lx + 9, ly + 62, 134); ctx.fillStyle = COL.ink;
+      var pw = PWX[s.p.place]; if (pw && !narrow){ R(lx, ly + 76, 150, 22, 1.1, COL.tint); ctx.font = '10.5px ' + MONO; ctx.fillStyle = COL.ink; fitText('Now ' + I.timeIn(pw.tz) + ' · ' + pw.tempF + '°F', lx + 8, ly + 91, 136); }
     });
   }
   function fitText(t, x, y, w){ while (ctx.measureText(t).width > w && t.length > 4) t = t.slice(0, -2) + '…'; ctx.fillText(t, x, y); }
@@ -208,7 +227,7 @@
   /* the photo viewer */
   var lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCap'), lbI = 0;
   function showPhoto(i){ lbI = (i + stops.length) % stops.length; var s = stops[lbI]; lbImg.src = src(s.p, 1600); lbImg.alt = 'Photo: ' + s.label;
-    lbCap.textContent = s.label + ' · ' + (lbI + 1) + ' / ' + stops.length; new Image().src = src(stops[(lbI + 1) % stops.length].p, 1600);
+    var lw = nowAt(s.p.place); lbCap.textContent = s.series + ' · ' + s.label + (lw ? ' · there now: ' + lw : ''); new Image().src = src(stops[(lbI + 1) % stops.length].p, 1600);
     var ask = document.getElementById('lbColor'); if (ask) ask.dataset.prefill = 'Could I see your photo "' + s.label + '" in color?'; }
   if (lb){
     document.getElementById('lbX').addEventListener('click', function(){ lb.close(); });
@@ -230,7 +249,7 @@
     u = still() ? ut : lerp(u, ut, .16); if (Math.abs(u - ut) < .3) u = ut;
     var wk = walkerAt(u), cur = wk.i >= 0 ? wk.i : wk.near; curI = cur;
     var s = stops[cur], goal = wk.i >= 0 ? s.x : lerp(stops[Math.max(0, wk.near - 1)].x, s.x, wk.w || 0);
-    if (u < IN) goal = lerp(stops[0].x - 300, stops[0].x, ease(u / IN));
+    if (u < IN) goal = lerp(cw < 700 ? 430 : 640, stops[0].x, ease(u / IN));
     camX = goal;
     if (cw < 700) camX = goal - 40;
     zoomK = still() ? zoomGoal : lerp(zoomK, zoomGoal, .14); if (Math.abs(zoomK - zoomGoal) < .01){ zoomK = zoomGoal; if (zoomGoal === 0) zoomTo = null; }
@@ -241,7 +260,7 @@
     var p0 = toScreen(0, 0), p1 = toScreen(1, 1), sc = p1[0] - p0[0];
     ctx.setTransform(dpr * sc, 0, 0, dpr * sc, dpr * p0[0], dpr * p0[1]);
     var lo = camX - cw / 2 / K - 100, hi = camX + cw / 2 / K + 100; if (lo < -400) lo = -400;
-    if (scene === 'library') drawLibrary(lo, hi, wk); else drawGallery(lo, hi, wk);
+    if (scene === 'library') drawLibrary(lo, hi, wk); else { for (var pre = Math.max(0, cur - 1); pre <= Math.min(stops.length - 1, cur + 2); pre++) img(stops[pre].p, bigOn(stops[pre])); drawGallery(lo, hi, wk); }   /* the next prints load ahead of time */
     /* the figure, to scale */
     var look = hoverI >= 0 ? stops[hoverI].look : (wk.i >= 0 ? s.look : null);
     var f = { x: 0, y: 0, mode: wk.mode, ph: wk.ph, face: wk.face, look: look ? { x: (look.x - wk.x) / ZOOM, y: (look.y - FLOOR) / ZOOM } : null, smile: wk.i >= 0 };
@@ -250,12 +269,13 @@
     var vis = zoomGoal === 0;
     stops.forEach(function(t, i){ var a = toScreen(t.x - t.w / 2 - 16, t.cy - t.h / 2 - 16), b = toScreen(t.x + t.w / 2 + 16, t.cy + t.h / 2 + 16), on = vis && b[0] > 0 && a[0] < cw;
       var h = hits[i]; h.style.left = a[0] + 'px'; h.style.top = a[1] + 'px'; h.style.width = (b[0] - a[0]) + 'px'; h.style.height = (b[1] - a[1]) + 'px'; h.style.visibility = on ? 'visible' : 'hidden'; });
-    var top = toScreen(s.x, s.cy - s.h / 2 - 22);
-    if (labelEl.textContent !== s.label) labelEl.textContent = s.label;
-    openBtn.style.left = Math.max(openBtn.offsetWidth / 2 + 8, Math.min(cw - openBtn.offsetWidth / 2 - 8, top[0])) + 'px'; openBtn.style.top = Math.max(70 + openBtn.offsetHeight, top[1]) + 'px';
+    /* the Open label sits under the print's wall label, as in a gallery, never over the print */
+    var top = s.lx != null ? toScreen(s.lx + 75, s.ly + (cw < 700 ? 72 : 98) + 54) : toScreen(s.x, s.cy - s.h / 2 - 22);
+    var lt = scene === 'gallery' ? 'Look closer' : s.label; if (labelEl.textContent !== lt) labelEl.textContent = lt;
+    openBtn.style.left = Math.max(openBtn.offsetWidth / 2 + 8, Math.min(cw - openBtn.offsetWidth / 2 - 8, top[0])) + 'px'; openBtn.style.top = Math.max(topH + openBtn.offsetHeight + 8, top[1]) + 'px';
     openBtn.style.visibility = vis && wk.i >= 0 ? 'visible' : 'hidden'; openBtn.setAttribute('aria-label', 'Open ' + s.label);
     if (countEl){ var t2 = (cur + 1) + ' / ' + stops.length; if (countEl.textContent !== t2) countEl.textContent = t2; }
-    var sl = document.getElementById('stripSky'); if (sl){ var t3 = skyLine(); if (sl.textContent !== t3) sl.textContent = t3; }
+    var sl = document.getElementById('stripSky'); if (sl){ var t3 = scene === 'gallery' && s.p && nowAt(s.p.place) ? s.p.place + ' now · ' + nowAt(s.p.place) : skyLine(); if (sl.textContent !== t3) sl.textContent = t3; }
     requestAnimationFrame(frame);
   }
   size(); setLen(); addEventListener('resize', function(){ size(); setLen(); });

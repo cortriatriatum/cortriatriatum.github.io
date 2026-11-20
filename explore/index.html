@@ -42,6 +42,7 @@ layout: null
   .tag-in:hover,.tag-in:focus-visible{background:var(--pop);color:#fff}
   .tag-in:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   .dir-line,.hot{position:absolute;display:block;border-radius:6px;background:transparent;border:0;padding:0;cursor:pointer}
+  .hot{z-index:0}.obj{z-index:1}
   .dir-line:focus-visible,.hot:focus-visible{outline:2.5px dashed var(--pop);outline-offset:2px}
   @keyframes boil{0%{border-radius:14px 11px 15px 10px}33%{border-radius:11px 15px 10px 14px}66%{border-radius:15px 10px 13px 12px}}
   /* one panel per stop, on the left; they fade in when you arrive */
@@ -95,7 +96,7 @@ layout: null
   .loop button.here .dot{background:var(--ink)}
   .loop button:focus-visible{outline:2px solid var(--pop);outline-offset:1px;border-radius:6px}
   /* the detail panel for the room's objects and the coffee cart */
-  .panel{position:fixed;top:0;right:0;bottom:0;width:min(500px,94vw);z-index:40;background:var(--paper);border-left:1.5px solid var(--ink);
+  .panel{position:fixed;top:var(--navh,0px);right:0;bottom:0;width:min(500px,94vw);z-index:40;background:var(--paper);border-left:1.5px solid var(--ink);
     transform:translateX(104%);transition:transform .32s cubic-bezier(.2,.8,.2,1);overflow-y:auto;visibility:hidden;overscroll-behavior:contain;
     padding:calc(24px + env(safe-area-inset-top,0px)) calc(24px + env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) 26px;box-shadow:-20px 0 60px rgba(0,0,0,.08)}
   .panel.open{transform:none;visibility:visible}
@@ -113,11 +114,11 @@ layout: null
   .obj .mk{width:14px;height:14px;border-radius:50%;border:2.5px solid var(--ink);background:var(--paper);flex:none;box-sizing:border-box}
   .obj .l,.obj .go{display:none}
   .obj .go{font:600 11px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;border:1px solid currentColor;border-radius:99px;padding:3px 6px}
-  .obj:hover,.obj:focus-visible,.obj.now{background:var(--ink);color:var(--paper);padding:7px 12px 8px;border-radius:14px 11px 15px 10px;box-shadow:3px 3px 0 color-mix(in srgb,var(--ink) 25%,transparent)}
-  .obj:hover .mk,.obj:focus-visible .mk,.obj.now .mk{display:none}
-  .obj:hover .l,.obj:focus-visible .l,.obj.now .l,.obj.now .go{display:inline}
+  .obj:hover,.obj:focus-visible,.obj.now,.obj.hov{background:var(--ink);color:var(--paper);padding:7px 12px 8px;border-radius:14px 11px 15px 10px;box-shadow:3px 3px 0 color-mix(in srgb,var(--ink) 25%,transparent)}
+  .obj:hover .mk,.obj:focus-visible .mk,.obj.now .mk,.obj.hov .mk{display:none}
+  .obj:hover .l,.obj:focus-visible .l,.obj.now .l,.obj.now .go,.obj.hov .l,.obj.hov .go{display:inline}
   .obj.now{animation:pop .35s cubic-bezier(.2,1.6,.4,1),boil 1s steps(1) .35s infinite;z-index:2}
-  .obj:hover,.obj:focus-visible{background:var(--pop);color:#fff;z-index:3}
+  .obj:hover,.obj:focus-visible,.obj.hov{background:var(--pop);color:#fff;z-index:3}
   .obj:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   @keyframes pop{0%{transform:translate(-50%,-100%) scale(.4)}100%{transform:translate(-50%,-100%) scale(1)}}
   /* the room's and the lab's left-hand list, in walking order */
@@ -179,7 +180,7 @@ layout: null
     <h2 id="plat-h">Where to?</h2>
     <ol class="dep">
       <li class="now"><button type="button" data-goto-zone="train"><b class="bul">T</b><span>Marquam Hill · OHSU<small>now boarding · or just keep scrolling</small></span></button></li>
-      <li><a href="{{ '/photos/' | relative_url }}"><b class="bul">G</b><span>Gallery<small>detour · photos</small></span></a></li>
+      <li><a href="{{ '/photos/' | relative_url }}"><b class="bul">G</b><span>Art gallery<small>detour · photographs</small></span></a></li>
       <li><a href="{{ '/library/' | relative_url }}"><b class="bul">B</b><span>Library<small>detour · notes and essays</small></span></a></li>
       <li><a href="{{ '/food/' | relative_url }}"><b class="bul">F</b><span>Food recs<small>detour · city by city</small></span></a></li>
     </ol>
@@ -226,9 +227,9 @@ layout: null
 
 <aside class="panel" id="panel" aria-label="Details">
   <button type="button" class="pill close" id="panelClose">Close</button>
-  <section data-c="photos" hidden><span class="k">The photos on the wall · a door to the gallery</span><h2>Photos</h2>
-    <div class="ph-strip">{% assign _ph = "img-6761-bw,img-7451-bw,img-e1873-bw,oytf2732-bw,img-7177-bw,img-6843-bw" | split: "," %}{% for id in _ph %}<a href="{{ '/photos/' | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ '/img/photos/' | append: id | append: '-640.webp' | relative_url }}" alt="" loading="lazy" decoding="async"></a>{% endfor %}</div>
-    <div class="links"><a class="key" href="{{ '/photos/' | relative_url }}">Walk into the gallery</a><a href="{{ '/photos/all/' | relative_url }}">All {{ site.data.photos.photos.size }} at once</a></div>
+  <section data-c="photos" hidden><span class="k">The photos on the wall · a door to the art gallery</span><h2>Photos</h2>
+    <div class="ph-strip">{% assign _ph = "img-7451-bw,img-1945-bw,img-6761-bw,img-7543-bw,img-6731-bw,img-e5151-bw" | split: "," %}{% for id in _ph %}<a href="{{ '/photos/' | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ '/img/photos/' | append: id | append: '-640.webp' | relative_url }}" alt="" loading="lazy" decoding="async"></a>{% endfor %}</div>
+    <div class="links"><a class="key" href="{{ '/photos/' | relative_url }}">Walk into the art gallery</a><a href="{{ '/photos/all/' | relative_url }}">The series as a page</a></div>
     <p class="hint">In black and white. Ask me if you would like one in color.</p></section>
   <section data-c="notes" hidden><span class="k">The notebook · a door to the library</span><h2>Notes, Scribbles &amp; Ideas in Progress</h2>
     <div class="links"><a class="key" href="{{ '/library/' | relative_url }}">Walk into the library</a><a href="#subscribe" data-open="subscribe">Subscribe</a></div>
@@ -238,6 +239,9 @@ layout: null
     <h3 class="sub">Research funding</h3>{% include ink/funding.html %}</section>
   <section data-c="training" hidden><span class="k">The diplomas</span><h2>Education</h2>{% include ink/education.html %}
     <h3 class="sub">Coursework</h3>{% include ink/coursework.html %}</section>
+  <section data-c="be" hidden></section>
+  <section data-c="phd" hidden></section>
+  <section data-c="md" hidden></section>
   <section data-c="awards" hidden><span class="k">The shelf</span><h2>Awards</h2>{% include ink/awards.html %}</section>
   <section data-c="work" hidden><span class="k">The coat rack</span><h2>Work Experience &amp; Community Service</h2>{% include ink/work.html %}</section>
   <section data-c="dev" hidden><span class="k">The laptop</span><h2>Dev</h2>{% include ink/dev.html %}</section>
@@ -249,8 +253,8 @@ layout: null
 <script>
 {% include cite-share.js %}
 </script>
-<script src="{{ '/assets/ink.js' | relative_url }}?v=20261124" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}?v=20261124" defer></script>
-<script src="{{ '/assets/world.js' | relative_url }}?v=20261124" defer></script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261127" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261127" defer></script>
+<script src="{{ '/assets/world.js' | relative_url }}?v=20261127" defer></script>
 </body>
 </html>

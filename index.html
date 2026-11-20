@@ -67,6 +67,18 @@ layout: null
     .page{max-width:760px;display:grid}
     .rail{display:block}
   }
+  /* phones: the board reads like a station's list of lines. Each sign folds open when you tap it (Bio is open);
+     the page stays short enough to scan, and the end of it, with the stairs, is in reach */
+  @media (max-width: 720px){
+    .board{align-items:stretch}
+    .card[data-fold] .sign{cursor:pointer;margin-bottom:0;border-radius:7px}
+    .card[data-fold] .sign::after{content:"+";margin-left:auto;font:700 22px/1 var(--grot);color:var(--paper);transition:transform .2s ease}
+    .card[data-fold].open .sign{margin-bottom:14px;border-radius:7px 7px 0 0}
+    .card[data-fold].open .sign::after{transform:rotate(45deg)}
+    .card[data-fold]{padding-bottom:0}.card[data-fold].open{padding-bottom:16px}
+    .card[data-fold]:not(.open) > :not(.sign){display:none}
+    .card[data-fold] .sign:focus-visible{outline:3px solid var(--pop);outline-offset:2px}
+  }
   /* phones: the site's line in the top bar is the one line; no second rail of sections */
   @media (max-width: 720px){ .rail{display:none!important} .page{display:block} }
   @media (max-width: 1100px){
@@ -81,7 +93,15 @@ layout: null
   /* past the end of the page the paper turns into the street, and you walk into the station */
   .walk-in{position:relative;height:150vh;height:150svh}
   .walk-in .stage{position:sticky;top:0;height:100vh;height:100svh;display:grid;place-items:center;align-content:center;gap:8px;padding:40px 18px;box-sizing:border-box}
-  .walk-in canvas{width:min(900px,100%);height:auto;aspect-ratio:2/1}
+  .walk-in canvas{width:100%;height:auto;aspect-ratio:2/1;display:block}
+  .runway{position:relative;width:min(900px,100%)}
+  /* the food cart on the street is a real door: its tag sits over the cart */
+  .cart-tag{position:absolute;left:44.5%;top:21%;transform:translate(-50%,-100%);font:400 18px/1 var(--hand);background:var(--ink);color:var(--paper);text-decoration:none;padding:6px 11px 7px;border-radius:14px 11px 15px 10px;box-shadow:3px 3px 0 color-mix(in srgb,var(--ink) 25%,transparent);white-space:nowrap}
+  .cart-tag::after{content:"";position:absolute;left:50%;bottom:-6px;width:11px;height:11px;background:inherit;transform:translateX(-50%) rotate(45deg);z-index:-1}
+  .cart-tag:hover,.cart-tag:focus-visible{background:var(--pop);color:#fff}
+  .cart-tag:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  @media (prefers-reduced-motion: no-preference){ .cart-tag{animation:cart-boil 1s steps(1) infinite} }
+  @keyframes cart-boil{0%{border-radius:14px 11px 15px 10px}33%{border-radius:11px 15px 10px 14px}66%{border-radius:15px 10px 13px 12px}}
   .walk-in .hint{font:400 20px/1.2 var(--hand);color:var(--soft);margin:0;opacity:calc(1 - var(--p,0) * 1.6)}
   /* and above the top of the page: pull past it and the Aerial Tram comes down to meet you */
   .peek{position:fixed;left:0;right:0;top:0;height:0;overflow:hidden;z-index:60;background:var(--paper);border-bottom:2px solid var(--ink);pointer-events:none;visibility:hidden}
@@ -136,7 +156,7 @@ layout: null
       <header class="sign"><span class="bul" aria-hidden="true">N</span><h2 id="notes-h">Notes, Scribbles &amp; Ideas in Progress</h2></header>
       <canvas class="vig" data-vig="notebook" data-still role="img" aria-label="Drawing: the figure writing in a notebook"></canvas>
       {% include ink/notes.html %}
-      <div class="links"><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/' | relative_url }}">The whole line</a></div>
+      <div class="links"><a href="{{ '/library/' | relative_url }}" class="key">Walk into the library</a><a href="{{ '/essays/' | relative_url }}">The whole line</a><a href="#subscribe" data-open="subscribe">Subscribe</a></div>
     </section>
 
     <section class="card" id="work" data-index aria-labelledby="work-h">
@@ -176,7 +196,8 @@ layout: null
 {% include ink/foot.html %}
 <section class="walk-in" id="walk" aria-label="Keep scrolling to walk into a drawing of Portland">
   <div class="stage">
-    <canvas id="walkCv" role="img" aria-label="Drawing: the figure walks down the street to the station stairs"></canvas>
+    <div class="runway"><canvas id="walkCv" role="img" aria-label="Drawing: the figure walks down SW Moody Avenue, past a food cart, and down the station stairs into the subway"></canvas>
+      <a class="cart-tag" href="{{ '/food/' | relative_url }}">Food recs <span aria-hidden="true">→</span></a></div>
     <p class="hint" id="walkHint" aria-hidden="true">keep scrolling…</p>
     <a class="sr" href="{{ '/explore/' | relative_url }}" data-pick="walk">Walk into the drawing</a>
   </div>
@@ -187,10 +208,22 @@ layout: null
 <script>
 {% include cite-share.js %}
 </script>
-<script src="{{ '/assets/ink.js' | relative_url }}?v=20261124" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}?v=20261124" defer></script>
-<script src="{{ '/assets/vig.js' | relative_url }}?v=20261124" defer></script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261127" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261127" defer></script>
+<script src="{{ '/assets/vig.js' | relative_url }}?v=20261127" defer></script>
 <script>
+/* phones: fold the signs (all but Bio); a tap or Enter opens one; a link to a section (or a search hit) opens it */
+(function(){
+  var mq = matchMedia('(max-width: 720px)');
+  var cards = [].slice.call(document.querySelectorAll('.board .card')).filter(function(c){ return c.id !== 'about'; });
+  cards.forEach(function(c){ c.setAttribute('data-fold', ''); var sg = c.querySelector('.sign'); if (!sg) return;
+    sg.setAttribute('role', 'button'); sg.tabIndex = 0; sg.setAttribute('aria-expanded', 'false');
+    function toggle(){ if (!mq.matches) return; var on = !c.classList.contains('open'); c.classList.toggle('open', on); sg.setAttribute('aria-expanded', String(on)); if (on) setTimeout(function(){ c.scrollIntoView({ block: 'start', behavior: 'smooth' }); }, 30); }
+    sg.addEventListener('click', toggle); sg.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } }); });
+  function openFor(id){ var el = id && document.getElementById(id); var c = el && el.closest('.card[data-fold]'); if (c && !c.classList.contains('open')){ c.classList.add('open'); var sg = c.querySelector('.sign'); if (sg) sg.setAttribute('aria-expanded', 'true'); } }
+  openFor((location.hash || '').slice(1)); addEventListener('hashchange', function(){ openFor(location.hash.slice(1)); });
+  window.openFold = openFor;
+})();
 /* Simple is the default. Choosing the walk is remembered, and then the drawings here move too. */
 (function(){
   var KEY = 'mode', walk = false;
@@ -229,7 +262,10 @@ layout: null
     /* the entrance above the stairs */
     R(380, 92, 140, 22, 2, COL.paper); TX('STATION', 450, 109, 15); S([[372, GL], [372, 114], [528, 114], [528, GL]], 2.2);
     I.O(384, 98, 8, 1.8, COL.leaf); I.O(516, 98, 8, 1.8, COL.leaf);
-    Ln(180, 100, 180, GL, 2.2); R(118, 74, 124, 18, 1.8, COL.leaf); ctx.fillStyle = '#fff'; ctx.font = '700 10.5px ' + mono; ctx.textAlign = 'center'; ctx.fillText('SW MOODY AVE', 180, 87);
+    /* the food cart (a door to the food walk; its tag is the link) */
+    R(220, 136, 94, 50, 2, COL.paper); R(232, 146, 46, 22, 1.4, null); for (var aw = 0; aw < 5; aw++){ var ax = 214 + aw * 21.2; S([[ax, 130], [ax + 10.6, 138], [ax + 21.2, 130]], 1.4); }
+    I.WASH(267, 133, 50, 6, COL.sun, .55, 21); S([[212, 130], [322, 130]], 1.6); TX('FOOD RECS', 267, 182, 9, 'center', mono); I.O(240, GL - 3, 6, 1.6, COL.paper); I.O(294, GL - 3, 6, 1.6, COL.paper);
+    Ln(130, 100, 130, GL, 2.2); R(68, 74, 124, 18, 1.8, COL.leaf); ctx.fillStyle = '#fff'; ctx.font = '700 10.5px ' + mono; ctx.textAlign = 'center'; ctx.fillText('SW MOODY AVE', 130, 87);
     TX('↓ subway', 450, 84, 15);
     /* the figure: walks to the top step, then down one step at a time */
     var walk = Math.min(1, p / .6), dn = Math.max(0, (p - .6) / .4), x, y, f;

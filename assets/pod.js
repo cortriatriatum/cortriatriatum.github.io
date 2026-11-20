@@ -42,15 +42,7 @@
 
   /* ---------- live weather and daylight in every city, one request, cached 15 minutes ---------- */
   var WX = {};
-  (function(){
-    var names = Object.keys(CITY), key = 'pod-wx', cached = null;
-    try { cached = JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) {}
-    if (cached && Date.now() - cached.at < 15 * 60e3){ WX = cached.wx; return; }
-    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + names.map(function(n){ return CITY[n].ll[0]; }).join(',') + '&longitude=' + names.map(function(n){ return CITY[n].ll[1]; }).join(',') + '&current=temperature_2m,weather_code,is_day,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto';
-    fetch(url).then(function(r){ return r.json(); }).then(function(j){ var arr = Array.isArray(j) ? j : [j];
-      arr.forEach(function(o, i){ var c = o.current || {}; WX[names[i]] = { kind: classify(c.weather_code), tempF: Math.round(c.temperature_2m), day: c.is_day === 1, wind: c.wind_speed_10m || 0 }; });
-      try { localStorage.setItem(key, JSON.stringify({ at: Date.now(), wx: WX })); } catch (e) {} }).catch(function(){});
-  })();
+  I.wxAt(Object.keys(CITY).map(function(n){ return { key: n, lat: CITY[n].ll[0], lon: CITY[n].ll[1] }; })).then(function(w){ WX = w || {}; });
   function classify(code){ if (code === 0) return 'clear'; if (code === 1 || code === 2) return 'partly'; if (code === 3) return 'cloudy'; if (code === 45 || code === 48) return 'fog'; if (code >= 51 && code <= 57) return 'drizzle'; if ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) return 'rain'; if ((code >= 71 && code <= 77) || code === 85 || code === 86) return 'snow'; if (code >= 95) return 'storm'; return 'cloudy'; }
   function wxOf(c){ return WX[c.name] || null; }
   function nightIn(c){ var w = wxOf(c); return w ? !w.day : false; }
@@ -106,10 +98,14 @@
   function fitText(t, x0, y0, w, al){ ctx.textAlign = al || 'center'; while (ctx.measureText(t).width > w && t.length > 4) t = t.slice(0, -2) + '…'; ctx.fillText(t, x0, y0); }
   function sky(c, lo, hi){
     var w = wxOf(c), kind = w ? w.kind : 'cloudy', nt = nightIn(c), T = I.T, P = COL.paper;
+    /* the sun where it really is in that city's sky now: up at sunrise on the left, down at sunset on the right */
+    var fr = I.dayFrac(w), arcX = function(f){ return lo + (hi - lo) * (.12 + .76 * cl(f, 0, 1)); }, arcY = function(f){ return 250 - Math.sin(cl(f, 0, 1) * Math.PI) * 190; };
     if (nt){ ctx.fillStyle = COL.night; ctx.globalAlpha = .14; ctx.fillRect(lo, -400, hi - lo, FLOOR + 400); ctx.globalAlpha = 1;
       for (var s = 0; s < 26; s++){ var sx = lo + ((s * 137 + c.i * 41) % Math.max(1, hi - lo)), sy = 40 + (s * 53) % 150; Ln(sx - 3, sy, sx + 3, sy, 1.1, .7); Ln(sx, sy - 3, sx, sy + 3, 1.1, .7); }
-      O(lo + (hi - lo) * .78, 90, 20, 2, P); }
-    else if (kind === 'clear' || kind === 'partly'){ var sxp = lo + (hi - lo) * .78; WASH(sxp, 90, 48, 48, COL.sun, .4, 60 + c.i); O(sxp, 90, 24, 2.2, P); for (var r = 0; r < 10; r++){ var an = r / 10 * 6.283 + (still() ? 0 : T * .15); Ln(sxp + Math.cos(an) * 34, 90 + Math.sin(an) * 34, sxp + Math.cos(an) * 46, 90 + Math.sin(an) * 46, 1.8); } }
+      var nf = fr == null ? .6 : (fr > 1 ? (fr - 1) / 1.4 : (fr + 1.4) / 1.4), mx = arcX(nf), my = arcY(nf); O(mx, my, 20, 2, P); ctx.fillStyle = COL.night; ctx.globalAlpha = .5; ctx.beginPath(); ctx.arc(mx + 8, my - 5, 16, 0, 6.3); ctx.fill(); ctx.globalAlpha = 1; }
+    else { var df = fr == null ? .6 : fr, sxp = arcX(df), syp = arcY(df), clearish = kind === 'clear' || kind === 'partly';
+      WASH(sxp, syp, 48, 48, COL.sun, clearish ? .4 : .18, 60 + c.i); O(sxp, syp, 24, 2.2, P);
+      if (clearish) for (var r = 0; r < 10; r++){ var an = r / 10 * 6.283 + (still() ? 0 : T * .15); Ln(sxp + Math.cos(an) * 34, syp + Math.sin(an) * 34, sxp + Math.cos(an) * 46, syp + Math.sin(an) * 46, 1.8); } }
     var nc = { clear: 0, partly: 2, cloudy: 6, fog: 3, drizzle: 5, rain: 6, snow: 5, storm: 6 }[kind] || 2;
     for (var k = 0; k < nc; k++){ var cx = lo + ((k * 331 + c.i * 97 + (still() ? 0 : T * (6 + (w ? Math.min(1, w.wind / 25) : .2) * 14))) % (hi - lo + 300)) - 150, cy = 60 + (k % 3) * 34; ctx.fillStyle = P; ctx.beginPath(); ctx.ellipse(cx + 50, cy, 56, 15, 0, 0, 6.3); ctx.fill(); S([[cx, cy + 6], [cx + 20, cy - 10], [cx + 56, cy - 16], [cx + 100, cy + 6], [cx, cy + 6]], 1.6); if (kind === 'storm' || kind === 'rain') H(cx + 8, cy - 10, 90, 12, 7, .3); }
     return { kind: kind, nt: nt };
@@ -178,7 +174,7 @@
     var x0 = c.a, P = COL.paper; if (x0 + GATE < lo || x0 > hi) return;
     if (c.i > 0){ /* coming up out of the subway */ S([[x0 + 30, FLOOR], [x0 + 30, 420], [x0 + 170, 420], [x0 + 170, FLOOR]], 2.2); S([[x0 + 22, 420], [x0 + 178, 420]], 2.6); O(x0 + 40, 404, 9, 1.8, COL.leaf); O(x0 + 160, 404, 9, 1.8, COL.leaf); for (var st = 0; st < 4; st++) Ln(x0 + 44 + st * 3, 446 + st * 22, x0 + 156 - st * 3, 446 + st * 22, 1.4, .8 - st * .15); }
     R(x0 + 230, 300, 260, 64, 2.6, P); WASH(x0 + 360, 332, 120, 26, c.c.col, .22, 100 + c.i); bullet(x0 + 262, 332, 20, c.c.bul, c.c.col);
-    ctx.fillStyle = COL.ink; ctx.font = '700 17px ' + MONO; fitText(c.c.sign, x0 + 376, 330, 196); ctx.font = '11px ' + MONO; fitText(c.spots.length + (c.spots.length === 1 ? ' spot' : ' spots'), x0 + 376, 350, 196);
+    ctx.fillStyle = COL.ink; ctx.font = '700 17px ' + MONO; fitText(c.c.sign, x0 + 376, 330, 196); ctx.font = '11px ' + MONO; var gw = wxOf(c); fitText(c.spots.length + (c.spots.length === 1 ? ' spot' : ' spots') + (gw ? ' · ' + I.timeIn(gw.tz) + ' here' : ''), x0 + 376, 350, 196);
     Ln(x0 + 260, 364, x0 + 260, FLOOR, 2.2); Ln(x0 + 460, 364, x0 + 460, FLOOR, 2.2);
   }
   /* the way down at the end of each street: the subway to the next city, with its route bullet */
@@ -309,8 +305,8 @@
     shownCity && shownCity.spots.forEach(function(s){ if (s.row){ var on = s === sp; if (s.row.classList.contains('here') !== on){ s.row.classList.toggle('here', on); if (on && innerWidth > 900) s.row.scrollIntoView({ block: 'nearest' }); } } });
     if (countEl){ var t2 = c.c.short + (sp ? ' · ' + (sp.j + 1) + ' of ' + c.spots.length : ' · ' + c.spots.length + (c.spots.length === 1 ? ' spot' : ' spots')); if (countEl.textContent !== t2) countEl.textContent = t2; }
     var nx = cities[c.i + 1], pv = cities[c.i - 1]; if (nextL){ var nt2 = nx ? nx.c.short : 'The CV'; if (nextL.textContent !== nt2) nextL.textContent = nt2; } if (prevL){ var pt = figX(ut) > c.a + 400 ? 'Start of ' + c.c.short : pv ? pv.c.short : 'The CV'; if (prevL.textContent !== pt) prevL.textContent = pt; }
-    if (skyEl){ var t3 = c.c.short + (w ? ' now · ' + w.tempF + '°F · ' + I.WORDS[w.kind] + (w.day ? '' : ' · night') : ''); if (skyEl.textContent !== t3) skyEl.textContent = t3; }
-    if (sideK){ var t4 = c.spots.length + (c.spots.length === 1 ? ' spot' : ' spots') + (w ? ' · ' + w.tempF + '°F, ' + I.WORDS[w.kind] : ''); if (sideK.textContent !== t4) sideK.textContent = t4; }
+    if (skyEl){ var t3 = c.c.short + (w ? ' now · ' + I.timeIn(w.tz) + ' · ' + w.tempF + '°F · ' + I.WORDS[w.kind] : ''); if (skyEl.textContent !== t3) skyEl.textContent = t3; }
+    if (sideK){ var t4 = c.spots.length + (c.spots.length === 1 ? ' spot' : ' spots') + (w ? ' · ' + I.timeIn(w.tz) + ' there, ' + w.tempF + '°F, ' + I.WORDS[w.kind] : ''); if (sideK.textContent !== t4) sideK.textContent = t4; }
     if (fade > 0){ ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.globalAlpha = Math.min(1, fade * 1.4); ctx.fillStyle = COL.paper; ctx.fillRect(0, 0, cw, ch); ctx.globalAlpha = 1; fade = Math.max(0, fade - .06); }
     requestAnimationFrame(frame);
   }

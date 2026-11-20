@@ -202,6 +202,25 @@
     }).catch(function(){ return cached || null; });
     return wxPromise;
   }
+  /* Any places, live: weather, time zone, and today's sunrise and sunset, in one request, cached 15 minutes.
+     places: [{ key, lat, lon }] -> Promise of { key: { kind, tempF, day, wind, tz, rise, set } } (rise/set in ms) */
+  function wxAt(places){
+    var key = 'wx:' + places.map(function(p){ return p.key; }).join('|'), cached = null;
+    try { cached = JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) {}
+    if (cached && Date.now() - cached.at < 15 * 60e3) return Promise.resolve(cached.wx);
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + places.map(function(p){ return p.lat; }).join(',') + '&longitude=' + places.map(function(p){ return p.lon; }).join(',') +
+      '&current=temperature_2m,weather_code,is_day,wind_speed_10m&daily=sunrise,sunset&forecast_days=1&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto';
+    return fetch(url).then(function(r){ return r.json(); }).then(function(j){ var arr = Array.isArray(j) ? j : [j], out = {};
+      arr.forEach(function(o, i){ var c = o.current || {}, d = o.daily || {}, off = (o.utc_offset_seconds || 0) * 1000;
+        function abs(t){ return t ? Date.parse(t + 'Z') - off : null; }
+        out[places[i].key] = { kind: classify(c.weather_code), tempF: Math.round(c.temperature_2m), day: c.is_day === 1, wind: c.wind_speed_10m || 0, tz: o.timezone || 'UTC', rise: abs(d.sunrise && d.sunrise[0]), set: abs(d.sunset && d.sunset[0]) }; });
+      try { localStorage.setItem(key, JSON.stringify({ at: Date.now(), wx: out })); } catch (e) {}
+      return out; }).catch(function(){ return cached ? cached.wx : {}; });
+  }
+  /* the local time somewhere, like "9:14 pm" */
+  function timeIn(tz){ try { return new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit' }).format(new Date()).toLowerCase(); } catch (e) { return ''; } }
+  /* how far through its day (0 at sunrise, 1 at sunset) or night (negative) a place is */
+  function dayFrac(w){ if (!w || !w.rise || !w.set) return null; var n = Date.now(); return (n - w.rise) / (w.set - w.rise); }
   function pdxHour(){ // Portland's local hour, as a decimal
     try {
       var parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: 'numeric', hour12: false }).formatToParts(new Date());
@@ -253,7 +272,7 @@
     S: S, Ln: Ln, O: O, R: R, H: H, TX: TX, WASH: WASH, FIG: FIG,
     ease: ease, cl: cl, lerp: lerp, back: back,
     COL: COL, reduce: reduce, mouse: mouse, lookIn: lookIn,
-    weather: weather, WORDS: WORDS, pdxHour: pdxHour, pdxTime: pdxTime, sunAlt: sunAlt, phase: phase, sunLine: sunLine,
+    weather: weather, wxAt: wxAt, timeIn: timeIn, dayFrac: dayFrac, WORDS: WORDS, pdxHour: pdxHour, pdxTime: pdxTime, sunAlt: sunAlt, phase: phase, sunLine: sunLine,
     tick: tick, use: use, plain: plain, fit: fit,
     get T(){ return T; }, get ctx(){ return C; }
   };

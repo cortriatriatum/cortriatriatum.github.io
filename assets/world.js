@@ -27,7 +27,7 @@
      scroll position is filled in below as hs.at. The other stops are drawn against fixed ranges (d). */
   var WALK = 60, DWELL = 110, IN = 100, OUT = 150;
   var ROOM_HOTS = [
-    { id: 'photos', label: 'Photos on the wall · Photos', r: [155, 176, 120, 130], stand: 225, act: 'point', lookY: 245 },
+    { id: 'photos', label: 'Photos on the wall · Art gallery', r: [155, 176, 120, 130], stand: 225, act: 'point', lookY: 245 },
     { id: 'notes', label: 'Notebook · Notes', r: [270, 392, 130, 46], stand: 330, act: 'write', lookY: 420 },
     { id: 'dev', label: 'Laptop · Dev', r: [440, 376, 80, 62], stand: 470, act: 'point', lookY: 400 },
     { id: 'awards', label: 'Shelf · Awards', r: [560, 150, 210, 110], stand: 600, act: 'point', lookY: 200 },
@@ -36,9 +36,9 @@
   ];
   var LAB_HOTS = [
     { id: 'research', label: 'Microscope · Research', r: [430, 280, 160, 160], stand: 430, act: 'peer' },
-    { id: 'training', row: 2, label: 'BE · City College of New York', r: [610, 110, 70, 90], stand: 620, act: 'point', lookY: 150 },
-    { id: 'training', row: 1, label: 'PhD · OHSU', r: [700, 96, 80, 104], stand: 720, act: 'point', lookY: 140 },
-    { id: 'training', row: 0, label: 'MD · in progress', r: [800, 110, 70, 90], stand: 820, act: 'point', lookY: 150 }
+    { id: 'be', label: 'BE · The City College of New York', r: [610, 110, 70, 90], stand: 620, act: 'point', lookY: 150 },
+    { id: 'phd', label: 'PhD · OHSU', r: [700, 96, 80, 104], stand: 720, act: 'point', lookY: 140 },
+    { id: 'md', label: 'MD · OHSU, in progress', r: [800, 110, 70, 90], stand: 820, act: 'point', lookY: 150 }
   ];
   function walkLen(list){ return IN + list.length * (WALK + DWELL) + OUT; }
   var ZONES = [
@@ -473,6 +473,10 @@
       b.addEventListener('mouseenter', function(){ hover = hs; }); b.addEventListener('mouseleave', function(){ if (hover === hs) hover = null; });
       b.addEventListener('focus', function(){ hover = hs; }); b.addEventListener('blur', function(){ if (hover === hs) hover = null; });
       b.addEventListener('click', function(){ openHot(hs); });
+      /* the object itself is clickable too, any time, not only when it is the lit one */
+      var a = document.createElement('button'); a.type = 'button'; a.className = 'hot'; a.tabIndex = -1; a.setAttribute('aria-hidden', 'true'); hs.hit = a; hot.appendChild(a);
+      a.addEventListener('mouseenter', function(){ hover = hs; }); a.addEventListener('mouseleave', function(){ if (hover === hs) hover = null; });
+      a.addEventListener('click', function(){ openHot(hs); });
     }); });
     cards = [].map.call(document.querySelectorAll('#noteCards a'), function(a){ var el = a.cloneNode(false); el.className = 'card-hot'; el.setAttribute('aria-label', 'Note: ' + a.dataset.title); hot.appendChild(el); return { el: el, title: a.dataset.title, route: a.dataset.route, color: a.dataset.color }; });
   }
@@ -503,7 +507,9 @@
     dirLines.forEach(function(a, j){ var p = toScreen(BX + 4, SY + BY + 32 + j * LH), q = toScreen(BX + BW - 4, SY + BY + 30 + (j + 1) * LH); a.style.left = p[0] + 'px'; a.style.top = p[1] + 'px'; a.style.width = (q[0] - p[0]) + 'px'; a.style.height = (q[1] - p[1]) + 'px'; a.style.visibility = zid === 'street' ? 'visible' : 'hidden'; });
     [['room', ROOM_HOTS], ['lab', LAB_HOTS]].forEach(function(pair){ var y0 = interiorY(pair[0]); pair[1].forEach(function(hs){
       var p = toScreen((hs.r[0] + hs.r[2] / 2) * K, y0 + hs.r[1] * K); hs.btn.style.left = p[0] + 'px'; hs.btn.style.top = p[1] + 'px'; hs.btn.style.visibility = zid === pair[0] ? 'visible' : 'hidden';
-      hs.btn.classList.toggle('now', hs === here); }); });
+      if (hs.hit){ var a1 = toScreen(hs.r[0] * K, y0 + hs.r[1] * K), a2 = toScreen((hs.r[0] + hs.r[2]) * K, y0 + (hs.r[1] + hs.r[3]) * K);
+        hs.hit.style.left = a1[0] + 'px'; hs.hit.style.top = a1[1] + 'px'; hs.hit.style.width = (a2[0] - a1[0]) + 'px'; hs.hit.style.height = (a2[1] - a1[1]) + 'px'; hs.hit.style.visibility = zid === pair[0] ? 'visible' : 'hidden'; }
+      hs.btn.classList.toggle('now', hs === here); hs.btn.classList.toggle('hov', hs === hover && hs !== here); }); });
     unclash(zid);
     cards.forEach(function(cd, i){ var a = toScreen(56 + i * 178, RT + 16), b = toScreen(222 + i * 178, RT + 78); cd.el.style.left = a[0] + 'px'; cd.el.style.top = a[1] + 'px'; cd.el.style.width = (b[0] - a[0]) + 'px'; cd.el.style.height = (b[1] - a[1]) + 'px'; cd.el.style.visibility = zid === 'train' ? 'visible' : 'hidden'; });
   }
@@ -536,6 +542,57 @@
         hs.row2 = li; ol.appendChild(li);
       }); });
   }
+  /* ---------- the diplomas are portals: each gathers its own degree from everything else on the site ----------
+     The rows already carry their years; a row belongs to a degree by the years it spans:
+       BE 2013–17 (City College), PhD 2020–24, MD 2018 on (the MD/PhD program began in 2018 and the MD continues).
+     The same rows appear on the one page; here they are curated for the degree you walked up to. */
+  function span(li){ var d = li.querySelector('.d'), t = d ? d.textContent.replace(/\s/g, '') : '', m = t.match(/(\d{4})(?:[–-](\d{2,4})?)?/); if (!m) return null;
+    var a = +m[1], b = m[2] ? +(m[2].length === 2 ? m[1].slice(0, 2) + m[2] : m[2]) : (/[–-]$/.test(t) ? 2099 : a); return [a, b]; }
+  var ERA = {
+    be: function(y){ return y[0] <= 2017; },
+    phd: function(y){ return y[0] <= 2024 && y[1] >= 2020 && y[0] >= 2018; },
+    md: function(y){ return y[0] >= 2018 && (y[0] <= 2019 || y[1] >= 2025); }
+  };
+  var DEG = {
+    be: { row: 2, course: /BE|Minor|Macaulay/, k: 'The diploma · 2013–17', h: 'Bachelor of Engineering', focus: false },
+    phd: { row: 1, course: /PhD/, k: 'The diploma · 2020–24', h: 'Doctor of Philosophy', focus: true },
+    md: { row: 0, course: /MD/, k: 'The frame still waiting · 2018–', h: 'Doctor of Medicine', focus: true }
+  };
+  function sec(id){ return panel && panel.querySelector('section[data-c="' + id + '"]'); }
+  function rowsIn(el, sel){ return el ? [].slice.call(el.querySelectorAll(sel)) : []; }
+  function cloneRow(li){ var c = li.cloneNode(true); c.removeAttribute('id'); c.hidden = false; c.removeAttribute('hidden'); c.querySelectorAll('button, .cs').forEach(function(b){ b.remove(); }); return c; }
+  function group(out, title, items){ if (!items.length) return; var h = document.createElement('h3'); h.className = 'sub'; h.textContent = title; out.appendChild(h);
+    var ul = document.createElement('ul'); ul.className = 'rows'; items.forEach(function(li){ ul.appendChild(cloneRow(li)); }); out.appendChild(ul); }
+  function buildDegree(id){
+    var out = sec(id), d = DEG[id], test = ERA[id]; if (!out || out.dataset.built) return; out.dataset.built = '1';
+    var res = sec('research'), tr = sec('training'), aw = sec('awards'), wk = sec('work');
+    var k = document.createElement('span'); k.className = 'k'; k.textContent = d.k; out.appendChild(k);
+    var h2 = document.createElement('h2'); h2.textContent = d.h; out.appendChild(h2);
+    var edu = rowsIn(tr, 'ul.rows')[0]; edu = edu && edu.children[d.row]; if (edu){ var ul0 = document.createElement('ul'); ul0.className = 'rows'; ul0.appendChild(cloneRow(edu)); out.appendChild(ul0); }
+    if (d.focus && res){ var f = res.querySelector('.focus'); if (f){ var h3 = document.createElement('h3'); h3.className = 'sub'; h3.textContent = 'The research'; out.appendChild(h3); out.appendChild(f.cloneNode(true)); var nx = f.nextElementSibling; if (nx && nx.tagName === 'P') out.appendChild(nx.cloneNode(true)); } }
+    var inEra = function(li){ var y = span(li); return y && test(y); };
+    group(out, 'Papers from these years', rowsIn(res, '[data-pub-list] > li').filter(inEra));
+    var fund = rowsIn(res, 'ul.rows').filter(function(u){ return !u.hasAttribute('data-pub-list'); }).pop();
+    group(out, 'Funding', rowsIn(fund, ':scope > li').filter(inEra));
+    group(out, 'Honors', rowsIn(aw, 'ul.rows > li').filter(inEra));
+    var courses = rowsIn(tr, 'details.course').filter(function(dd){ var sp = dd.querySelector('summary span'); return sp && d.course.test(sp.textContent); });
+    if (courses.length){ var h4 = document.createElement('h3'); h4.className = 'sub'; h4.textContent = 'Coursework'; out.appendChild(h4); courses.forEach(function(dd){ var c = dd.cloneNode(true); c.open = courses.length === 1; out.appendChild(c); }); }
+    group(out, 'Also in these years', rowsIn(wk, 'ul.rows > li').filter(inEra));
+  }
+  /* the shelf tells the same story by the same eras, newest first */
+  function byEra(id){
+    var s0 = sec(id); if (!s0 || s0.dataset.era) return; s0.dataset.era = '1';
+    var list = s0.querySelector('ul.rows'); if (!list) return;
+    var all = rowsIn(list, ':scope > li'), used = [], holder = document.createElement('div');
+    [['md', 'The MD years · 2018–'], ['phd', 'The PhD years · 2020–24'], ['be', 'The BE years · City College, 2013–17']].forEach(function(e){
+      var items = all.filter(function(li){ var y = span(li); return y && used.indexOf(li) < 0 && ERA[e[0]](y); }); if (!items.length) return;
+      items.forEach(function(li){ used.push(li); });
+      var h = document.createElement('h3'); h.className = 'sub'; h.textContent = e[1]; holder.appendChild(h);
+      var ul = document.createElement('ul'); ul.className = 'rows'; items.forEach(function(li){ ul.appendChild(li); }); holder.appendChild(ul); });
+    var rest = all.filter(function(li){ return used.indexOf(li) < 0; }); if (rest.length){ var ul2 = document.createElement('ul'); ul2.className = 'rows'; rest.forEach(function(li){ ul2.appendChild(li); }); holder.appendChild(ul2); }
+    list.replaceWith(holder);
+  }
+  ['be', 'phd', 'md'].forEach(buildDegree); byEra('awards');
   fillPass();
   if (panelClose) panelClose.addEventListener('click', closePanel);
   addEventListener('keydown', function(e){ if (e.key === 'Escape' && panel && panel.classList.contains('open') && !document.querySelector('dialog[open]')) closePanel(); });

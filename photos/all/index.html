@@ -5,26 +5,34 @@ layout: null
 <html lang="en">
 <head>
 {% include ink/head.html %}
-<title>All photos · Rick Mathews, PhD</title>
-<meta name="description" content="Photographs by Rick Mathews, PhD, in black and white, newest first.">
+<title>Photographs · Art gallery · Rick Mathews, PhD</title>
+<meta name="description" content="Twenty-four black-and-white photographs by Rick Mathews, PhD, in five series.">
 <link href="https://cortriatriatum.github.io/photos/all/" rel="canonical"/>
 <meta name="robots" content="noindex">
 <style>
-  .page{padding-block:6px 40px}
-  .ph-head{margin:0 0 22px}
-  .ph-head h1{font-weight:800;font-size:clamp(34px,4vw,52px);line-height:.95;letter-spacing:-.04em;margin:0}
-  .ph-head p{margin:10px 0 0;color:var(--soft);max-width:60ch}
-  .ph-head .links{margin-top:14px}
-  .year{margin:0 0 34px}
-  .year .sign{margin-bottom:14px}
-  .wall{columns:3 260px;column-gap:12px}
-  .wall figure{break-inside:avoid;margin:0 0 14px}
-  .wall button{display:block;width:100%;padding:0;border:0;background:var(--rule);cursor:zoom-in;border-radius:4px;overflow:hidden}
-  .wall img{display:block;width:100%;height:auto;transition:transform .35s ease}
-  .wall button:hover img{transform:scale(1.02)}
-  .wall button:focus-visible{outline:3px solid var(--pop);outline-offset:2px}
-  .copy{font:500 12.5px/1.5 var(--mono);color:var(--soft);margin:10px 0 0}
-  .wall figcaption{font:500 12px/1.3 var(--mono);color:var(--soft);padding:6px 2px 0}
+  .page{display:block;max-width:1180px}
+  .show{max-width:1040px;margin:0 auto;padding:10px 0 60px}
+  .show-head{padding:28px 0 40px;border-bottom:1.5px solid var(--rule);margin-bottom:56px}
+  .show-head .k{display:block;margin-bottom:10px}
+  .show-head h1{font:800 clamp(40px,6vw,76px)/.92 var(--grot);letter-spacing:-.045em;margin:0}
+  .show-head p{font:400 18px/1.5 var(--serif);color:var(--soft);margin:16px 0 0;max-width:48ch}
+  .show-head .links{margin-top:18px}
+  .series{margin:0 0 96px}
+  .series header{display:flex;align-items:baseline;gap:16px;margin:0 0 30px}
+  .series header .k{flex:none}
+  .series h2{font:400 clamp(40px,5vw,60px)/1 var(--hand);margin:0}
+  .series header .n{font:500 12px/1 var(--mono);color:var(--soft);margin-left:auto}
+  .plates{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px 40px}
+  .plate{grid-column:span 2;margin:0;justify-self:center;max-width:100%}
+  .plate.tall{max-width:560px}
+  .plate.half{grid-column:span 1;max-width:none;justify-self:stretch}
+  .plate button{all:unset;cursor:zoom-in;display:block}
+  .plate img{display:block;max-width:100%;max-height:82vh;max-height:82svh;width:auto;height:auto;margin:0 auto;box-shadow:0 1px 0 var(--rule)}
+  .plate.half img{width:100%;max-height:none}
+  .plate button:focus-visible{outline:3px solid var(--pop);outline-offset:6px}
+  .plate figcaption{display:flex;flex-wrap:wrap;gap:4px 14px;font:500 12.5px/1.4 var(--mono);color:var(--soft);padding:12px 2px 0}
+  .plate figcaption b{color:var(--ink);font-weight:600}
+  .copy{font:500 12.5px/1.5 var(--mono);color:var(--soft);margin:0}
   .lb{border:0;padding:0;margin:0;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;background:rgba(10,10,10,.94);color:#f4f1ea}
   .lb::backdrop{background:rgba(10,10,10,.94)}
   .lb[open]{display:grid;grid-template-rows:minmax(0,1fr) auto}
@@ -38,8 +46,17 @@ layout: null
   .lb .nav-b{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;padding:0;font-size:20px}
   .lb .prev{left:10px}.lb .next{right:10px}
   .lb .bar{flex-wrap:wrap}
+    .lb .stage{padding:56px 8px 8px}
+    .lb img{max-width:calc(100vw - 16px);max-height:calc(100dvh - 200px)}
+    .lb .nav-b{top:auto;bottom:12px;transform:none}
+    .lb .bar{padding:10px 64px 18px}
+  .lb .bar{flex-wrap:wrap}
   @media (max-width: 700px){
-    .wall{columns:2 140px;column-gap:8px}.wall figure{margin-bottom:10px}
+    .show-head{padding:10px 0 28px;margin-bottom:36px}
+    .series{margin-bottom:64px}.series header{flex-wrap:wrap;gap:6px 12px;margin-bottom:18px}
+    .plates{grid-template-columns:minmax(0,1fr);gap:40px}
+    .plate,.plate.half{grid-column:span 1}.plate.tall{max-width:100%}
+    .plate img{max-height:none;width:100%}
     .lb .stage{padding:56px 8px 8px}
     .lb img{max-width:calc(100vw - 16px);max-height:calc(100dvh - 200px)}
     .lb .nav-b{top:auto;bottom:12px;transform:none}
@@ -49,21 +66,20 @@ layout: null
 </head>
 <body>
 {% assign navpage = "photos" %}{% include ink/nav.html %}
-{% assign P = site.data.photos.photos | sort: "o" %}
+{% assign ALL = site.data.photos.photos %}{% assign total = 0 %}{% for se in site.data.gallery.series %}{% assign total = total | plus: se.photos.size %}{% endfor %}
 <div class="page" id="main">
-  <main>
-    <header class="ph-head">
-      <h1>Photos</h1>
-      <p>{{ P.size }} photographs, newest first, in black and white. If you would like one in color, ask me.</p>
-      <div class="links"><a class="key" href="{{ '/photos/' | relative_url }}">Walk the gallery</a><button type="button" data-open="contact" data-prefill="Could I see one of your photos in color?">Ask for one in color</button><a href="{{ '/explore/' | relative_url }}#room">Back to the room</a></div>
+  <main class="show">
+    <header class="show-head">
+      <span class="k">Photographs</span>
+      <h1>Rick Mathews</h1>
+      <p>{{ total }} prints in {{ site.data.gallery.series.size }} series, black and white.</p>
+      <div class="links"><a class="key" href="{{ '/photos/' | relative_url }}">Walk the art gallery</a><button type="button" data-open="contact" data-prefill="Could I see one of your photos in color?">Ask for one in color</button></div>
     </header>
-    {% assign years = "" %}{% for p in P %}{% assign y = p.date | slice: 0, 4 %}{% if y == "" %}{% assign y = "Undated" %}{% endif %}{% unless years contains y %}{% assign years = years | append: y | append: "," %}{% endunless %}{% endfor %}
-    {% assign years = years | split: "," %}
-    {% for y in years %}
-    <section class="year" id="y{{ y }}" aria-labelledby="y{{ y }}-h">
-      <header class="sign"><h2 id="y{{ y }}-h">{{ y }}</h2></header>
-      <div class="wall">{% for p in P %}{% assign py = p.date | slice: 0, 4 %}{% if py == "" %}{% assign py = "Undated" %}{% endif %}{% if py == y %}{% capture when %}{% if p.date != "" %}{{ p.date | append: "-01" | date: "%B %Y" }}{% endif %}{% endcapture %}{% capture cap %}{% if p.place != "" %}{{ p.place }}{% else %}Untitled{% endif %}{% if when != "" %}, {{ when }}{% endif %}{% endcapture %}
-        <figure><button type="button" data-base="{{ '/img/photos/' | append: p.id | relative_url }}" data-cap="{{ cap | escape }}" aria-label="Open photo: {{ cap | escape }}"><img src="{{ '/img/photos/' | append: p.id | append: '-bw-640.webp' | relative_url }}" width="{{ p.w }}" height="{{ p.h }}" alt="Photo: {{ cap | escape }}" loading="lazy" decoding="async"></button><figcaption>{{ cap }}</figcaption></figure>{% endif %}{% endfor %}
+    {% for se in site.data.gallery.series %}
+    <section class="series" id="s{{ forloop.index }}" aria-labelledby="s{{ forloop.index }}-h">
+      <header><span class="k">Series {% case forloop.index %}{% when 1 %}I{% when 2 %}II{% when 3 %}III{% when 4 %}IV{% when 5 %}V{% else %}{{ forloop.index }}{% endcase %}</span><h2 id="s{{ forloop.index }}-h">{{ se.title }}</h2><span class="n">{{ se.photos.size }} prints</span></header>
+      <div class="plates">{% for id in se.photos %}{% assign p = ALL | where: "id", id | first %}{% capture when %}{% if p.date != "" %}{{ p.date | append: "-01" | date: "%B %Y" }}{% endif %}{% endcapture %}{% capture cap %}{% if p.place != "" %}{{ p.place }}{% else %}Untitled{% endif %}{% if when != "" %}, {{ when }}{% endif %}{% endcapture %}
+        <figure class="plate{% if p.h > p.w %} tall{% endif %}" data-tall="{% if p.h > p.w %}1{% else %}0{% endif %}"><button type="button" data-base="{{ '/img/photos/' | append: p.id | relative_url }}" data-cap="{{ se.title | escape }} · {{ forloop.index }} of {{ se.photos.size }} · {{ cap | escape }}" aria-label="Open photo: {{ cap | escape }}"><img src="{{ '/img/photos/' | append: p.id | append: '-bw-1600.webp' | relative_url }}" width="{{ p.w }}" height="{{ p.h }}" alt="Photo: {{ cap | escape }}" loading="lazy" decoding="async"></button><figcaption><b>{{ cap }}</b><span>{{ se.title }} · {{ forloop.index }} of {{ se.photos.size }}</span></figcaption></figure>{% endfor %}
       </div>
     </section>{% endfor %}
     <p class="copy">Photos © 2021–2025 Rick Mathews. All rights reserved. Please ask before using one.</p>
@@ -78,10 +94,15 @@ layout: null
 </dialog>
 {% include ink/foot.html %}
 <script>
+/* two portrait prints in a row sit side by side; a lone one stays centered */
 (function(){
-  var btns = [].slice.call(document.querySelectorAll('.wall button')), lb = document.getElementById('lb'), img = document.getElementById('lbImg'), cap = document.getElementById('lbCap'), ask = document.getElementById('lbColor'), cur = 0, opener = null;
-  function show(i){ cur = (i + btns.length) % btns.length; var b = btns[cur]; img.src = b.dataset.base + '-bw-1600.webp'; img.alt = 'Photo: ' + b.dataset.cap; cap.textContent = b.dataset.cap + ' · ' + (cur + 1) + ' / ' + btns.length;
-    ask.dataset.prefill = 'Could I see your photo "' + b.dataset.cap + '" in color?'; new Image().src = btns[(cur + 1) % btns.length].dataset.base + '-bw-1600.webp'; }
+  document.querySelectorAll('.plates').forEach(function(g){ var f = [].slice.call(g.children), i = 0;
+    while (i < f.length){ if (f[i].dataset.tall === '1' && f[i + 1] && f[i + 1].dataset.tall === '1'){ f[i].classList.add('half'); f[i + 1].classList.add('half'); i += 2; } else i++; } });
+})();
+(function(){
+  var btns = [].slice.call(document.querySelectorAll('.plate button')), lb = document.getElementById('lb'), img = document.getElementById('lbImg'), cap = document.getElementById('lbCap'), ask = document.getElementById('lbColor'), cur = 0, opener = null;
+  function show(i){ cur = (i + btns.length) % btns.length; var b = btns[cur]; img.src = b.dataset.base + '-bw-1600.webp'; img.alt = 'Photo: ' + b.dataset.cap; cap.textContent = b.dataset.cap;
+    ask.dataset.prefill = 'Could I see your photo "' + b.dataset.cap.split(' · ').pop() + '" in color?'; new Image().src = btns[(cur + 1) % btns.length].dataset.base + '-bw-1600.webp'; }
   btns.forEach(function(b, i){ b.addEventListener('click', function(){ opener = b; show(i); lb.showModal(); }); });
   document.getElementById('lbX').addEventListener('click', function(){ lb.close(); });
   document.getElementById('lbPrev').addEventListener('click', function(){ show(cur - 1); });
@@ -94,7 +115,7 @@ layout: null
   lb.addEventListener('touchend', function(e){ if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); x0 = null; });
 })();
 </script>
-<script src="{{ '/assets/ink.js' | relative_url }}?v=20261124" defer></script>
-<script src="{{ '/assets/site.js' | relative_url }}?v=20261124" defer></script>
+<script src="{{ '/assets/ink.js' | relative_url }}?v=20261127" defer></script>
+<script src="{{ '/assets/site.js' | relative_url }}?v=20261127" defer></script>
 </body>
 </html>
