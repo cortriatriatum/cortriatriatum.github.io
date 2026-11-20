@@ -97,7 +97,7 @@
   };
 
 
-  var vigs = [].map.call(document.querySelectorAll('canvas[data-vig]'), function(cv){ return { cv: cv, ctx: cv.getContext('2d'), name: cv.dataset.vig, on: false, hov: false }; });
+  var vigs = [].map.call(document.querySelectorAll('canvas[data-vig]'), function(cv){ return { cv: cv, ctx: cv.getContext('2d'), name: cv.dataset.vig, on: false, hov: false, still: cv.hasAttribute('data-still') }; });
   if (!vigs.length) return;
   if ('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(es){ es.forEach(function(e){ var v = vigs.find(function(v){ return v.cv === e.target; }); if (v) v.on = e.isIntersecting; }); }, { rootMargin: '80px' });
@@ -108,7 +108,7 @@
   function frame(now){
     if (I.plain()){ running = false; return; }
     I.tick(now);
-    vigs.forEach(function(v){ if (v.on && VIG[v.name] && I.fit(v.cv, v.ctx, 300, 200)){ I.use(v.ctx); VIG[v.name](I.T, I.lookIn(v.cv, 300, 200), v.hov); } });
+    vigs.forEach(function(v){ if (v.still && v.drawn) return; if (v.on && VIG[v.name] && I.fit(v.cv, v.ctx, 300, 200)){ I.use(v.ctx); if (v.still) I.tick(2000); VIG[v.name](v.still ? 2 : I.T, v.still ? null : I.lookIn(v.cv, 300, 200), v.still ? false : v.hov); if (v.still){ v.drawn = true; I.tick(now); } } });
     requestAnimationFrame(frame);
   }
   function start(){ if (!running && !I.plain()){ running = true; requestAnimationFrame(frame); } }

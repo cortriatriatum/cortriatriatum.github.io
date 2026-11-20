@@ -220,6 +220,15 @@ dialog.search::backdrop{background:rgba(20,20,18,.35)}
 @keyframes hit{0%,35%{background:color-mix(in srgb,var(--sun) 45%,transparent)}100%{background:transparent}}
 @media (prefers-reduced-motion: reduce){.hit{animation:none;outline:2px solid var(--sun)}}
 
+/* ---------- footer: the site map ---------- */
+.sitemap{width:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px 28px;margin-bottom:14px}
+.sitemap div{display:flex;flex-direction:column;gap:6px}
+.sitemap b{font:800 15px/1.2 var(--grot);color:var(--ink)}
+.sitemap a{color:var(--soft);text-decoration:none;font-size:14px;line-height:1.3}
+.sitemap a:hover{color:var(--ink);text-decoration:underline}
+.sitemap b a{color:var(--ink)}
+.fb{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;font:800 10px/1 var(--grot);vertical-align:-3px}
+.foot .fine{font-size:13px}
 /* ---------- footer ---------- */
 .foot{max-width:1180px;margin:0 auto;border-top:1.5px solid var(--ink);padding-block:22px 40px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 24px;color:var(--soft);font-size:14px}
 .foot a{color:inherit}

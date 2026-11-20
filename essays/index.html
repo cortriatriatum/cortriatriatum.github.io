@@ -26,7 +26,10 @@ layout: null
     .map .sign{margin-bottom:26px}
     .map-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:28px;align-items:end;margin-bottom:26px}
     .map-intro{font-size:18px;line-height:1.55;max-width:46rem;margin:0}
-    .line{position:relative;list-style:none;margin:0;padding:0 0 0 70px}
+    .line{position:relative;list-style:none;margin:0;padding:0 0 0 110px}
+    .xfers{position:absolute;left:0;top:0;width:100px;height:100%;pointer-events:none;overflow:visible}
+    .xfers path{fill:none;stroke-width:3.5;stroke-linecap:round;opacity:.85}
+    .xfers circle{stroke:var(--ink);stroke-width:2}
     .stop:not(:last-child)::after{content:"";position:absolute;left:-47px;top:20px;bottom:-20px;width:7px;border-radius:4px;background:var(--ink);transform-origin:top;animation:draw .45s cubic-bezier(.2,.7,.2,1) both}
     .stop:nth-child(2)::after{animation-delay:.3s}.stop:nth-child(3)::after{animation-delay:.6s}.stop:nth-child(n+4)::after{animation-delay:.9s}
     @keyframes draw{from{transform:scaleY(0)}to{transform:scaleY(1)}}
@@ -48,7 +51,7 @@ layout: null
     .stop:target .stop-title{background:color-mix(in srgb,var(--sun) 45%,transparent)}
     @media (max-width: 760px){
       .map-top{grid-template-columns:minmax(0,1fr)}
-      .line{padding-left:46px}.stop::before{left:-40px;width:18px;height:18px}
+      .line{padding-left:76px}.xfers{width:70px}.stop::before{left:-40px;width:18px;height:18px}
       .stop:not(:last-child)::after{left:-34px;width:6px;top:17px;bottom:-17px}
     }
   </style>
@@ -66,7 +69,7 @@ layout: null
     {%- assign words = e.content | number_of_words %}
     {%- assign minutes = words | divided_by: 230 | plus: 1 %}
     {%- assign slug = e.url | split: "/" | last %}
-    <li class="stop" id="{{ slug }}" data-cite-id="essay:{{ slug }}">
+    <li class="stop" id="{{ slug }}" data-cite-id="essay:{{ slug }}" data-color="{{ e.route_color }}" data-transfers="{{ e.transfers | join: ' ' }}">
       <div class="stop-head">
         {%- if e.route %}<span class="rb" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span>{% endif %}
         <span class="stop-date"><time datetime="{{ e.date | date_to_xml_schema }}">{{ e.date | date: "%B %-d, %Y" }}</time>{% if e.updated %} · revised <time datetime="{{ e.updated | date_to_xml_schema }}">{{ e.updated | date: "%B %-d, %Y" }}</time>{% endif %}</span>
@@ -92,6 +95,27 @@ layout: null
 {% include citable.html %}
 <script>
 {% include cite-share.js %}
+</script>
+<script>
+/* Transfers, drawn: a curved line in the route color joins each pair of related essays. */
+(function(){
+  var line = document.querySelector('.line'); if (!line) return;
+  var NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'xfers'); svg.setAttribute('aria-hidden', 'true'); line.prepend(svg);
+  function draw(){
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var box = line.getBoundingClientRect(), stops = [].slice.call(line.querySelectorAll('.stop')), seen = {};
+    var dotX = parseFloat(getComputedStyle(stops[0], '::before').left) + 110 + 10, lane = 0;
+    stops.forEach(function(a){
+      (a.dataset.transfers || '').split(' ').filter(Boolean).forEach(function(slug){
+        var b = document.getElementById(slug); if (!b) return; var key = [a.id, slug].sort().join('|'); if (seen[key]) return; seen[key] = 1;
+        var ya = a.getBoundingClientRect().top - box.top + 19, yb = b.getBoundingClientRect().top - box.top + 19, x = Math.max(8, dotX - 26 - (lane % 4) * 16); lane++;
+        var p = document.createElementNS(NS, 'path'); p.setAttribute('d', 'M' + dotX + ' ' + ya + ' C' + x + ' ' + ya + ' ' + x + ' ' + yb + ' ' + dotX + ' ' + yb);
+        p.setAttribute('stroke', b.dataset.color || 'currentColor'); svg.appendChild(p);
+      });
+    });
+  }
+  addEventListener('resize', draw); (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(draw); draw();
+})();
 </script>
 <script src="{{ '/assets/ink.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/site.js' | relative_url }}" defer></script>

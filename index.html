@@ -29,185 +29,207 @@ layout: null
 <meta content="https://cortriatriatum.github.io/img/share.jpg" name="twitter:image"/>
 <meta content="Rick Mathews, PhD. Physician-Scientist in Training, MD/PhD, Oregon Health &amp; Science University." name="twitter:image:alt"/>
 <style>
-  body.home{padding:0}
-  body.home>.nav{position:absolute;top:0;left:0;right:0;z-index:6;max-width:none;padding-inline:max(20px,env(safe-area-inset-left,0px)) max(20px,env(safe-area-inset-right,0px))}
-  #stage{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden}
-  #live{position:absolute;inset:0;width:100%;height:100%;display:block}
-  #hot{position:absolute;inset:0;pointer-events:none}
+  html,body.world{height:100%;overflow:hidden;overscroll-behavior:none}
+  body.world{padding:0;touch-action:none}
+  body.world>.nav{position:fixed;top:0;left:0;right:0;z-index:30;max-width:none;padding-inline:max(18px,env(safe-area-inset-left,0px)) max(18px,env(safe-area-inset-right,0px));pointer-events:none}
+  body.world>.nav>*{pointer-events:auto}
+  body.world>.foot{display:none}
+  #world{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;display:block}
+  #hot{position:fixed;inset:0;pointer-events:none;z-index:5}
   #hot>*{pointer-events:auto}
-  .tag-in{all:unset;box-sizing:border-box;position:absolute;transform:translate(-50%,-100%);cursor:pointer;white-space:nowrap;font:400 19px/1 var(--hand);
+  .tag-in{all:unset;box-sizing:border-box;position:absolute;transform:translate(-50%,-100%);cursor:pointer;white-space:nowrap;font:400 18px/1 var(--hand);
     background:var(--ink);color:var(--paper);padding:7px 12px 8px;border-radius:14px 11px 15px 10px;box-shadow:3px 3px 0 color-mix(in srgb,var(--ink) 25%,transparent);animation:boil 1s steps(1) infinite}
   .tag-in::after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;background:inherit;transform:translateX(-50%) rotate(45deg);z-index:-1}
-  .tag-in:hover,.tag-in:focus-visible{background:var(--pop);color:#fff;transform:translate(-50%,-112%)}
+  .tag-in:hover,.tag-in:focus-visible{background:var(--pop);color:#fff}
   .tag-in:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-  .tag-in.dir-head{font-size:16px;padding:5px 10px 6px}
-  .dir-line{position:absolute;display:block;border-radius:2px}
-  .dir-line:focus-visible{outline:2px solid var(--pop)}
+  .dir-line,.hot{position:absolute;display:block;border-radius:6px;background:transparent;border:0;padding:0;cursor:pointer}
+  .dir-line:focus-visible,.hot:focus-visible{outline:2.5px dashed var(--pop);outline-offset:2px}
   @keyframes boil{0%{border-radius:14px 11px 15px 10px}33%{border-radius:11px 15px 10px 14px}66%{border-radius:15px 10px 13px 12px}}
-  .intro{position:absolute;z-index:4;left:max(20px,env(safe-area-inset-left,0px));top:calc(74px + env(safe-area-inset-top,0px));width:min(470px,calc(100% - 40px));
-    background:color-mix(in srgb,var(--paper) 86%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:18px 20px;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.08)}
-  .intro .who{display:grid;grid-template-columns:112px minmax(0,1fr);gap:18px;align-items:center}
-  .me-photo{display:block;width:112px;height:112px;border-radius:50%;object-fit:cover;border:2px solid var(--ink)}
-  .intro h1{font-weight:800;font-size:clamp(32px,3.6vw,48px);line-height:.95;letter-spacing:-.04em;margin:0}
+  /* one panel per stop, on the left; they fade in when you arrive */
+  .zp{position:fixed;z-index:10;left:max(18px,env(safe-area-inset-left,0px));top:calc(72px + env(safe-area-inset-top,0px));width:min(440px,calc(100vw - 36px));max-height:calc(100dvh - 100px);overflow-y:auto;
+    background:color-mix(in srgb,var(--paper) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:18px 20px;border-radius:16px;box-shadow:0 14px 44px rgba(0,0,0,.1);
+    opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease,visibility 0s linear .35s;overscroll-behavior:contain}
+  .zp.on{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .35s ease}
+  .zp h2{font:800 clamp(24px,2.4vw,30px)/1.05 var(--grot);letter-spacing:-.02em;margin:6px 0 10px}
+  .zp .k{display:block}
+  .zp .more{margin-top:14px}
+  .intro .who{display:grid;grid-template-columns:116px minmax(0,1fr);gap:16px;align-items:center}
+  .me-photo{position:relative;display:block;width:116px;height:116px;border-radius:50%;overflow:hidden;border:2px solid var(--ink);background:var(--paper)}
+  .me-photo img,.me-photo canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .intro h1{font-weight:800;font-size:clamp(30px,3.3vw,44px);line-height:.95;letter-spacing:-.04em;margin:0}
   .intro .bio{margin:10px 0 0;font-size:15.5px;line-height:1.45}
-  .intro .now{display:block;margin-top:12px;font:500 12px/1.5 var(--mono);color:var(--soft)}
-  .seek{all:unset;box-sizing:border-box;cursor:text;display:flex;align-items:center;gap:10px;width:100%;margin-top:12px;padding:11px 14px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);font:500 15px/1 var(--grot);color:var(--soft)}
-  .seek:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
+  .intro .now{display:block;margin-top:10px;font:500 12px/1.5 var(--mono);color:var(--soft)}
+  .seek{all:unset;box-sizing:border-box;cursor:text;display:flex;align-items:center;gap:10px;width:100%;margin-top:12px;padding:10px 14px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);font:500 15px/1 var(--grot);color:var(--soft)}
   .seek kbd{margin-left:auto;font:500 11px/1 var(--mono);border:1px solid currentColor;border-radius:4px;padding:2px 5px}
   .ways{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
   .ways>*{all:unset;cursor:pointer;font:600 13.5px/1 var(--grot);padding:8px 12px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper)}
   .ways>*:hover,.ways>*:focus-visible{background:var(--ink);color:var(--paper)}
-  .ways>*:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
-  .cue{position:absolute;z-index:4;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font:400 18px/1 var(--hand);display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;background:var(--paper);padding:6px 12px;border-radius:12px}
-  .cue span{animation:nudge 1.6s ease-in-out infinite}
-  @keyframes nudge{50%{transform:translateY(5px)}}
-  html.plain #stage{height:auto;min-height:0;overflow:visible;padding-bottom:20px}
-  html.plain #live,html.plain #hot,html.plain .cue{display:none}
-  html.plain .intro{position:static;margin:80px max(20px,env(safe-area-inset-left,0px)) 0;background:none;box-shadow:none;padding:0;-webkit-backdrop-filter:none;backdrop-filter:none;width:auto;max-width:680px}
-  html.plain .ways [data-go="plain"]{display:none}
-  .page{padding-inline:max(20px,env(safe-area-inset-left,0px)) max(20px,env(safe-area-inset-right,0px))}
-  body.home>.foot{margin-inline:max(20px,env(safe-area-inset-left,0px)) max(20px,env(safe-area-inset-right,0px))}
-  @media (min-width: 1240px){ body.home>.foot{margin-inline:auto} }
-  @media (max-width: 700px){
-    #stage{min-height:620px}
-    .intro{padding:14px 15px;top:calc(64px + env(safe-area-inset-top,0px))}
-    .intro .who{grid-template-columns:84px minmax(0,1fr);gap:14px}
-    .me-photo{width:84px;height:84px}
-    .intro h1{font-size:30px}
-    .seek{padding:9px 12px;font-size:14px}
-    .ways{gap:6px}.ways>*{font-size:12.5px;padding:7px 10px}
-    .intro .bio{font-size:14px}
-    .tag-in{font-size:16px;padding:6px 10px 7px}
-    .cue{display:none}
+  .ways>*:focus-visible,.seek:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
+  .hint{font:400 17px/1.3 var(--hand);color:var(--soft);margin:10px 0 0}
+  .zp .rows>li{padding:9px 0}
+  .zp .rows.two{grid-template-columns:minmax(0,1fr)}.zp .rows.two>li:nth-child(2){border-top:0}
+  .zp ol.mini{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .zp ol.mini li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start}
+  .zp ol.mini a{font:700 16px/1.25 var(--grot);text-decoration:none}
+  .zp ol.mini a:hover{text-decoration:underline}
+  .zp .xf{font:500 11.5px/1.6 var(--mono);color:var(--soft)}
+  .rb{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font:800 14px/1 var(--grot);flex:none}
+  .rb.sm{width:20px;height:20px;font-size:10.5px;vertical-align:-4px;margin-left:3px}
+  /* the loop indicator, on the right: every stop of the loop, the current one filled */
+  .loop{position:fixed;z-index:12;right:max(14px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);margin:0;padding:12px 10px;list-style:none;display:grid;gap:6px;
+    background:color-mix(in srgb,var(--paper) 85%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:18px}
+  .loop::before{content:"";position:absolute;right:22px;top:22px;bottom:22px;border-right:3px solid var(--ink);border-radius:3px}
+  .loop button{all:unset;cursor:pointer;position:relative;display:flex;align-items:center;flex-direction:row-reverse;gap:8px;font:600 12.5px/1 var(--grot);color:var(--soft);padding:3px 0}
+  .loop .dot{width:18px;height:18px;border-radius:50%;border:3px solid var(--ink);background:var(--paper);flex:none;position:relative;z-index:1}
+  .loop button.here{color:var(--ink);font-weight:800}
+  .loop button.here .dot{background:var(--ink)}
+  .loop button:focus-visible{outline:2px solid var(--pop);outline-offset:3px;border-radius:6px}
+  .loop .wrapnote{font:400 13px/1.2 var(--hand);color:var(--soft);text-align:right;padding-right:2px}
+  /* the detail panel for the room's objects and the coffee cart */
+  .panel{position:fixed;top:0;right:0;bottom:0;width:min(500px,94vw);z-index:40;background:var(--paper);border-left:1.5px solid var(--ink);
+    transform:translateX(104%);transition:transform .32s cubic-bezier(.2,.8,.2,1);overflow-y:auto;visibility:hidden;overscroll-behavior:contain;
+    padding:calc(24px + env(safe-area-inset-top,0px)) calc(24px + env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) 26px;box-shadow:-20px 0 60px rgba(0,0,0,.08)}
+  .panel.open{transform:none;visibility:visible}
+  .panel h2{font:800 32px/1.02 var(--grot);letter-spacing:-.03em;margin:8px 0 14px}
+  .panel .close{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:calc(18px + env(safe-area-inset-right,0px))}
+  .panel section[hidden]{display:none}
+  .panel .ideas>li{grid-template-columns:40px minmax(0,1fr)}.panel .ideas>li::before{font-size:38px}.panel .ideas .data-title>a{font-size:20px}
+  .recs h3{font:700 16px/1.2 var(--grot);margin:18px 0 6px}
+  .skip-dir{position:absolute;left:-9999px;top:8px;z-index:100;background:var(--ink);color:var(--paper);padding:8px 12px}
+  .skip-dir:focus{left:12px}
+  @media (max-width: 900px){
+    .zp{top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-height:46dvh;padding:14px 16px;background:color-mix(in srgb,var(--paper) 97%,transparent)}
+    .intro .who{grid-template-columns:76px minmax(0,1fr);gap:12px}.me-photo{width:76px;height:76px}.intro h1{font-size:27px}
+    .intro .bio{font-size:14px}.ways>*{font-size:12.5px;padding:7px 10px}
+    .loop{top:auto;bottom:auto;top:calc(64px + env(safe-area-inset-top,0px));transform:none;padding:8px 8px;gap:3px}
+    .loop .lb,.loop .wrapnote{display:none}.loop .dot{width:13px;height:13px;border-width:2.5px}.loop::before{right:14.5px;top:14px;bottom:14px;border-right-width:2.5px}
+    .tag-in{font-size:15px;padding:6px 10px 7px}
+    .panel{top:auto;left:0;width:100%;max-height:82vh;border-left:0;border-top:1.5px solid var(--ink);transform:translateY(104%);border-radius:16px 16px 0 0}
   }
-  @media (prefers-reduced-motion: reduce){ .tag-in{animation:none} .cue span{animation:none} }
+  @media (prefers-reduced-motion: reduce){ .tag-in{animation:none} .zp,.panel{transition:none} }
 </style>
 </head>
-<body class="home">
+<body class="world">
+<a class="skip-dir" href="{{ '/directory/' | relative_url }}">Skip the drawing: everything on one page</a>
 {% assign navpage = "home" %}{% include ink/nav.html %}
-<section id="stage" aria-label="Rick Mathews, and the ways into this site">
-  <canvas id="live" role="img" aria-label="A live ink drawing of a Portland street from the current weather and time of day: a building with a lit window marked Room, a station directory board, a subway entrance, and a coffee cart"></canvas>
-  <div id="hot" data-ride="{{ '/ride/' | relative_url }}" data-room="{{ '/room/' | relative_url }}"></div>
-  <div class="intro">
+<canvas id="world" role="img" aria-label="A looping ink drawing. Down from a Portland street: a subway station, a train ride from New Delhi to Portland, and a door into a room. Up from the street: the OHSU Aerial Tram to the same room. Scroll, swipe or use the arrow keys to move through it."></canvas>
+<div id="hot" data-directory="{{ '/directory/' | relative_url }}"></div>
+
+<main id="main">
+  <section class="zp intro" data-zone-panel="street" aria-label="Rick Mathews">
     <div class="who">
-      <img class="me-photo" src="https://cortriatriatum.github.io/img/rick-1.webp" alt="Rick Mathews" width="112" height="112" decoding="async" fetchpriority="high">
+      <span class="me-photo"><img src="{{ '/img/rick-1.webp' | relative_url }}" alt="Rick Mathews" width="116" height="116" decoding="async" fetchpriority="high"><canvas aria-hidden="true"></canvas></span>
       <h1>Rick Mathews, PhD</h1>
     </div>
     <p class="bio">Physician-Scientist in Training at the <a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a> <a href="https://www.ohsu.edu/school-of-medicine/md-phd-program/rick-mathews-phd">Medical Scientist Training Program</a></p>
     <span class="now" id="liveNow">Portland, Oregon</span>
     <button type="button" class="seek" data-search aria-haspopup="dialog">Search notes, papers, awards, courses <kbd>/</kbd></button>
     <nav class="ways" aria-label="Ways in">
-      <a href="{{ '/ride/' | relative_url }}" data-go="ride">Take the stairs down</a>
-      <a href="{{ '/room/' | relative_url }}" data-go="room">Walk into the room</a>
-      <a href="#main" data-go="read" data-sec="main">Read the directory</a>
-      <button type="button" data-go="coffee">Grab a coffee</button>
-      <button type="button" data-go="plain" data-plain-go>Plain page</button>
+      <a href="#room" data-goto-zone="room">Tram up to the room ↑</a>
+      <a href="#notes" data-goto-zone="notes">Down to the subway ↓</a>
+      <a href="{{ '/directory/' | relative_url }}">Directory</a>
+      <button type="button" data-open-panel="coffee">Grab a coffee</button>
     </nav>
-  </div>
-  <a class="cue" href="#main" aria-label="Scroll to everything">everything<span>↓</span></a>
-</section>
+  </section>
 
-<div class="page" id="main">
-  <nav class="rail" aria-label="Sections">
-    <p class="rail-top">Directory</p>
-    <div class="rail-track"><span class="rail-line" aria-hidden="true"></span><span class="rail-fill" aria-hidden="true"></span>
-    <ol>
-      <li><a href="#notes"><span class="bul">N</span>Notes</a></li>
-      <li><a href="#research"><span class="bul">R</span>Research</a></li>
-      <li><a href="#route"><span class="bul">→</span>Route</a></li>
-      <li><a href="#training"><span class="bul">E</span>Education</a></li>
-      <li><a href="#work"><span class="bul">W</span>Work &amp; Service</a></li>
-      <li><a href="#awards"><span class="bul">A</span>Awards</a></li>
-      <li><a href="#dev"><span class="bul">D</span>Dev</a></li>
-      <li><a href="#contact"><span class="bul">C</span>Contact</a></li>
-    </ol></div>
-  </nav>
-  <main>
-    <section class="sec" id="notes" aria-labelledby="notes-h">
-      <header class="sign"><span class="bul" aria-hidden="true">N</span><h2 id="notes-h">Notes, Scribbles &amp; Ideas in Progress</h2></header>
-      <div class="side">
-        <canvas class="vig" data-vig="toss" role="img" aria-label="Drawing: the figure crumples a draft and tosses it into a bin labeled drafts"></canvas>
-        <div class="links"><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/' | relative_url }}">All notes</a></div>
-      </div>
-      <div class="body">{% include ink/notes.html %}</div>
-    </section>
+  <section class="zp" data-zone-panel="tram" aria-labelledby="tram-h">
+    <span class="k">OHSU Aerial Tram · up Marquam Hill</span>
+    <h2 id="tram-h">Education</h2>
+    {% include ink/education.html %}
+    <a class="more" href="{{ '/directory/' | relative_url }}#education">Coursework</a>
+  </section>
 
-    <section class="sec" id="research" aria-labelledby="research-h">
-      <header class="sign"><span class="bul" aria-hidden="true">R</span><h2 id="research-h">Research</h2></header>
-      <div class="side">
-        <canvas class="vig" data-vig="scope" role="img" aria-label="Drawing: the figure peers into a microscope and pictures a heart and aorta"></canvas>
-        <h3 class="sub">Current research focus</h3>
-        {% include ink/focus.html %}
-      </div>
-      <div class="body">
-        <h3 class="sub">Manuscripts and publications</h3>
-        {% include ink/pubs.html %}
-        <h3 class="sub">Research funding</h3>
-        {% include ink/funding.html %}
-      </div>
-    </section>
+  <section class="zp" data-zone-panel="streetcar" aria-labelledby="sc-h">
+    <span class="k">TriMet · along the Willamette to South Waterfront</span>
+    <h2 id="sc-h">Work Experience &amp; Community Service</h2>
+    {% include ink/work.html %}
+  </section>
 
-    <section class="sec" id="route" aria-labelledby="route-h">
-      <header class="sign"><span class="bul" aria-hidden="true">→</span><h2 id="route-h">New Delhi to Portland</h2></header>
-      <div class="side">
-        <canvas class="vig" data-vig="train" role="img" aria-label="Drawing: a little train runs from New Delhi to Portland"></canvas>
-        <div class="links"><a href="{{ '/ride/' | relative_url }}">Take the ride</a></div>
-      </div>
-      <div class="body">{% include ink/route.html %}</div>
-    </section>
+  <section class="zp" data-zone-panel="hall" aria-labelledby="hall-h">
+    <span class="k">OHSU · the sky bridge</span>
+    <h2 id="hall-h">Awards</h2>
+    {% include ink/awards.html %}
+  </section>
 
-    <section class="sec" id="training" aria-labelledby="training-h">
-      <header class="sign"><span class="bul" aria-hidden="true">E</span><h2 id="training-h">Education</h2></header>
-      <div class="side"><canvas class="vig" data-vig="study" role="img" aria-label="Drawing: the figure sits on a stack of books labeled BE, PhD and MD, writing in a notebook"></canvas></div>
-      <div class="body">
-        {% include ink/education.html %}
-        <h3 class="sub">Coursework</h3>
-        {% include ink/coursework.html %}
-      </div>
-    </section>
+  <section class="zp" data-zone-panel="tramdown" aria-labelledby="td-h">
+    <span class="k">OHSU Aerial Tram · down to the street</span>
+    <h2 id="td-h">Dev</h2>
+    {% include ink/dev.html %}
+  </section>
 
-    <section class="sec" id="work" aria-labelledby="work-h">
-      <header class="sign"><span class="bul" aria-hidden="true">W</span><h2 id="work-h">Work Experience &amp; Community Service</h2></header>
-      <div class="side"><canvas class="vig" data-vig="carry" role="img" aria-label="Drawing: the figure carries a wobbling stack of boxes"></canvas></div>
-      <div class="body">{% include ink/work.html %}</div>
-    </section>
+  <section class="zp" data-zone-panel="room" aria-labelledby="room-h">
+    <h2 id="room-h">The room</h2>
+    <p class="hint">Click anything in the room.</p>
+    <div class="ways">
+      <button type="button" data-open-panel="notes">Notebook</button><button type="button" data-open-panel="research">Microscope</button><button type="button" data-open-panel="training">Diplomas</button><button type="button" data-open-panel="awards">Shelf</button><button type="button" data-open-panel="route">Suitcase</button><button type="button" data-open-panel="work">Coat rack</button><button type="button" data-open-panel="dev">Laptop</button><button type="button" data-open-panel="contact">Door</button>
+    </div>
+  </section>
 
-    <section class="sec" id="awards" aria-labelledby="awards-h">
-      <header class="sign"><span class="bul" aria-hidden="true">A</span><h2 id="awards-h">Awards</h2></header>
-      <div class="body" style="grid-column:1/-1">{% include ink/awards.html %}</div>
-    </section>
+  <section class="zp" data-zone-panel="notes" aria-labelledby="notes-h">
+    <span class="k">N line · mezzanine</span>
+    <h2 id="notes-h">Notes, Scribbles &amp; Ideas in Progress</h2>
+    <ol class="mini">
+    {%- assign recent = site.essays | sort: "date" | reverse -%}
+    {%- for e in recent %}
+      <li>{% if e.route %}<span class="rb" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span>{% else %}<span></span>{% endif %}<div><a href="{{ e.url | relative_url }}">{{ e.title }}</a>
+        <div class="xf">{{ e.date | date: "%Y" }} · <span class="wip">{{ e.status | downcase }}</span>{% for t in e.transfers %}{% for o in site.essays %}{% if o.url contains t %} · transfer <span class="rb sm" style="background:{{ o.route_color }};color:{{ o.route_text }}" title="{{ o.title | escape }}">{{ o.route }}</span>{% endif %}{% endfor %}{% endfor %}</div></div></li>
+    {%- endfor %}
+    </ol>
+    <a class="more" href="{{ '/essays/' | relative_url }}">The whole line</a>
+  </section>
 
-    <section class="sec" id="dev" aria-labelledby="dev-h">
-      <header class="sign"><span class="bul" aria-hidden="true">D</span><h2 id="dev-h">Dev</h2></header>
-      <div class="body" style="grid-column:1/-1">{% include ink/dev.html %}</div>
-    </section>
+  <section class="zp" data-zone-panel="research" aria-labelledby="research-h">
+    <span class="k">Platform</span>
+    <h2 id="research-h">Research</h2>
+    {% include ink/focus.html %}
+    <a class="more" href="{{ '/directory/' | relative_url }}#research">All 20 publications and funding</a>
+  </section>
 
-    <section class="sec" id="contact" aria-labelledby="contact-h">
-      <header class="sign"><span class="bul" aria-hidden="true">C</span><h2 id="contact-h">Contact</h2></header>
-      <div class="side">
-        <canvas class="vig" data-vig="mail" role="img" aria-label="Drawing: the figure posts a letter and waves"></canvas>
-      </div>
-      <div class="body">
-        {% include ink/links.html %}
-        <div class="links"><button type="button" data-open="contact">Grab a coffee</button><a href="#subscribe" data-open="subscribe">Subscribe to new notes</a><a href="https://cortriatriatum.github.io/essays/feed.xml">RSS</a></div>
-      </div>
-    </section>
-  </main>
-</div>
+  <section class="zp" data-zone-panel="ride" aria-labelledby="ride-h">
+    <span class="k">The ride</span>
+    <h2 id="ride-h">New Delhi to Portland</h2>
+    {% include ink/route.html %}
+  </section>
+
+  <section class="zp" data-zone-panel="portland" aria-labelledby="pdx-h">
+    <span class="k">Portland · now</span>
+    <h2 id="pdx-h">Contact</h2>
+    {% include ink/links.html %}
+    <div class="links"><button type="button" data-open-panel="coffee">Grab a coffee</button><a href="#subscribe" data-open="subscribe">Subscribe</a><a href="https://cortriatriatum.github.io/essays/feed.xml">RSS</a></div>
+    <p class="hint">The escalator goes up to TriMet.</p>
+  </section>
+</main>
+
+<nav aria-label="Where you are on the loop"><ol class="loop" id="loopNav"><li class="wrapnote" aria-hidden="true">↻ loops</li></ol></nav>
+
+<aside class="panel" id="panel" aria-label="Details">
+  <button type="button" class="pill close" id="panelClose">Close</button>
+  <section data-c="coffee" hidden><span class="k">The coffee cart</span><h2>Grab a coffee</h2>
+    <div class="links"><button type="button" class="key" data-open="contact">Write to me</button><button type="button" data-open="contact" data-prefill="Coffee in Portland?">Meet for coffee</button></div>
+    {%- assign pdx_has = false %}{% for l in site.data.portland.lists %}{% if l.title and l.title != "" %}{% assign pdx_has = true %}{% endif %}{% endfor %}
+    {%- if pdx_has %}<div class="recs"><span class="k" style="display:block;margin-top:22px">Portland, recommended</span>
+      {%- for l in site.data.portland.lists %}{% if l.title and l.title != "" %}<h3><a href="{{ l.url }}">{{ l.title }}</a></h3>{% if l.places %}<ul class="rows">{% for pl in l.places %}<li><div class="data-title"><span class="t">{% if pl.url %}<a href="{{ pl.url }}">{{ pl.name }}</a>{% else %}{{ pl.name }}{% endif %}</span>{% if pl.note %}<span class="s">{{ pl.note }}</span>{% endif %}</div><span class="d">{{ pl.area }}</span></li>{% endfor %}</ul>{% endif %}{% endif %}{% endfor %}</div>{% endif %}
+  </section>
+  <section data-c="notes" hidden><span class="k">The notebook</span><h2>Notes, Scribbles &amp; Ideas in Progress</h2>{% include ink/notes.html %}
+    <div class="links"><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/' | relative_url }}">The whole line</a></div></section>
+  <section data-c="research" hidden><span class="k">The microscope</span><h2>Research</h2><h3 class="sub">Current research focus</h3>{% include ink/focus.html %}
+    <h3 class="sub">Manuscripts and publications</h3>{% include ink/pubs.html %}
+    <h3 class="sub">Research funding</h3>{% include ink/funding.html %}</section>
+  <section data-c="training" hidden><span class="k">The diplomas</span><h2>Education</h2>{% include ink/education.html %}
+    <h3 class="sub">Coursework</h3>{% include ink/coursework.html %}</section>
+  <section data-c="awards" hidden><span class="k">The shelf</span><h2>Awards</h2>{% include ink/awards.html %}</section>
+  <section data-c="route" hidden><span class="k">The suitcase</span><h2>New Delhi to Portland</h2>{% include ink/route.html %}</section>
+  <section data-c="work" hidden><span class="k">The coat rack</span><h2>Work Experience &amp; Community Service</h2>{% include ink/work.html %}</section>
+  <section data-c="dev" hidden><span class="k">The laptop</span><h2>Dev</h2>{% include ink/dev.html %}</section>
+  <section data-c="contact" hidden><span class="k">The door</span><h2>Contact</h2>{% include ink/links.html %}</section>
+</aside>
 {% include ink/foot.html %}
 {% include citable.html %}
 <script>
 {% include cite-share.js %}
 </script>
-<script>
-  document.querySelectorAll('[data-plain-go]').forEach(function(b){ b.addEventListener('click', function(){
-    if (!document.documentElement.classList.contains('plain')) document.getElementById('plainToggle').click();
-    document.getElementById('main').scrollIntoView();
-  }); });
-</script>
 <script src="{{ '/assets/ink.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/site.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/home.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/vig.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/world.js' | relative_url }}" defer></script>
 </body>
 </html>

@@ -196,6 +196,30 @@
   }
   function pdxTime(){ try { return new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit' }).format(new Date()).toLowerCase(); } catch (e) { return ''; } }
 
+  /* ---------- the sun over Portland (NOAA approximation), and the page tone it sets ---------- */
+  var LAT = 45.5152, LON = -122.6784, RAD = Math.PI / 180;
+  function sunAlt(d){ // solar altitude in degrees at time d
+    var jd = d.getTime() / 864e5 + 2440587.5, n = jd - 2451545, L = (280.46 + .9856474 * n) % 360, g = (357.528 + .9856003 * n) % 360;
+    var lam = L + 1.915 * Math.sin(g * RAD) + .02 * Math.sin(2 * g * RAD), eps = 23.439 - 4e-7 * n;
+    var dec = Math.asin(Math.sin(eps * RAD) * Math.sin(lam * RAD));
+    var ra = Math.atan2(Math.cos(eps * RAD) * Math.sin(lam * RAD), Math.cos(lam * RAD)) / RAD;
+    var gmst = (18.697374558 + 24.06570982441908 * n) % 24, lst = (gmst * 15 + LON) % 360, ha = (lst - ra) * RAD;
+    return Math.asin(Math.sin(LAT * RAD) * Math.sin(dec) + Math.cos(LAT * RAD) * Math.cos(dec) * Math.cos(ha)) / RAD;
+  }
+  function crossing(rising){ // today's sunrise or sunset in Portland, found by bisection on a 10-minute scan
+    var now = new Date(), day = new Date(now.getTime()); day.setUTCHours(12 + 8, 0, 0, 0); // about local noon
+    var t0 = day.getTime() + (rising ? -12 : 0) * 3600e3, prev = sunAlt(new Date(t0));
+    for (var k = 1; k <= 72; k++){ var t = t0 + k * 600e3, a = sunAlt(new Date(t)); if ((rising && prev < -.83 && a >= -.83) || (!rising && prev >= -.83 && a < -.83)){ var lo = t - 600e3, hi = t; for (var j = 0; j < 12; j++){ var mid = (lo + hi) / 2, am = sunAlt(new Date(mid)); if ((am >= -.83) === rising) hi = mid; else lo = mid; } return new Date((lo + hi) / 2); } prev = a; }
+    return null;
+  }
+  function phase(){ var a = sunAlt(new Date()), up = sunAlt(new Date(Date.now() + 1800e3)) > a;
+    if (a < -6) return 'night'; if (a < 1) return up ? 'dawn' : 'dusk'; if (a < 9) return up ? 'morning' : 'golden'; return 'day'; }
+  function fmt(d){ try { return new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit' }).format(d).toLowerCase(); } catch (e) { return ''; } }
+  function sunLine(){ var p = phase(), r = crossing(true), st = crossing(false);
+    if (p === 'night' || p === 'dawn') return r ? 'sunrise ' + fmt(r) : ''; return st ? 'sunset ' + fmt(st) : ''; }
+  function setTone(){ root.setAttribute('data-sky', phase()); readColors(); }
+  setTone(); setInterval(setTone, 5 * 60 * 1000);
+
   /* ---------- frame clock ---------- */
   function tick(now){ T = reduce.matches ? 2 : now / 1000; boil = reduce.matches ? 0 : Math.floor(now / 125); }
   function use(ctx){ C = ctx; seedN = 0; C.lineCap = 'round'; C.lineJoin = 'round'; }
@@ -213,7 +237,7 @@
     S: S, Ln: Ln, O: O, R: R, H: H, TX: TX, WASH: WASH, FIG: FIG,
     ease: ease, cl: cl, lerp: lerp, back: back,
     COL: COL, reduce: reduce, mouse: mouse, lookIn: lookIn,
-    weather: weather, WORDS: WORDS, pdxHour: pdxHour, pdxTime: pdxTime,
+    weather: weather, WORDS: WORDS, pdxHour: pdxHour, pdxTime: pdxTime, sunAlt: sunAlt, phase: phase, sunLine: sunLine,
     tick: tick, use: use, plain: plain, fit: fit,
     get T(){ return T; }, get ctx(){ return C; }
   };

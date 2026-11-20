@@ -2,19 +2,22 @@
 
 Built by GitHub Pages with Jekyll (no plugins).
 
-The home page (`index.html`), `/ride/` and `/room/` share one ink look: styles in `_includes/ink.css`, the head, nav,
-footer, dialogs and every piece of content in `_includes/ink/` (edit a fact once and all three pages change), and the
-drawings in `assets/` (`ink.js` is the line engine and character, plus live Portland weather from Open-Meteo;
-`home.js`, `ride.js`, `room.js` draw each page; `site.js` runs the contact and subscribe forms and the publication
-filter). The home page opens on a full-screen live drawing of a Portland street with four ways in: the subway stairs (`/ride/`),
-the lit window (`/room/`), the directory board (scrolling moves the camera into it until it becomes the page), and Plain.
-Search (the Search button, `/` or Ctrl/Cmd K, in `assets/site.js`) indexes the home page's own sections, so it never
-needs updating. The Plain switch on every page turns all drawings off; visitors who ask for reduced motion get still frames.
-Every page now uses this look: the essays map (an ink subway line), each essay (its LaTeX sheet lies on the ink page,
-with the ink nav and an essay toolbar), and the 404 page. Small drawings come from `assets/vig.js`
-(`<canvas class="vig" data-vig="toss|scope|train|study|carry|mail|desk|lost">`). On the home page every object
-in the scene is a way in (stairs, room, directory lines, coffee cart for contact), and a route rail down the side
-tracks the sections. `_includes/subway.css` is no longer used by any page.
+The home page (`index.html`) is one looping ink drawing, run by `assets/world.js`. It is a day's commute, in
+order: the street at South Waterfront, the subway stairs, the mezzanine (Notes), the platform (Research), the ride
+(New Delhi by air to New York, then Madison, then Portland), Portland · Now (Contact), the escalator up to TriMet, the
+streetcar along the Willamette back to South Waterfront (Work and service), the Aerial Tram up to OHSU (Education),
+the sky bridge (Awards), the room, out its door, and the tram back down to the street (Dev). Scrolling backward runs
+it in reverse. Scroll, swipe or arrow keys move through it; the loop indicator on the right jumps to any stop;
+`/#room`, `/#notes`, `/#ride`, `/#streetcar` and so on link to a stop. `/ride/` and `/room/` now redirect there. `/directory/` is the static site: everything on one page, with the route rail; the
+Plain switch sends the home page there. Search indexes the Directory.
+
+Shared pieces: styles in `_includes/ink.css`; head, nav, footer (with the site map), dialogs and every piece of
+content in `_includes/ink/`; `assets/ink.js` is the line engine, the character, live Portland weather (Open-Meteo)
+and the sun over Portland, which sets the page tone (`data-sky` on `<html>`: night, dawn, morning, day, golden,
+dusk); `assets/vig.js` draws the small drawings (`<canvas class="vig" data-vig="..." [data-still]>`);
+`assets/site.js` runs the forms, the publication filter, search, and the route rail. Essay pages show the N line
+with transfers and previous/next stops; the essays map draws transfers as curves. Portland recommendations for
+"Grab a coffee" live in `_data/portland.yml`; a list shows once it has a title.
 Essays: see `WRITING.md` (web page + PDF from one Markdown file).
 Publications: `_data/publications.yml` (the Research section on the home page and the microscope in `/room/`). See "Publications" in `WRITING.md`.
 

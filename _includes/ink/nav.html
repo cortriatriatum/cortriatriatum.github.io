@@ -1,12 +1,10 @@
 <a class="skip" href="#main">Skip to content</a>
 <nav class="nav" aria-label="Site">
-  <a class="me" href="{{ '/' | relative_url }}">Rick Mathews</a>
-  <a class="navsec" href="{{ '/' | relative_url }}#notes">Notes</a>
-  <a class="navsec" href="{{ '/' | relative_url }}#research">Research</a>
-  <a class="navsec" href="{{ '/' | relative_url }}#route">Route</a>
+  <a class="me" href="{{ '/' | relative_url }}"{% if navpage == "home" %} aria-current="page"{% endif %}>Rick Mathews</a>
+  <a class="navsec" href="{{ '/directory/' | relative_url }}" data-dir{% if navpage == "directory" %} aria-current="page"{% endif %}>Directory</a>
+  <a class="navsec" href="{{ '/essays/' | relative_url }}"{% if navpage == "essays" or navpage == "essay" %} aria-current="page"{% endif %}>Notes</a>
+  <a class="navsec" href="{{ '/directory/' | relative_url }}#research">Research</a>
   <a class="navsec" href="{{ '/' | relative_url }}#contact" data-open="contact">Contact</a>
-  <a href="{{ '/ride/' | relative_url }}"{% if navpage == "ride" %} aria-current="page"{% endif %}>Ride</a>
-  <a href="{{ '/room/' | relative_url }}"{% if navpage == "room" %} aria-current="page"{% endif %}>Room</a>
   <span class="tools">
     <button type="button" class="pill search-open" data-search aria-haspopup="dialog" title="Search this site (press / or Ctrl K)">Search <kbd>/</kbd></button>
     <button type="button" class="pill" id="plainToggle" aria-pressed="false" title="Turn the drawings off or on">Plain</button>

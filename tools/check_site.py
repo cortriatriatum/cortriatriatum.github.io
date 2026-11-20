@@ -23,9 +23,12 @@ from urllib.parse import urlsplit, unquote
 SITE_HOSTS = {"cortriatriatum.github.io"}
 # Other GitHub Pages project sites served under this host from their own repositories.
 OTHER_SITES = ("/lifeinweeks/",)
-# Anchors that a page's script handles instead of an element id: index.html opens the Subscribe dialog;
+# Anchors that a page's script handles instead of an element id: index.html opens the Subscribe and Contact dialogs
+# and moves to a stop on its loop;
 # essay pages open their Markup, Edits, and Provenance tabs.
-SCRIPT_ANCHORS = {"subscribe", "markup", "edits", "original"}
+SCRIPT_ANCHORS = {"subscribe", "markup", "edits", "original",
+                  # stops on the home page's loop (assets/world.js) and the contact dialog
+                  "contact", "room", "tram", "street", "subway", "notes", "research", "ride", "portland"}
 
 
 class Page(HTMLParser):

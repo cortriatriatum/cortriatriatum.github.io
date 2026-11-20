@@ -36,7 +36,7 @@
   }
   var openContact = wire({ dlg: 'contactDlg', hash: 'contact', minMs: 3000, invalid: 'Please fill in all three fields with a valid email.', done: 'Sent. Thank you, I will reply soon.' });
   var openSub = wire({ dlg: 'subDlg', hash: 'subscribe', minMs: 2000, invalid: 'Please enter a valid email.', done: 'Subscribed. Thank you.' });
-  document.querySelectorAll('#contactBtn, [data-open="contact"]').forEach(function(b){ if (openContact){ b.hidden = false; b.addEventListener('click', function(e){ e.preventDefault(); openContact(); }); } });
+  document.querySelectorAll('[data-open="contact"]').forEach(function(b){ if (openContact){ b.hidden = false; b.addEventListener('click', function(e){ e.preventDefault(); openContact(); var ta = document.querySelector('#contactDlg textarea'); if (b.dataset.prefill && ta && !ta.value) ta.value = b.dataset.prefill + ' '; }); } });
   document.querySelectorAll('[data-open="subscribe"]').forEach(function(b){ if (openSub) b.addEventListener('click', function(e){ e.preventDefault(); openSub(); }); });
   window.InkSite = { openContact: function(){ if (openContact) openContact(); else location.href = (document.querySelector('.nav .me') || {}).href + '#contact'; }, openSub: function(){ if (openSub) openSub(); } };
 
@@ -76,17 +76,17 @@
   'use strict';
   var dlg = document.getElementById('searchDlg'); if (!dlg || typeof dlg.showModal !== 'function') return;
   var q = document.getElementById('searchQ'), out = document.getElementById('searchResults');
-  var homeLink = document.querySelector('.nav .me'), HOME = homeLink ? homeLink.href.replace(/#.*$/, '') : '/';
+  var dirLink = document.querySelector('.nav [data-dir]'), HOME = dirLink ? dirLink.href.replace(/#.*$/, '') : '/directory/';
   var onHome = location.href.replace(/[?#].*$/, '') === HOME.replace(/[?#].*$/, '');
   var INDEX = null, sel = 0, hits = [];
   function txt(el){ return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
   function norm(s){ return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
   /* Give every row on the home page a stable id: section id + position. Search links point at these. */
   function rowsOf(sec){ return [].slice.call(sec.querySelectorAll('.rows>li, .ideas>li, .route>li, .build>div, details.course li')); }
-  function tagRows(doc){ doc.querySelectorAll('section.sec[id]').forEach(function(sec){ rowsOf(sec).forEach(function(el, i){ if (!el.id) el.id = sec.id + '-' + (i + 1); }); }); }
+  function tagRows(doc){ doc.querySelectorAll('section[data-index][id]').forEach(function(sec){ rowsOf(sec).forEach(function(el, i){ if (!el.id) el.id = sec.id + '-' + (i + 1); }); }); }
   function build(doc){
     var items = [];
-    doc.querySelectorAll('section.sec[id]').forEach(function(sec){
+    doc.querySelectorAll('section[data-index][id]').forEach(function(sec){
       var label = txt(sec.querySelector('h2')) || sec.id;
       items.push({ t: label, d: '', s: 'Section', href: HOME + '#' + sec.id });
       rowsOf(sec).forEach(function(el, i){
