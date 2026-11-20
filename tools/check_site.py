@@ -28,7 +28,7 @@ OTHER_SITES = ("/lifeinweeks/",)
 # essay pages open their Markup, Edits, and Provenance tabs.
 SCRIPT_ANCHORS = {"subscribe", "markup", "edits", "original",
                   # stops on the home page's loop (assets/world.js) and the contact dialog
-                  "contact", "room", "tram", "street", "subway", "notes", "research", "ride", "portland"}
+                  "contact", "room", "tram", "street", "subway", "notes", "research", "platform", "train", "hill", "lab"}
 
 
 class Page(HTMLParser):

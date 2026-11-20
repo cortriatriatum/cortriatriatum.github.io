@@ -43,6 +43,7 @@ layout: null
       <li><a href="#work"><span class="bul">W</span>Work &amp; Service</a></li>
       <li><a href="#awards"><span class="bul">A</span>Awards</a></li>
       <li><a href="#dev"><span class="bul">D</span>Dev</a></li>
+      <li><a href="#food"><span class="bul">F</span>Food</a></li>
       <li><a href="#contact"><span class="bul">C</span>Contact</a></li>
     </ol></div>
   </nav>
@@ -52,8 +53,6 @@ layout: null
       <div class="who"><img class="me-photo" src="{{ '/img/rick-1.webp' | relative_url }}" alt="Rick Mathews" width="104" height="104"><h1>Rick Mathews, PhD</h1></div>
       <p>Physician-Scientist in Training at the <a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a> <a href="https://www.ohsu.edu/school-of-medicine/md-phd-program/rick-mathews-phd">Medical Scientist Training Program</a>. Portland, Oregon.</p>
       {% include ink/links.html %}
-      <h3 class="sub">New Delhi to Portland</h3>
-      {% include ink/route.html %}
     </section>
 
     <section class="card" id="research" data-index aria-labelledby="research-h">
@@ -94,6 +93,11 @@ layout: null
     <section class="card" id="dev" data-index aria-labelledby="dev-h">
       <header class="sign"><span class="bul" aria-hidden="true">D</span><h2 id="dev-h">Dev</h2></header>
       {% include ink/dev.html %}
+    </section>
+
+    <section class="card" id="food" data-index aria-labelledby="food-h">
+      <header class="sign"><span class="bul" aria-hidden="true">F</span><h2 id="food-h">Food</h2></header>
+      {% include ink/food.html %}
     </section>
 
     <section class="card" id="contact" data-index aria-labelledby="contact-h">

@@ -76,7 +76,7 @@ layout: null
   .rb{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font:800 14px/1 var(--grot);flex:none}
   .rb.sm{width:20px;height:20px;font-size:10.5px;vertical-align:-4px;margin-left:3px}
   /* the loop indicator, on the right: every stop of the loop, the current one filled */
-  .loop{position:fixed;z-index:12;right:max(14px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);margin:0;padding:12px 10px;list-style:none;display:grid;gap:6px;
+  .loop{position:fixed;z-index:12;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(76px + env(safe-area-inset-bottom,0px));margin:0;padding:12px 10px;list-style:none;display:grid;gap:6px;
     background:color-mix(in srgb,var(--paper) 85%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:18px}
   .loop::before{content:"";position:absolute;right:22px;top:22px;bottom:22px;border-right:3px solid var(--ink);border-radius:3px}
   .loop button{all:unset;cursor:pointer;position:relative;display:flex;align-items:center;flex-direction:row-reverse;gap:8px;font:600 12.5px/1 var(--grot);color:var(--soft);padding:3px 0}
@@ -95,10 +95,25 @@ layout: null
   .panel section[hidden]{display:none}
   .panel .ideas>li{grid-template-columns:40px minmax(0,1fr)}.panel .ideas>li::before{font-size:38px}.panel .ideas .data-title>a{font-size:20px}
   .recs h3{font:700 16px/1.2 var(--grot);margin:18px 0 6px}
+
+  .obj{all:unset;box-sizing:border-box;position:absolute;transform:translate(-50%,-100%);cursor:pointer;white-space:nowrap;font:600 13px/1 var(--grot);
+    background:var(--paper);color:var(--ink);border:1.5px solid var(--ink);padding:6px 10px;border-radius:999px;margin-top:-6px;box-shadow:2px 2px 0 var(--ink)}
+  .obj:hover,.obj:focus-visible{background:var(--ink);color:var(--paper)}
+  .obj:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
+  .card-hot{position:absolute;display:block;border-radius:4px}
+  .card-hot:focus-visible{outline:2.5px dashed var(--pop);outline-offset:2px}
+  .journey{position:fixed;z-index:14;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;
+    background:color-mix(in srgb,var(--paper) 90%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:6px;border-radius:999px;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+  .jb{all:unset;cursor:pointer;font:600 14px/1 var(--grot);padding:10px 15px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);white-space:nowrap}
+  .jb.key{background:var(--ink);color:var(--paper)}
+  .jb:hover{transform:translateY(-1px)}
+  .jb:focus-visible{outline:2px solid var(--pop);outline-offset:2px}
   .skip-dir{position:absolute;left:-9999px;top:8px;z-index:100;background:var(--ink);color:var(--paper);padding:8px 12px}
   .skip-dir:focus{left:12px}
   @media (max-width: 900px){
-    .zp{top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-height:46dvh;padding:14px 16px;background:color-mix(in srgb,var(--paper) 97%,transparent)}
+    .journey{left:12px;right:12px;transform:none;justify-content:space-between;bottom:calc(10px + env(safe-area-inset-bottom,0px))}.jb{font-size:12.5px;padding:9px 11px}.jb .jl{overflow:hidden;text-overflow:ellipsis;max-width:38vw;display:inline-block;vertical-align:bottom}
+    .obj{font-size:11.5px;padding:5px 8px}
+    .zp{top:auto;bottom:calc(66px + env(safe-area-inset-bottom,0px));max-height:42dvh;padding:14px 16px;background:color-mix(in srgb,var(--paper) 97%,transparent)}
     .intro .who{grid-template-columns:76px minmax(0,1fr);gap:12px}.me-photo{width:76px;height:76px}.intro h1{font-size:27px}
     .intro .bio{font-size:14px}.ways>*{font-size:12.5px;padding:7px 10px}
     .loop{top:auto;bottom:auto;top:calc(64px + env(safe-area-inset-top,0px));transform:none;padding:8px 8px;gap:3px}
@@ -106,110 +121,96 @@ layout: null
     .tag-in{font-size:15px;padding:6px 10px 7px}
     .panel{top:auto;left:0;width:100%;max-height:82vh;border-left:0;border-top:1.5px solid var(--ink);transform:translateY(104%);border-radius:16px 16px 0 0}
   }
+  @media (max-width: 600px){ .obj,.loop,.tag-in.wide-only{display:none!important} }
   @media (prefers-reduced-motion: reduce){ .tag-in{animation:none} .zp,.panel{transition:none} }
 </style>
 </head>
 <body class="world">
 <a class="skip-dir" href="{{ '/directory/' | relative_url }}">Skip the drawing: everything on one page</a>
 {% assign navpage = "home" %}{% include ink/nav.html %}
-<canvas id="world" role="img" aria-label="A looping ink drawing. Down from a Portland street: a subway station, a train ride from New Delhi to Portland, and a door into a room. Up from the street: the OHSU Aerial Tram to the same room. Scroll, swipe or use the arrow keys to move through it."></canvas>
+<canvas id="world" role="img" aria-label="A looping ink drawing of a day in Portland: a street at South Waterfront, stairs down into a station with a room inside it, a platform, a train to Marquam Hill, an elevator up to a lab at OHSU, and the Aerial Tram back down to the street. Scroll, swipe, the arrow keys or the Next button move along it."></canvas>
 <div id="hot" data-directory="{{ '/directory/' | relative_url }}"></div>
 
 <main id="main">
   <section class="zp intro" data-zone-panel="street" aria-label="Rick Mathews">
     <div class="who">
-      <span class="me-photo"><img src="{{ '/img/rick-1.webp' | relative_url }}" alt="Rick Mathews" width="116" height="116" decoding="async" fetchpriority="high"><canvas aria-hidden="true"></canvas></span>
+      <span class="me-photo"><img src="{{ '/img/rick-1.webp' | relative_url }}" alt="Rick Mathews" width="116" height="116" decoding="async" fetchpriority="high"></span>
       <h1>Rick Mathews, PhD</h1>
     </div>
     <p class="bio">Physician-Scientist in Training at the <a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a> <a href="https://www.ohsu.edu/school-of-medicine/md-phd-program/rick-mathews-phd">Medical Scientist Training Program</a></p>
     <span class="now" id="liveNow">Portland, Oregon</span>
-    <button type="button" class="seek" data-search aria-haspopup="dialog">Search notes, papers, awards, courses <kbd>/</kbd></button>
-    <nav class="ways" aria-label="Ways in">
-      <a href="#room" data-goto-zone="room">Tram up to the room ↑</a>
-      <a href="#notes" data-goto-zone="notes">Down to the subway ↓</a>
-      <a href="{{ '/directory/' | relative_url }}">Directory</a>
-      <button type="button" data-open-panel="coffee">Grab a coffee</button>
+    <button type="button" class="seek" data-search aria-haspopup="dialog">Search notes, papers, awards, courses, food <kbd>/</kbd></button>
+    <nav class="ways" aria-label="Where to go from here">
+      <a href="#room" data-goto-zone="room">Down to the station ↓</a>
+      <a href="#lab" data-goto-zone="lab">Aerial Tram up to OHSU ↑</a>
+      <button type="button" data-open-panel="food">Coffee &amp; food recs</button>
+      <a href="{{ '/directory/' | relative_url }}">Everything on one page</a>
     </nav>
   </section>
 
-  <section class="zp" data-zone-panel="tram" aria-labelledby="tram-h">
-    <span class="k">OHSU Aerial Tram · up Marquam Hill</span>
-    <h2 id="tram-h">Education</h2>
-    {% include ink/education.html %}
-    <a class="more" href="{{ '/directory/' | relative_url }}#education">Coursework</a>
-  </section>
-
-  <section class="zp" data-zone-panel="streetcar" aria-labelledby="sc-h">
-    <span class="k">TriMet · along the Willamette to South Waterfront</span>
-    <h2 id="sc-h">Work Experience &amp; Community Service</h2>
-    {% include ink/work.html %}
-  </section>
-
-  <section class="zp" data-zone-panel="hall" aria-labelledby="hall-h">
-    <span class="k">OHSU · the sky bridge</span>
-    <h2 id="hall-h">Awards</h2>
-    {% include ink/awards.html %}
-  </section>
-
-  <section class="zp" data-zone-panel="tramdown" aria-labelledby="td-h">
-    <span class="k">OHSU Aerial Tram · down to the street</span>
-    <h2 id="td-h">Dev</h2>
-    {% include ink/dev.html %}
-  </section>
-
   <section class="zp" data-zone-panel="room" aria-labelledby="room-h">
+    <span class="k">Inside the station</span>
     <h2 id="room-h">The room</h2>
-    <p class="hint">Click anything in the room.</p>
+    <p class="hint">Everything in here opens. Through the far door is the platform.</p>
     <div class="ways">
-      <button type="button" data-open-panel="notes">Notebook</button><button type="button" data-open-panel="research">Microscope</button><button type="button" data-open-panel="training">Diplomas</button><button type="button" data-open-panel="awards">Shelf</button><button type="button" data-open-panel="route">Suitcase</button><button type="button" data-open-panel="work">Coat rack</button><button type="button" data-open-panel="dev">Laptop</button><button type="button" data-open-panel="contact">Door</button>
+      <button type="button" data-open-panel="notes">Notebook · Notes</button><button type="button" data-open-panel="dev">Laptop · Dev</button><button type="button" data-open-panel="awards">Shelf · Awards</button><button type="button" data-open-panel="contact">Mailbox · Contact</button><button type="button" data-open-panel="work">Coat rack · Work &amp; Service</button>
     </div>
   </section>
 
-  <section class="zp" data-zone-panel="notes" aria-labelledby="notes-h">
-    <span class="k">N line · mezzanine</span>
+  <section class="zp" data-zone-panel="platform" aria-labelledby="plat-h">
+    <span class="k">Platform</span>
+    <h2 id="plat-h">Train to Marquam Hill</h2>
+    <p class="hint">On the train, the cards over the windows are my notes.</p>
+  </section>
+
+  <section class="zp" data-zone-panel="train" aria-labelledby="notes-h">
+    <span class="k">On the train · the cards over the windows</span>
     <h2 id="notes-h">Notes, Scribbles &amp; Ideas in Progress</h2>
-    <ol class="mini">
+    <ol class="mini" id="noteCards">
     {%- assign recent = site.essays | sort: "date" | reverse -%}
     {%- for e in recent %}
-      <li>{% if e.route %}<span class="rb" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span>{% else %}<span></span>{% endif %}<div><a href="{{ e.url | relative_url }}">{{ e.title }}</a>
+      <li>{% if e.route %}<span class="rb" style="background:{{ e.route_color }};color:{{ e.route_text }}" aria-hidden="true">{{ e.route }}</span>{% else %}<span></span>{% endif %}<div><a href="{{ e.url | relative_url }}" data-title="{{ e.title | escape }}" data-route="{{ e.route }}" data-color="{{ e.route_color }}">{{ e.title }}</a>
         <div class="xf">{{ e.date | date: "%Y" }} · <span class="wip">{{ e.status | downcase }}</span>{% for t in e.transfers %}{% for o in site.essays %}{% if o.url contains t %} · transfer <span class="rb sm" style="background:{{ o.route_color }};color:{{ o.route_text }}" title="{{ o.title | escape }}">{{ o.route }}</span>{% endif %}{% endfor %}{% endfor %}</div></div></li>
     {%- endfor %}
     </ol>
     <a class="more" href="{{ '/essays/' | relative_url }}">The whole line</a>
   </section>
 
-  <section class="zp" data-zone-panel="research" aria-labelledby="research-h">
-    <span class="k">Platform</span>
-    <h2 id="research-h">Research</h2>
+  <section class="zp" data-zone-panel="hill" aria-labelledby="hill-h">
+    <span class="k">Marquam Hill station</span>
+    <h2 id="hill-h">Elevator up to OHSU</h2>
+    <p class="hint">The lab is at the top.</p>
+  </section>
+
+  <section class="zp" data-zone-panel="lab" aria-labelledby="lab-h">
+    <span class="k">OHSU · Marquam Hill</span>
+    <h2 id="lab-h">The lab</h2>
     {% include ink/focus.html %}
-    <a class="more" href="{{ '/directory/' | relative_url }}#research">All 20 publications and funding</a>
+    <div class="ways">
+      <button type="button" data-open-panel="research">Microscope · Research</button><button type="button" data-open-panel="training">Diplomas · Education</button>
+    </div>
   </section>
 
-  <section class="zp" data-zone-panel="ride" aria-labelledby="ride-h">
-    <span class="k">The ride</span>
-    <h2 id="ride-h">New Delhi to Portland</h2>
-    {% include ink/route.html %}
-  </section>
-
-  <section class="zp" data-zone-panel="portland" aria-labelledby="pdx-h">
-    <span class="k">Portland · now</span>
-    <h2 id="pdx-h">Contact</h2>
-    {% include ink/links.html %}
-    <div class="links"><button type="button" data-open-panel="coffee">Grab a coffee</button><a href="#subscribe" data-open="subscribe">Subscribe</a><a href="https://cortriatriatum.github.io/essays/feed.xml">RSS</a></div>
-    <p class="hint">The escalator goes up to TriMet.</p>
+  <section class="zp" data-zone-panel="tram" aria-labelledby="tram-h">
+    <span class="k">OHSU Aerial Tram</span>
+    <h2 id="tram-h">Down to South Waterfront</h2>
+    <p class="hint">It lands on the street you started on.</p>
   </section>
 </main>
 
-<nav aria-label="Where you are on the loop"><ol class="loop" id="loopNav"><li class="wrapnote" aria-hidden="true">↻ loops</li></ol></nav>
+<nav class="journey" aria-label="Move along the loop">
+  <button type="button" id="goPrev" class="jb"><span aria-hidden="true">↑</span> <span class="jl">Back: <span id="prevLabel">Aerial Tram</span></span></button>
+  <button type="button" id="goNext" class="jb key"><span class="jl">Next: <span id="nextLabel">Down to the station</span></span> <span aria-hidden="true">↓</span></button>
+</nav>
+
+<nav aria-label="Stops on the loop"><ol class="loop" id="loopNav"><li class="wrapnote" aria-hidden="true">↻ loops</li></ol></nav>
 
 <aside class="panel" id="panel" aria-label="Details">
   <button type="button" class="pill close" id="panelClose">Close</button>
-  <section data-c="coffee" hidden><span class="k">The coffee cart</span><h2>Grab a coffee</h2>
-    <div class="links"><button type="button" class="key" data-open="contact">Write to me</button><button type="button" data-open="contact" data-prefill="Coffee in Portland?">Meet for coffee</button></div>
-    {%- assign pdx_has = false %}{% for l in site.data.portland.lists %}{% if l.title and l.title != "" %}{% assign pdx_has = true %}{% endif %}{% endfor %}
-    {%- if pdx_has %}<div class="recs"><span class="k" style="display:block;margin-top:22px">Portland, recommended</span>
-      {%- for l in site.data.portland.lists %}{% if l.title and l.title != "" %}<h3><a href="{{ l.url }}">{{ l.title }}</a></h3>{% if l.places %}<ul class="rows">{% for pl in l.places %}<li><div class="data-title"><span class="t">{% if pl.url %}<a href="{{ pl.url }}">{{ pl.name }}</a>{% else %}{{ pl.name }}{% endif %}</span>{% if pl.note %}<span class="s">{{ pl.note }}</span>{% endif %}</div><span class="d">{{ pl.area }}</span></li>{% endfor %}</ul>{% endif %}{% endif %}{% endfor %}</div>{% endif %}
-  </section>
+  <section data-c="food" hidden><span class="k">The food cart</span><h2>Coffee &amp; food</h2>
+    <div class="links"><button type="button" class="key" data-open="contact" data-prefill="Coffee in Portland?">Grab a coffee with me</button><button type="button" data-open="contact">Write to me</button></div>
+    <h3 class="sub">Recommendations</h3>
+    {% include ink/food.html %}</section>
   <section data-c="notes" hidden><span class="k">The notebook</span><h2>Notes, Scribbles &amp; Ideas in Progress</h2>{% include ink/notes.html %}
     <div class="links"><a href="#subscribe" data-open="subscribe" class="key">Subscribe</a><a href="{{ '/essays/' | relative_url }}">The whole line</a></div></section>
   <section data-c="research" hidden><span class="k">The microscope</span><h2>Research</h2><h3 class="sub">Current research focus</h3>{% include ink/focus.html %}
@@ -218,10 +219,10 @@ layout: null
   <section data-c="training" hidden><span class="k">The diplomas</span><h2>Education</h2>{% include ink/education.html %}
     <h3 class="sub">Coursework</h3>{% include ink/coursework.html %}</section>
   <section data-c="awards" hidden><span class="k">The shelf</span><h2>Awards</h2>{% include ink/awards.html %}</section>
-  <section data-c="route" hidden><span class="k">The suitcase</span><h2>New Delhi to Portland</h2>{% include ink/route.html %}</section>
   <section data-c="work" hidden><span class="k">The coat rack</span><h2>Work Experience &amp; Community Service</h2>{% include ink/work.html %}</section>
   <section data-c="dev" hidden><span class="k">The laptop</span><h2>Dev</h2>{% include ink/dev.html %}</section>
-  <section data-c="contact" hidden><span class="k">The door</span><h2>Contact</h2>{% include ink/links.html %}</section>
+  <section data-c="contact" hidden><span class="k">The mailbox</span><h2>Contact</h2>{% include ink/links.html %}
+    <div class="links"><button type="button" data-open="contact" data-prefill="Coffee in Portland?">Grab a coffee</button><a href="#subscribe" data-open="subscribe">Subscribe</a><a href="https://cortriatriatum.github.io/essays/feed.xml">RSS</a></div></section>
 </aside>
 {% include ink/foot.html %}
 {% include citable.html %}

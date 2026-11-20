@@ -82,7 +82,7 @@
   function txt(el){ return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
   function norm(s){ return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
   /* Give every row on the home page a stable id: section id + position. Search links point at these. */
-  function rowsOf(sec){ return [].slice.call(sec.querySelectorAll('.rows>li, .ideas>li, .route>li, .build>div, details.course li')); }
+  function rowsOf(sec){ return [].slice.call(sec.querySelectorAll('.rows>li, .ideas>li, .route>li, .build>div, details.course li, .food-list>li')); }
   function tagRows(doc){ doc.querySelectorAll('section[data-index][id]').forEach(function(sec){ rowsOf(sec).forEach(function(el, i){ if (!el.id) el.id = sec.id + '-' + (i + 1); }); }); }
   function build(doc){
     var items = [];
@@ -92,6 +92,7 @@
       rowsOf(sec).forEach(function(el, i){
         var id = el.id || (sec.id + '-' + (i + 1)), title, detail, href = HOME + '#' + id, kind = label;
         if (el.matches('details.course li')){ title = txt(el); detail = txt(el.closest('details').querySelector('summary')).replace(/[+–]$/, ''); kind = 'Coursework'; }
+        else if (el.matches('.food-list>li')){ var fa = el.querySelector('a'); title = txt(fa); detail = el.closest('.food-list').getAttribute('aria-label') + (el.querySelector('span') ? ' · ' + txt(el.querySelector('span')) : ''); kind = 'Food'; }
         else {
           var a = el.querySelector('.data-title > a, .t, b'); title = txt(a) || txt(el);
           detail = txt(el.querySelector('.s, .desc, p, .note, .when')); var d = txt(el.querySelector(':scope > .d')); if (d) detail = (detail ? detail + ' · ' : '') + d;
@@ -139,6 +140,7 @@
   function highlight(id){
     var el = document.getElementById(id); if (!el) return false;
     var det = el.closest('details'); if (det) det.open = true;
+    var fl = el.closest('[data-city-list]'); if (fl && fl.hidden){ var fb = fl.closest('[data-food]').querySelector('[data-city="' + fl.dataset.cityList + '"]'); if (fb) fb.click(); }
     el.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     el.classList.remove('hit'); void el.offsetWidth; el.classList.add('hit');
     return true;
@@ -186,4 +188,15 @@
   }
   addEventListener('scroll', function(){ if (!tick){ tick = true; requestAnimationFrame(update); } }, { passive: true });
   addEventListener('resize', update); update();
+})();
+
+/* Food recommendations: one city at a time. */
+(function(){
+  document.querySelectorAll('[data-food]').forEach(function(box){
+    var btns = box.querySelectorAll('[data-city]'), lists = box.querySelectorAll('[data-city-list]');
+    btns.forEach(function(b){ b.addEventListener('click', function(){
+      btns.forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+      lists.forEach(function(l){ l.hidden = l.dataset.cityList !== b.dataset.city; });
+    }); });
+  });
 })();
