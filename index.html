@@ -43,26 +43,15 @@ layout: null
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<canvas aria-hidden="true" id="ambient"></canvas>
-<div aria-live="polite" class="service-board" role="status">
-<span class="sb-live"><span class="sb-dot live" id="sbDot"></span><span>Service</span></span>
-<span class="sb-msg" id="sbMsg">Good service on all lines.</span>
-<span class="sb-time" id="sbTime"></span>
-<button aria-label="Switch color theme" aria-pressed="false" class="theme-toggle" id="themeToggle" title="Toggle light / dark" type="button">☾</button>
-</div>
 <div class="station-grid" id="main">
 <!-- Three columns. Each card takes the height its content needs; the last card in a column takes what is left and scrolls. -->
 <div class="col col-a">
 <!-- 0 IDENTITY (Bio) -->
 <div class="station line-orange identity">
-<div class="station-header"><div class="bullet orange" aria-hidden="true">B</div><span class="station-title">Bio</span></div>
+<div class="station-header"><div class="bullet orange" aria-hidden="true">B</div><span class="station-title">Bio</span><button aria-label="Switch color theme" aria-pressed="false" class="theme-toggle" id="themeToggle" title="Toggle light / dark" type="button">☾</button></div>
 <div class="station-content">
 <div class="bio-head">
-<button aria-label="Show next photo of Rick Mathews" class="avatar" id="avatar" type="button">
-<img alt="Rick Mathews" class="on" decoding="async" fetchpriority="high" height="84" src="https://cortriatriatum.github.io/img/rick-1.webp" width="84"/>
-<img alt="" data-src="https://cortriatriatum.github.io/img/rick-2.webp" decoding="async" height="84" width="84"/>
-<img alt="" data-src="https://cortriatriatum.github.io/img/rick-3.webp" decoding="async" height="84" width="84"/>
-</button>
+<div class="avatar"><img alt="Rick Mathews" class="on" decoding="async" fetchpriority="high" height="84" src="https://cortriatriatum.github.io/img/rick-1.webp" width="84"/></div>
 <div>
 <h1>Rick Mathews, PhD</h1>
 <div class="bio-sub">Physician-Scientist in Training at the <a href="https://www.ohsu.edu/">Oregon Health &amp; Science University</a> <a href="https://www.ohsu.edu/school-of-medicine/md-phd-program/rick-mathews-phd">Medical Scientist Training Program</a></div>
@@ -71,16 +60,16 @@ layout: null
 </div>
 </div>
 <div class="button-group primary">
-<button class="portal-btn key" hidden="" id="contactBtn" type="button"><span aria-hidden="true" class="ico">✉</span>Email</button>
-<a class="portal-btn key" href="https://cortriatriatum.github.io/docs/MathewsRick_CV.pdf" rel="noopener" target="_blank"><span aria-hidden="true" class="ico">📄</span>CV</a>
-<a class="portal-btn key" href="https://cortriatriatum.github.io/docs/MathewsRick_Biosketch.pdf" rel="noopener" target="_blank"><span aria-hidden="true" class="ico">📄</span>NIH Biosketch</a>
+<button class="portal-btn key" hidden="" id="contactBtn" type="button">Email</button>
+<a class="portal-btn key" href="https://cortriatriatum.github.io/docs/MathewsRick_CV.pdf" rel="noopener" target="_blank">CV</a>
+<a class="portal-btn key" href="https://cortriatriatum.github.io/docs/MathewsRick_Biosketch.pdf" rel="noopener" target="_blank">NIH Biosketch</a>
 </div>
 <div class="button-group">
-<a class="portal-btn" href="https://www.ohsu.edu/people/rick-mathews-phd"><span aria-hidden="true" class="ico">🏥</span>OHSU</a>
-<a class="portal-btn" href="https://www.linkedin.com/in/mathewsrick/"><span aria-hidden="true" class="ico">🔗</span>LinkedIn</a>
-<a class="portal-btn" href="https://scholar.google.com/citations?user=uRJdT64AAAAJ"><span aria-hidden="true" class="ico">📄</span>Scholar</a>
-<a class="portal-btn" href="https://orcid.org/0000-0003-2723-5646"><span aria-hidden="true" class="ico">🔗</span>ORCID</a>
-<a class="portal-btn" href="https://www.ncbi.nlm.nih.gov/myncbi/rick.mathews.1/bibliography/public/"><span aria-hidden="true" class="ico">📄</span>PubMed</a>
+<a class="portal-btn" href="https://www.ohsu.edu/people/rick-mathews-phd">OHSU</a>
+<a class="portal-btn" href="https://www.linkedin.com/in/mathewsrick/">LinkedIn</a>
+<a class="portal-btn" href="https://scholar.google.com/citations?user=uRJdT64AAAAJ">Scholar</a>
+<a class="portal-btn" href="https://orcid.org/0000-0003-2723-5646">ORCID</a>
+<a class="portal-btn" href="https://www.ncbi.nlm.nih.gov/myncbi/rick.mathews.1/bibliography/public/">PubMed</a>
 </div>
 </div>
 </div>
@@ -213,7 +202,7 @@ layout: null
 </div>
 <!-- Contact: posts to a Formspree endpoint that forwards privately. No email address appears anywhere in this page. -->
 <dialog aria-labelledby="contactTitle" class="contact" id="contactDlg">
-<div class="station-header"><div style="display:flex;align-items:center;gap:8px;"><div class="bullet orange" aria-hidden="true">✉</div><span class="station-title" id="contactTitle">Contact Rick</span></div>
+<div class="station-header"><div style="display:flex;align-items:center;gap:8px;"><div class="bullet orange" aria-hidden="true">C</div><span class="station-title" id="contactTitle">Contact Rick</span></div>
 <button aria-label="Close" class="close" id="contactClose" type="button">✕</button></div>
 <form id="contactForm" method="POST" novalidate="">
 <label>Name<input autocomplete="name" maxlength="120" name="name" required=""/></label>
@@ -240,206 +229,6 @@ layout: null
 </dialog>
 <script>
 (function(){
-  var CITY = 'Portland', LAT = 45.5152, LON = -122.6784;
-  var msgEl = document.getElementById('sbMsg');
-  var timeEl = document.getElementById('sbTime');
-  var dotEl  = document.getElementById('sbDot');
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  var HOLIDAYS = {
-    '01-01': { line: 'Happy New Year. Fresh timetable, same destination.' },
-    '02-14': { line: "Valentine's Day. The heart is, after all, the home line." },
-    '03-14': { line: 'Pi Day. 3.14 trains arriving shortly.' },
-    '06-19': { line: 'Juneteenth. A day worth observing.' },
-    '06-20': { line: 'Summer solstice. Longest day, full timetable.' },
-    '06-21': { line: 'Summer solstice. Longest day, full timetable.' },
-    '07-04': { line: 'Independence Day. Catch the fireworks after the last express.', advisory: true },
-    '10-31': { line: 'Halloween. The express is running, allegedly.' },
-    '11-11': { line: "Veterans Day. With thanks." },
-    '12-21': { line: 'Winter solstice. Shortest day, the lab stays lit.' },
-    '12-25': { line: 'Merry Christmas. Holiday service in effect.' },
-    '12-31': { line: "New Year's Eve. Last train of the year, all aboard." }
-  };
-
-  var EVERGREEN = [
-    'Good service on all lines.',
-    'Mind the gap. Specifically the developmental baseline gap for Coarctation of the aorta.',
-    'No delays. Only unanswered questions.',
-    'Connecting engineering and medicine.'
-  ];
-
-  function pad(n){ return (n < 10 ? '0' : '') + n; }
-  function mmdd(d){ return pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
-  function clock(){
-    try {
-      var fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hour: 'numeric', minute: '2-digit' });
-      timeEl.textContent = fmt.format(new Date()) + ' Portland';
-    } catch (e) {
-      var d = new Date(), h = d.getHours(), m = d.getMinutes();
-      var ap = h >= 12 ? 'PM' : 'AM', hh = h % 12; if (hh === 0) hh = 12;
-      timeEl.textContent = hh + ':' + pad(m) + ' ' + ap;
-    }
-  }
-
-  function weatherLine(code, temp){
-    var t = Math.round(temp);
-    var c = code, adv = false, phrase;
-    if (c === 0)                         phrase = 'Clear skies over ' + CITY + ', ' + t + '°. Good service on all lines.';
-    else if (c <= 3)                     phrase = 'Overcast in ' + CITY + ', ' + t + '°. Trains on schedule.';
-    else if (c === 45 || c === 48)     { phrase = 'Fog in ' + CITY + ', ' + t + '°. Mind your step.'; adv = true; }
-    else if (c >= 51 && c <= 67)       { phrase = 'Rain in ' + CITY + ', ' + t + '°. Running on time, bring a coat.'; }
-    else if (c >= 71 && c <= 77)       { phrase = 'Snow in ' + CITY + ', ' + t + '°. Expect a slower ride.'; adv = true; }
-    else if (c >= 80 && c <= 82)       { phrase = 'Showers in ' + CITY + ', ' + t + '°. Trains undeterred.'; }
-    else if (c === 85 || c === 86)     { phrase = 'Snow showers in ' + CITY + ', ' + t + '°. Slower ride ahead.'; adv = true; }
-    else if (c >= 95)                  { phrase = 'Thunderstorms in ' + CITY + ', ' + t + '°. Trains delayed, science isn\'t.'; adv = true; }
-    else                                 phrase = CITY + ', ' + t + '°. Good service on all lines.';
-    return { line: phrase, advisory: adv, code: c };
-  }
-
-  var messages = EVERGREEN.slice();
-  var idx = 0, weatherMode = 'none', daylightLine = null;
-
-  function fmtISOtime(s){
-    var t = (s || '').split('T')[1]; if (!t) return '';
-    var p = t.split(':'), h = parseInt(p[0], 10), m = p[1];
-    var ap = h >= 12 ? 'PM' : 'AM', hh = h % 12; if (hh === 0) hh = 12;
-    return hh + ':' + m + ' ' + ap;
-  }
-
-  function rebuildMessages(weather){
-    var today = HOLIDAYS[mmdd(new Date())];
-    var list = [];
-    if (weather)      list.push(weather.line);
-    if (daylightLine) list.push(daylightLine);
-    if (today)        list.push(today.line);
-    list = list.concat(EVERGREEN);
-    messages = list;
-    idx = 0;
-    dotEl.className = 'sb-dot live' + ((today && today.advisory) || (weather && weather.advisory) ? ' advisory' : '');
-    showMessage(messages[0]);
-  }
-
-  function showMessage(text){
-    if (reduce){ msgEl.innerHTML = text; return; }
-    msgEl.classList.add('swap');
-    setTimeout(function(){ msgEl.innerHTML = text; msgEl.classList.remove('swap'); }, 350);
-  }
-  function cycle(){ if (messages.length < 2) return; idx = (idx + 1) % messages.length; showMessage(messages[idx]); }
-
-  function loadWeather(){
-    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
-              '&current=temperature_2m,weather_code&daily=sunrise,sunset&temperature_unit=fahrenheit&timezone=auto';
-    // The board never waits on the weather service: give it 6 seconds, then run the standard messages.
-    var ctl = window.AbortController ? new AbortController() : null, gaveUp = false;
-    var timer = setTimeout(function(){ gaveUp = true; if (ctl) ctl.abort(); rebuildMessages(null); }, 6000);
-    fetch(url, ctl ? { signal: ctl.signal } : {}).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
-      clearTimeout(timer); if (gaveUp) return;
-      if (!j || !j.current) { rebuildMessages(null); return; }
-      if (j.daily && j.daily.sunrise && j.daily.sunset) {
-        daylightLine = 'Daylight in ' + CITY + ': ' + fmtISOtime(j.daily.sunrise[0]) + ' to ' + fmtISOtime(j.daily.sunset[0]) + '.';
-      }
-      var w = weatherLine(j.current.weather_code, j.current.temperature_2m);
-      rebuildMessages(w);
-      setAmbient(w.code);
-    }).catch(function(){ clearTimeout(timer); if (!gaveUp) rebuildMessages(null); });
-  }
-
-  var canvas = document.getElementById('ambient'), ctx = canvas.getContext('2d');
-  var W, H, parts = [], raf;
-  function size(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
-  function setAmbient(code){
-    if (reduce) return;
-    var mode = 'none';
-    if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82) || code >= 95) mode = 'rain';
-    else if ((code >= 71 && code <= 77) || code === 85 || code === 86) mode = 'snow';
-    else if (code === 45 || code === 48) mode = 'fog';
-    weatherMode = mode;
-    seed();
-  }
-  function seed(){
-    parts = [];
-    if (weatherMode === 'none'){ ctx && ctx.clearRect(0,0,W,H); return; }
-    var n = weatherMode === 'fog' ? 9 : (weatherMode === 'snow' ? 60 : 90);
-    for (var i=0;i<n;i++){
-      if (weatherMode === 'rain') parts.push({ x:Math.random()*W, y:Math.random()*H, l:8+Math.random()*12, v:5+Math.random()*5 });
-      else if (weatherMode === 'snow') parts.push({ x:Math.random()*W, y:Math.random()*H, r:1+Math.random()*2, v:0.4+Math.random()*0.8, s:Math.random()*6 });
-      else parts.push({ x:Math.random()*W, y:Math.random()*H, r:60+Math.random()*120, v:0.2+Math.random()*0.3, a:0.03+Math.random()*0.03 });
-    }
-    if (!raf) loop();
-  }
-  function loop(){
-    raf = requestAnimationFrame(loop);
-    if (!ctx) return;
-    ctx.clearRect(0,0,W,H);
-    if (weatherMode === 'rain'){
-      ctx.strokeStyle = 'rgba(40,70,120,0.18)'; ctx.lineWidth = 1;
-      parts.forEach(function(p){ ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x-1.5,p.y+p.l); ctx.stroke();
-        p.y += p.v; p.x -= 0.4; if (p.y > H){ p.y = -p.l; p.x = Math.random()*W; } });
-    } else if (weatherMode === 'snow'){
-      ctx.fillStyle = 'rgba(120,140,180,0.30)';
-      parts.forEach(function(p){ p.s += 0.02; ctx.beginPath(); ctx.arc(p.x + Math.sin(p.s)*4, p.y, p.r, 0, 7); ctx.fill();
-        p.y += p.v; if (p.y > H){ p.y = -4; p.x = Math.random()*W; } });
-    } else if (weatherMode === 'fog'){
-      parts.forEach(function(p){ var g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
-        g.addColorStop(0,'rgba(140,140,160,'+p.a+')'); g.addColorStop(1,'rgba(140,140,160,0)');
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill();
-        p.x += p.v; if (p.x - p.r > W){ p.x = -p.r; p.y = Math.random()*H; } });
-    }
-  }
-
-  function midnightRefresh(){
-    var now = new Date(), next = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 0, 0, 5);
-    setTimeout(function(){ loadWeather(); midnightRefresh(); }, next - now);
-  }
-
-  size(); addEventListener('resize', function(){ size(); seed(); });
-  clock(); setInterval(clock, 30000);
-  loadWeather();
-  setInterval(loadWeather, 30*60*1000);
-  if (!reduce) setInterval(cycle, 7000);
-  midnightRefresh();
-})();
-</script>
-<script>
-(function(){
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  var TAGS = {
-    identity:   ['now boarding', 'all aboard', 'this way in'],
-    focus:      ['express service', 'limited stops', 'next stop: a cause'],
-    side:       ['nights & weekends', 'off-peak builds', 'shuttle service'],
-    education:  ['uptown', '137 St · City College', 'transfers here'],
-    experience: ['via the express', 'all transfers'],
-    community:  ['local service', 'every stop', 'community board'],
-    funding:    ['fare paid', 'swipe accepted'],
-    honors:     ['priority seating', 'express awards'],
-    pubs:       ['free reading', 'take one', 'peer reviewed']
-  };
-  var tagEls = [];
-  document.querySelectorAll('.station').forEach(function(st){
-    var key = Object.keys(TAGS).filter(function(k){ return st.classList.contains(k); })[0];
-    if (!key) return;
-    var span = document.createElement('span');
-    span.className = 'station-tag';
-    span.textContent = TAGS[key][0];
-    span._tags = TAGS[key]; span._i = 0;
-    var hdr = st.querySelector('.station-header'); if (hdr) hdr.appendChild(span);
-    tagEls.push(span);
-  });
-  if (!reduce && tagEls.length){
-    var turn = 0;
-    setInterval(function(){
-      var el = tagEls[turn % tagEls.length]; turn++;
-      el._i = (el._i + 1) % el._tags.length;
-      el.classList.add('swap');
-      setTimeout(function(){ el.textContent = el._tags[el._i]; el.classList.remove('swap'); }, 400);
-    }, 3200);
-  }
-
-})();
-</script>
-<script>
-(function(){
   var root = document.documentElement, btn = document.getElementById('themeToggle');
   if (!btn) return;
   function systemDark(){ try { return matchMedia('(prefers-color-scheme: dark)').matches; } catch(e){ return false; } }
@@ -462,29 +251,6 @@ layout: null
     });
   } catch(e){}
   sync();
-})();
-</script>
-<script>
-/* Bio portrait rotation: crossfade every 6 s, click/tap to advance, pause on hover and when tab hidden.
-   Images 2-3 are fetched only after page load so they never compete with first paint. */
-(function(){
-  var box = document.getElementById('avatar'); if (!box) return;
-  var imgs = box.querySelectorAll('img'), i = 0, timer = null, hover = false;
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function hydrate(){ imgs.forEach(function(im){ if (im.dataset.src){ im.src = im.dataset.src; im.removeAttribute('data-src'); } }); }
-  function show(n){
-    imgs[i].classList.remove('on'); imgs[i].alt = '';
-    i = (n + imgs.length) % imgs.length;
-    imgs[i].classList.add('on'); imgs[i].alt = 'Rick Mathews';
-  }
-  function start(){ stop(); if (!reduce && !hover && !document.hidden) timer = setInterval(function(){ show(i + 1); }, 6000); }
-  function stop(){ clearInterval(timer); timer = null; }
-  box.addEventListener('click', function(){ hydrate(); show(i + 1); start(); });
-  box.addEventListener('mouseenter', function(){ hover = true; stop(); });
-  box.addEventListener('mouseleave', function(){ hover = false; start(); });
-  document.addEventListener('visibilitychange', start);
-  if (document.readyState === 'complete') { hydrate(); start(); }
-  else addEventListener('load', function(){ hydrate(); start(); });
 })();
 </script>
 <script>
