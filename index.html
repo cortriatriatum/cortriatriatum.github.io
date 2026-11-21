@@ -92,6 +92,7 @@ layout: null
   @media (max-width: 720px){ .edges{flex-direction:column;align-items:center;margin:18px 0 0} }
   /* past the end of the page the paper turns into the street, and you walk into the station */
   .walk-in{position:relative;height:150vh;height:150svh}
+  .walk-in.noink{height:auto}.walk-in.noink .stage{position:static;height:auto}.walk-in.noink .runway,.walk-in.noink .hint{display:none}
   .walk-in .stage{position:sticky;top:0;height:100vh;height:100svh;display:grid;place-items:center;align-content:center;gap:8px;padding:40px 18px;box-sizing:border-box}
   .walk-in canvas{width:100%;height:auto;aspect-ratio:2/1;display:block}
   .runway{position:relative;width:min(900px,100%)}
@@ -274,8 +275,14 @@ layout: null
   function drawingsOn(){ if (window.Ink && window.Ink.plain()){ var t = document.getElementById('plainToggle'); if (t) t.click(); else { document.documentElement.classList.remove('plain'); try { localStorage.setItem('plain', '0'); } catch (e) {} } } }
   /* a card that is scrolling up inside itself is not the page's top edge */
   function innerUp(t){ for (var el = t; el && el !== document.body && el.nodeType === 1; el = el.parentElement){ if (el.scrollHeight > el.clientHeight + 2 && /auto|scroll/.test(getComputedStyle(el).overflowY) && el.scrollTop > 0) return true; } return false; }
-  function go(hash){ if (gone) return; gone = true; try { localStorage.setItem('mode', 'walk'); } catch (e) {} fade.classList.add('on'); setTimeout(function(){ location.href = WALK + hash; }, 450); }
-  function prog(){ var r = sec.getBoundingClientRect(), span = r.height - innerHeight; return span > 0 ? Math.max(0, Math.min(1, -r.top / span)) : 0; }
+  function go(hash){ if (gone) return; gone = true; try { localStorage.setItem('mode', 'walk'); } catch (e) {} fade.classList.add('on'); setTimeout(function(){ location.href = WALK + hash; }, 450);
+    /* if the next page has not taken over in a few seconds, give this one back rather than leave it blank and stuck */
+    setTimeout(function(){ if (gone) reset(); }, 3500); }
+  function reset(){ gone = false; held = 0; topHeld = 0; pull = pullT = 0; fade.classList.remove('on'); if (peek){ peek.style.visibility = 'hidden'; peek.style.height = '0px'; } document.documentElement.style.paddingTop = ''; }
+  /* the bottom of the page is the end of the street, whatever rounding (svh vs innerHeight, zoom) leaves over */
+  function prog(){ var r = sec.getBoundingClientRect(), span = r.height - innerHeight, de = document.documentElement;
+    if (span > 0 && -r.top > 0 && scrollY >= de.scrollHeight - innerHeight - 4) return 1;
+    return span > 0 ? Math.max(0, Math.min(1, -r.top / (span - 4))) : 0; }
   /* the street at the bottom, then down the station stairs (seen in cutaway) into the subway */
   function street(p){
     var I = window.Ink; if (!I || !I.fit(cv, cv.getContext('2d'), 600, 300)) return;
@@ -326,7 +333,7 @@ layout: null
   }
   var pull = 0, pullT = 0;
   var WASH;
-  function atTop(){ return scrollY <= 0; }
+  function atTop(){ return scrollY < 2; }
   var lastPull = 0, onPeek = false; if (peek){ peek.addEventListener('pointerenter', function(){ onPeek = true; }); peek.addEventListener('pointerleave', function(){ onPeek = false; }); peek.addEventListener('focusin', function(){ onPeek = true; }); peek.addEventListener('focusout', function(){ onPeek = false; }); }
   function pushUp(d){ if (off() || gone || !atTop()) return; drawingsOn(); lastPull = performance.now(); pullT = Math.min(1.25, pullT + d); }
   /* a fresh visit starts at the top of the CV, not wherever the browser last was */
@@ -345,6 +352,10 @@ layout: null
   armed = location.hash !== '#walk';
   addEventListener('scroll', function(){ if (prog() < .9) armed = true; }, { passive: true });
   function tick(now){
+    requestAnimationFrame(tick);   /* first, so one bad frame can never stop the drawings or the scroll edges */
+    try { frame(now); } catch (e) { if (!tick.err){ tick.err = true; console.error(e); } }
+  }
+  function frame(now){
     var dt = Math.min(250, (now - last) || 16) / 16.7; last = now;   /* by real time, so slow frames do not slow the walk */
     var p = prog(); sec.style.setProperty('--p', p); if (p > .02 && !off()) drawingsOn();
     pd += Math.max(-.05 * dt, Math.min(.012 * dt, p - pd)); if (reduce) pd = p;
@@ -355,10 +366,13 @@ layout: null
     if (pullT > 0 && !gone && !onPeek && now - lastPull > 1800) pullT = Math.max(0, pullT - .012 * dt);
     pull += Math.max(-.06 * dt, Math.min(.016 * dt, pullT - pull)); tram(Math.min(1, pull));
     if (pull >= 1 && !gone){ if (++topHeld > 14) go('#tramup'); } else topHeld = 0;
-    requestAnimationFrame(tick);
   }
   var topHeld = 0;
-  addEventListener('pageshow', function(e){ if (e.persisted){ gone = false; held = 0; topHeld = 0; armed = false; pull = pullT = 0; pd = prog(); fade.classList.remove('on'); } });
+  addEventListener('pageshow', function(e){ if (e.persisted){ reset(); armed = false; pd = prog(); } });
+  /* coming back up the stairs (/#walk) lands on the street, at once, not wherever smooth scrolling gives up */
+  addEventListener('load', function(){ if (location.hash === '#walk'){ var y = sec.getBoundingClientRect().top + scrollY; try { scrollTo({ top: y, behavior: 'instant' }); } catch (e) { scrollTo(0, y); } pd = prog(); } });
+  /* if the drawing kit never arrives, the street is just its directory: no blank canvas to scroll through */
+  addEventListener('load', function(){ if (!window.Ink) sec.classList.add('noink'); });
   requestAnimationFrame(tick);
 })();
 </script>
